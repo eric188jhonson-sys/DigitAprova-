@@ -1,96 +1,160 @@
-</script>
-const frases = [
-  "A Constituição Federal é a norma suprema do ordenamento jurídico.",
-  "Todo poder emana do povo, que o exerce por meio de representantes eleitos.",
-  "A administração pública deve obedecer aos princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência.",
-  "O concurso público é a forma regular de ingresso no serviço público.",
-  "Os direitos fundamentais têm aplicação imediata.",
-  "Ninguém será obrigado a fazer ou deixar de fazer algo senão em virtude de lei.",
-  "A lei não excluirá da apreciação do Poder Judiciário lesão ou ameaça a direito.",
-  "A soberania é fundamento da República Federativa do Brasil.",
-  "A cidadania é um dos fundamentos do Estado Democrático de Direito.",
-  "A dignidade da pessoa humana é princípio fundamental da Constituição.",
-  "A separação dos poderes garante o equilíbrio entre Legislativo, Executivo e Judiciário.",
-  "A legalidade é princípio básico da atuação administrativa.",
-  "A impessoalidade veda a promoção pessoal por meio de atos administrativos.",
-  "A moralidade exige conduta ética do agente público.",
-  "A publicidade assegura transparência dos atos administrativos.",
-  "A eficiência impõe melhor aproveitamento dos recursos públicos.",
-  "O servidor público responde civil, penal e administrativamente por seus atos.",
-  "O ato administrativo deve respeitar a finalidade pública.",
-  "O controle da administração pode ser interno ou externo.",
-  "O Tribunal de Contas auxilia o Poder Legislativo no controle externo.",
-  "A licitação é obrigatória para contratação pela administração pública.",
-  "A dispensa de licitação ocorre nos casos previstos em lei.",
-  "A inexigibilidade de licitação ocorre quando há inviabilidade de competição.",
-  "O contrato administrativo possui cláusulas exorbitantes.",
-  "A responsabilidade civil do Estado é objetiva.",
-  "O Estado indenizará o dano causado por seus agentes.",
-  "O princípio da proporcionalidade orienta a aplicação da lei.",
-  "O princípio da razoabilidade limita o abuso de poder.",
-  "A hierarquia organiza a estrutura administrativa.",
-  "A autotutela permite à administração rever seus próprios atos.",
-  "O poder disciplinar permite punir infrações funcionais.",
-  "O poder regulamentar complementa a execução da lei.",
-  "O poder de polícia limita direitos em benefício da coletividade.",
-  "A motivação é requisito dos atos administrativos.",
-  "A finalidade é elemento essencial do ato administrativo.",
-  "A competência é requisito vinculado do ato administrativo.",
-  "O objeto do ato administrativo deve ser lícito.",
-  "A forma é requisito de validade do ato administrativo.",
-  "O acesso aos cargos públicos depende de aprovação em concurso.",
-  "O princípio da supremacia do interesse público prevalece sobre o privado.",
-  "O princípio da indisponibilidade do interesse público limita a atuação estatal.",
-  "A Constituição garante igualdade perante a lei.",
-  "O direito adquirido deve ser respeitado pela lei nova.",
-  "O ato jurídico perfeito é protegido pela Constituição.",
-  "A coisa julgada garante imutabilidade da decisão judicial."
-];
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>DigitAprova</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
 
-  ];
+    #frase {
+      font-size: 22px;
+      margin: 20px;
+    }
 
-  let indice = 0;
+    input {
+      width: 80%;
+      padding: 10px;
+      font-size: 18px;
+    }
 
-  const fraseDiv = document.getElementById("frase");
-  const entrada = document.getElementById("entrada");
-  const status = document.getElementById("status");
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+    }
 
-  function normalizar(texto) {
-    return texto
-      .normalize("NFD")                // separa acentos
-      .replace(/[\u0300-\u036f]/g, "") // remove acentos
-      .replace(/\s+/g, " ")            // remove espaços duplos
-      .trim()                          // remove espaço no começo/fim
-      .toLowerCase();                  // ignora maiúsculas
-  }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
 
-  function carregarFrase() {
-    fraseDiv.textContent = frases[indice];
-    entrada.value = "";
-    status.textContent = "";
-  }
+  <h1>DigitAprova</h1>
 
-  entrada.addEventListener("input", function() {
-    const digitado = normalizar(entrada.value);
-    const correto = normalizar(frases[indice]);
+  <div id="frase"></div>
 
-    if (digitado === correto) {
-      status.textContent = "✔️ Correto!";
+  <input type="text" id="entrada" placeholder="Digite aqui..." autofocus>
+
+  <div id="status"></div>
+
+  <div id="botoes" style="margin-top:15px; display:none;">
+    <button onclick="proximaFrase()">➡️ Próxima frase</button>
+    <button onclick="refazerFrase()">🔄 Refazer frase</button>
+  </div>
+
+  <script>
+    const frases = [
+      "A Constituição Federal é a norma suprema do ordenamento jurídico.",
+      "Todo poder emana do povo, que o exerce por meio de representantes eleitos.",
+      "A administração pública deve obedecer aos princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência.",
+      "O concurso público é a forma regular de ingresso no serviço público.",
+      "Os direitos fundamentais têm aplicação imediata.",
+      "Ninguém será obrigado a fazer ou deixar de fazer algo senão em virtude de lei.",
+      "A lei não excluirá da apreciação do Poder Judiciário lesão ou ameaça a direito.",
+      "A soberania é fundamento da República Federativa do Brasil.",
+      "A cidadania é um dos fundamentos do Estado Democrático de Direito.",
+      "A dignidade da pessoa humana é princípio fundamental da Constituição.",
+      "A separação dos poderes garante o equilíbrio entre Legislativo, Executivo e Judiciário.",
+      "A legalidade é princípio básico da atuação administrativa.",
+      "A impessoalidade veda a promoção pessoal por meio de atos administrativos.",
+      "A moralidade exige conduta ética do agente público.",
+      "A publicidade assegura transparência dos atos administrativos.",
+      "A eficiência impõe melhor aproveitamento dos recursos públicos.",
+      "O servidor público responde civil, penal e administrativamente por seus atos.",
+      "O ato administrativo deve respeitar a finalidade pública.",
+      "O controle da administração pode ser interno ou externo.",
+      "O Tribunal de Contas auxilia o Poder Legislativo no controle externo.",
+      "A licitação é obrigatória para contratação pela administração pública.",
+      "A dispensa de licitação ocorre nos casos previstos em lei.",
+      "A inexigibilidade de licitação ocorre quando há inviabilidade de competição.",
+      "O contrato administrativo possui cláusulas exorbitantes.",
+      "A responsabilidade civil do Estado é objetiva.",
+      "O Estado indenizará o dano causado por seus agentes.",
+      "O princípio da proporcionalidade orienta a aplicação da lei.",
+      "O princípio da razoabilidade limita o abuso de poder.",
+      "A hierarquia organiza a estrutura administrativa.",
+      "A autotutela permite à administração rever seus próprios atos.",
+      "O poder disciplinar permite punir infrações funcionais.",
+      "O poder regulamentar complementa a execução da lei.",
+      "O poder de polícia limita direitos em benefício da coletividade.",
+      "A motivação é requisito dos atos administrativos.",
+      "A finalidade é elemento essencial do ato administrativo.",
+      "A competência é requisito vinculado do ato administrativo.",
+      "O objeto do ato administrativo deve ser lícito.",
+      "A forma é requisito de validade do ato administrativo.",
+      "O acesso aos cargos públicos depende de aprovação em concurso.",
+      "O princípio da supremacia do interesse público prevalece sobre o privado.",
+      "O princípio da indisponibilidade do interesse público limita a atuação estatal.",
+      "A Constituição garante igualdade perante a lei.",
+      "O direito adquirido deve ser respeitado pela lei nova.",
+      "O ato jurídico perfeito é protegido pela Constituição.",
+      "A coisa julgada garante imutabilidade da decisão judicial."
+    ];
+
+    let indice = 0;
+
+    const fraseDiv = document.getElementById("frase");
+    const entrada = document.getElementById("entrada");
+    const status = document.getElementById("status");
+    const botoes = document.getElementById("botoes");
+
+    function normalizar(texto) {
+      return texto
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .toLowerCase();
+    }
+
+    function carregarFrase() {
+      fraseDiv.textContent = frases[indice];
+      entrada.value = "";
+      status.textContent = "";
+      botoes.style.display = "none";
+      entrada.disabled = false;
+      entrada.focus();
+    }
+
+    entrada.addEventListener("input", function() {
+      const digitado = normalizar(entrada.value);
+      const correto = normalizar(frases[indice]);
+
+      if (digitado === correto) {
+        status.textContent = "✔️ Frase correta!";
+        botoes.style.display = "block";
+        entrada.disabled = true;
+      }
+    });
+
+    function proximaFrase() {
       indice++;
-
       if (indice < frases.length) {
-        setTimeout(carregarFrase, 800);
+        carregarFrase();
       } else {
         fraseDiv.textContent = "🎉 Fim do treino!";
+        status.textContent = "Parabéns, você concluiu todas as frases!";
+        botoes.style.display = "none";
         entrada.disabled = true;
-        status.textContent = "Certificado: digitação sem erros!";
       }
     }
-  });
 
-  carregarFrase();
-</script>
-<div id="botoes" style="margin-top:15px; display:none;">
-  <button onclick="proximaFrase()">➡️ Próxima frase</button>
-  <button onclick="refazerFrase()">🔄 Refazer frase</button>
-</div>
+    function refazerFrase() {
+      entrada.value = "";
+      status.textContent = "🔄 Refaça a frase:";
+      entrada.disabled = false;
+      entrada.focus();
+    }
+
+    carregarFrase();
+  </script>
+
+</body>
+</html>
