@@ -6,80 +6,73 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f2f2f2;
       text-align: center;
       padding: 20px;
     }
-    h1 {
-      color: #2c3e50;
+
+    #frase {
+      font-size: 22px;
+      margin: 20px;
     }
-    #texto {
-      background: white;
-      padding: 15px;
-      border-radius: 8px;
-      margin: 20px auto;
+
+    input {
       width: 80%;
-    }
-    textarea {
-      width: 80%;
-      height: 120px;
-      font-size: 16px;
       padding: 10px;
+      font-size: 18px;
     }
-    #resultado {
+
+    #status {
       margin-top: 15px;
       font-weight: bold;
-    }
-    button {
-      padding: 10px 20px;
-      margin-top: 10px;
-      font-size: 16px;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
   <h1>DigitAprova</h1>
-  <p>Treine digitação enquanto estuda para concurso</p>
 
-  <div id="texto"></div>
+  <div id="frase"></div>
 
-  <textarea id="entrada" placeholder="Digite o texto acima aqui..."></textarea><br>
+  <input type="text" id="entrada" placeholder="Digite aqui..." autofocus>
 
-  <button onclick="verificar()">Verificar</button>
-
-  <div id="resultado"></div>
+  <div id="status"></div>
 
   <script>
-    const textos = [
-      "A Constituição Federal é a norma suprema do ordenamento jurídico brasileiro.",
-      "O servidor público deve agir conforme os princípios da legalidade e moralidade.",
-      "A administração pública deve obedecer aos princípios da eficiência e publicidade.",
-      "O concurso público é o meio legal de ingresso no serviço público.",
-      "A digitação correta melhora a concentração e a memorização do conteúdo."
+    const frases = [
+      "A Constituição é a lei fundamental do Estado.",
+      "O servidor público deve agir com legalidade.",
+      "O princípio da moralidade rege a administração pública.",
+      "O concurso público garante igualdade de acesso.",
+      "Direitos e deveres são previstos em lei."
     ];
 
-    let textoAtual = "";
+    let indice = 0;
 
-    function novoTexto() {
-      const indice = Math.floor(Math.random() * textos.length);
-      textoAtual = textos[indice];
-      document.getElementById("texto").innerText = textoAtual;
-      document.getElementById("entrada").value = "";
-      document.getElementById("resultado").innerText = "";
+    const fraseDiv = document.getElementById("frase");
+    const entrada = document.getElementById("entrada");
+    const status = document.getElementById("status");
+
+    function carregarFrase() {
+      fraseDiv.textContent = frases[indice];
+      entrada.value = "";
+      status.textContent = "";
     }
 
-    function verificar() {
-      const digitado = document.getElementById("entrada").value;
-      if (digitado === textoAtual) {
-        document.getElementById("resultado").innerText = "✅ Parabéns! Texto digitado corretamente.";
-      } else {
-        document.getElementById("resultado").innerText = "❌ Ainda há erros. Continue tentando.";
+    entrada.addEventListener("input", function() {
+      if (entrada.value === frases[indice]) {
+        status.textContent = "✔️ Correto!";
+        indice++;
+
+        if (indice < frases.length) {
+          setTimeout(carregarFrase, 800);
+        } else {
+          fraseDiv.textContent = "🎉 Fim do treino!";
+          entrada.disabled = true;
+        }
       }
-    }
+    });
 
-    novoTexto();
+    carregarFrase();
   </script>
 
 </body>
