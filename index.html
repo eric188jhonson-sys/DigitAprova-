@@ -1,79 +1,50 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>DigitAprova</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
+<script>
+  const frases = [
+    "A Constituição é a lei fundamental do Estado.",
+    "O servidor público deve agir com legalidade.",
+    "O princípio da moralidade rege a administração pública.",
+    "O concurso público garante igualdade de acesso.",
+    "Direitos e deveres são previstos em lei."
+  ];
 
-    #frase {
-      font-size: 22px;
-      margin: 20px;
-    }
+  let indice = 0;
 
-    input {
-      width: 80%;
-      padding: 10px;
-      font-size: 18px;
-    }
+  const fraseDiv = document.getElementById("frase");
+  const entrada = document.getElementById("entrada");
+  const status = document.getElementById("status");
 
-    #status {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
+  function normalizar(texto) {
+    return texto
+      .normalize("NFD")                // separa acentos
+      .replace(/[\u0300-\u036f]/g, "") // remove acentos
+      .replace(/\s+/g, " ")            // remove espaços duplos
+      .trim()                          // remove espaço no começo/fim
+      .toLowerCase();                  // ignora maiúsculas
+  }
 
-  <h1>DigitAprova</h1>
+  function carregarFrase() {
+    fraseDiv.textContent = frases[indice];
+    entrada.value = "";
+    status.textContent = "";
+  }
 
-  <div id="frase"></div>
+  entrada.addEventListener("input", function() {
+    const digitado = normalizar(entrada.value);
+    const correto = normalizar(frases[indice]);
 
-  <input type="text" id="entrada" placeholder="Digite aqui..." autofocus>
+    if (digitado === correto) {
+      status.textContent = "✔️ Correto!";
+      indice++;
 
-  <div id="status"></div>
-
-  <script>
-    const frases = [
-      "A Constituição é a lei fundamental do Estado.",
-      "O servidor público deve agir com legalidade.",
-      "O princípio da moralidade rege a administração pública.",
-      "O concurso público garante igualdade de acesso.",
-      "Direitos e deveres são previstos em lei."
-    ];
-
-    let indice = 0;
-
-    const fraseDiv = document.getElementById("frase");
-    const entrada = document.getElementById("entrada");
-    const status = document.getElementById("status");
-
-    function carregarFrase() {
-      fraseDiv.textContent = frases[indice];
-      entrada.value = "";
-      status.textContent = "";
-    }
-
-    entrada.addEventListener("input", function() {
-      if (entrada.value === frases[indice]) {
-        status.textContent = "✔️ Correto!";
-        indice++;
-
-        if (indice < frases.length) {
-          setTimeout(carregarFrase, 800);
-        } else {
-          fraseDiv.textContent = "🎉 Fim do treino!";
-          entrada.disabled = true;
-        }
+      if (indice < frases.length) {
+        setTimeout(carregarFrase, 800);
+      } else {
+        fraseDiv.textContent = "🎉 Fim do treino!";
+        entrada.disabled = true;
+        status.textContent = "Certificado: digitação sem erros!";
       }
-    });
+    }
+  });
 
-    carregarFrase();
-  </script>
-
-</body>
-</html>
+  carregarFrase();
+</script>
