@@ -32,11 +32,30 @@
       margin: 5px;
       cursor: pointer;
     }
+
+    #painel {
+      margin-top: 15px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
 
   <h1>DigitAprova</h1>
+
+  <label>Escolha a matéria:</label>
+  <select id="materia" onchange="trocarMateria()">
+    <option value="constitucional">Direito Constitucional</option>
+    <option value="administrativo">Direito Administrativo</option>
+    <option value="penal">Direito Penal</option>
+    <option value="portugues">Português</option>
+  </select>
+
+  <div id="painel">
+    ⏱ Tempo: <span id="tempo">0</span>s |
+    📄 Frase: <span id="contador">1</span>/<span id="total">0</span> |
+    ⭐ Pontos: <span id="pontos">0</span>
+  </div>
 
   <div id="frase"></div>
 
@@ -50,60 +69,82 @@
   </div>
 
   <script>
-    const frases = [
+    const frasesConstitucional = [
       "A Constituição Federal é a norma suprema do ordenamento jurídico.",
       "Todo poder emana do povo, que o exerce por meio de representantes eleitos.",
-      "A administração pública deve obedecer aos princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência.",
-      "O concurso público é a forma regular de ingresso no serviço público.",
+      "A dignidade da pessoa humana é fundamento da República.",
       "Os direitos fundamentais têm aplicação imediata.",
-      "Ninguém será obrigado a fazer ou deixar de fazer algo senão em virtude de lei.",
-      "A lei não excluirá da apreciação do Poder Judiciário lesão ou ameaça a direito.",
-      "A soberania é fundamento da República Federativa do Brasil.",
-      "A cidadania é um dos fundamentos do Estado Democrático de Direito.",
-      "A dignidade da pessoa humana é princípio fundamental da Constituição.",
-      "A separação dos poderes garante o equilíbrio entre Legislativo, Executivo e Judiciário.",
-      "A legalidade é princípio básico da atuação administrativa.",
-      "A impessoalidade veda a promoção pessoal por meio de atos administrativos.",
-      "A moralidade exige conduta ética do agente público.",
-      "A publicidade assegura transparência dos atos administrativos.",
-      "A eficiência impõe melhor aproveitamento dos recursos públicos.",
-      "O servidor público responde civil, penal e administrativamente por seus atos.",
-      "O ato administrativo deve respeitar a finalidade pública.",
-      "O controle da administração pode ser interno ou externo.",
-      "O Tribunal de Contas auxilia o Poder Legislativo no controle externo.",
-      "A licitação é obrigatória para contratação pela administração pública.",
-      "A dispensa de licitação ocorre nos casos previstos em lei.",
-      "A inexigibilidade de licitação ocorre quando há inviabilidade de competição.",
-      "O contrato administrativo possui cláusulas exorbitantes.",
-      "A responsabilidade civil do Estado é objetiva.",
-      "O Estado indenizará o dano causado por seus agentes.",
-      "O princípio da proporcionalidade orienta a aplicação da lei.",
-      "O princípio da razoabilidade limita o abuso de poder.",
-      "A hierarquia organiza a estrutura administrativa.",
-      "A autotutela permite à administração rever seus próprios atos.",
-      "O poder disciplinar permite punir infrações funcionais.",
-      "O poder regulamentar complementa a execução da lei.",
-      "O poder de polícia limita direitos em benefício da coletividade.",
-      "A motivação é requisito dos atos administrativos.",
-      "A finalidade é elemento essencial do ato administrativo.",
-      "A competência é requisito vinculado do ato administrativo.",
-      "O objeto do ato administrativo deve ser lícito.",
-      "A forma é requisito de validade do ato administrativo.",
-      "O acesso aos cargos públicos depende de aprovação em concurso.",
-      "O princípio da supremacia do interesse público prevalece sobre o privado.",
-      "O princípio da indisponibilidade do interesse público limita a atuação estatal.",
+      "A separação dos poderes garante o equilíbrio entre eles.",
+      "A soberania é fundamento do Estado brasileiro.",
+      "A cidadania é princípio fundamental da República.",
       "A Constituição garante igualdade perante a lei.",
-      "O direito adquirido deve ser respeitado pela lei nova.",
-      "O ato jurídico perfeito é protegido pela Constituição.",
-      "A coisa julgada garante imutabilidade da decisão judicial."
+      "O direito adquirido é protegido pela Constituição.",
+      "A coisa julgada assegura segurança jurídica."
     ];
 
+    const frasesAdministrativo = [
+      "A administração pública deve obedecer aos princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência.",
+      "O concurso público é a forma regular de ingresso no serviço público.",
+      "A licitação é obrigatória para contratação pela administração pública.",
+      "A responsabilidade civil do Estado é objetiva.",
+      "O poder de polícia limita direitos em benefício da coletividade.",
+      "O ato administrativo deve respeitar a finalidade pública.",
+      "A autotutela permite à administração rever seus próprios atos.",
+      "O servidor público responde civil, penal e administrativamente.",
+      "O contrato administrativo possui cláusulas exorbitantes.",
+      "A eficiência busca o melhor resultado do serviço público."
+    ];
+
+    const frasesPenal = [
+      "Não há crime sem lei anterior que o defina.",
+      "Não há pena sem prévia cominação legal.",
+      "O dolo consiste na vontade consciente de praticar o crime.",
+      "A culpa ocorre quando não há intenção de cometer o delito.",
+      "O crime pode ser doloso ou culposo.",
+      "A tentativa é punida quando o crime não se consuma por circunstâncias alheias à vontade do agente.",
+      "O agente é punido na medida de sua culpabilidade.",
+      "O erro de tipo pode excluir o dolo.",
+      "A legítima defesa exclui a ilicitude do fato.",
+      "O estado de necessidade afasta a ilicitude da conduta."
+    ];
+
+    const frasesPortugues = [
+      "O sujeito é o termo da oração sobre o qual se declara algo.",
+      "O predicado é aquilo que se declara sobre o sujeito.",
+      "O verbo concorda com o sujeito em número e pessoa.",
+      "A crase é a fusão da preposição a com o artigo a.",
+      "A vírgula separa termos coordenados.",
+      "O período pode ser simples ou composto.",
+      "A oração subordinada depende da oração principal.",
+      "O adjunto adnominal acompanha o substantivo.",
+      "O complemento nominal completa o sentido do nome.",
+      "A interpretação de texto exige atenção ao sentido das palavras."
+    ];
+
+    let frases = frasesConstitucional;
     let indice = 0;
+    let pontos = 0;
+    let tempo = 0;
+    let cronometro;
 
     const fraseDiv = document.getElementById("frase");
     const entrada = document.getElementById("entrada");
     const status = document.getElementById("status");
     const botoes = document.getElementById("botoes");
+    const contadorSpan = document.getElementById("contador");
+    const totalSpan = document.getElementById("total");
+    const pontosSpan = document.getElementById("pontos");
+    const tempoSpan = document.getElementById("tempo");
+
+    function iniciarCronometro() {
+      clearInterval(cronometro);
+      tempo = 0;
+      tempoSpan.textContent = tempo;
+      cronometro = setInterval(() => {
+        tempo++;
+        tempoSpan.textContent = tempo;
+      }, 1000);
+    }
 
     function normalizar(texto) {
       return texto
@@ -121,6 +162,9 @@
       botoes.style.display = "none";
       entrada.disabled = false;
       entrada.focus();
+      contadorSpan.textContent = indice + 1;
+      totalSpan.textContent = frases.length;
+      iniciarCronometro();
     }
 
     entrada.addEventListener("input", function() {
@@ -128,9 +172,12 @@
       const correto = normalizar(frases[indice]);
 
       if (digitado === correto) {
+        clearInterval(cronometro);
         status.textContent = "✔️ Frase correta!";
         botoes.style.display = "block";
         entrada.disabled = true;
+        pontos += 10;
+        pontosSpan.textContent = pontos;
       }
     });
 
@@ -140,9 +187,10 @@
         carregarFrase();
       } else {
         fraseDiv.textContent = "🎉 Fim do treino!";
-        status.textContent = "Parabéns, você concluiu todas as frases!";
+        status.textContent = "Pontuação final: " + pontos;
         botoes.style.display = "none";
         entrada.disabled = true;
+        clearInterval(cronometro);
       }
     }
 
@@ -151,6 +199,20 @@
       status.textContent = "🔄 Refaça a frase:";
       entrada.disabled = false;
       entrada.focus();
+      iniciarCronometro();
+    }
+
+    function trocarMateria() {
+      const materia = document.getElementById("materia").value;
+      if (materia === "constitucional") frases = frasesConstitucional;
+      if (materia === "administrativo") frases = frasesAdministrativo;
+      if (materia === "penal") frases = frasesPenal;
+      if (materia === "portugues") frases = frasesPortugues;
+
+      indice = 0;
+      pontos = 0;
+      pontosSpan.textContent = pontos;
+      carregarFrase();
     }
 
     carregarFrase();
