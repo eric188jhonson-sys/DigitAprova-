@@ -220,3 +220,273 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>DigitAprova</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  text-align: center;
+  padding: 20px;
+}
+h1 {
+  color: #333;
+}
+select, button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+}
+#frase {
+  margin: 20px auto;
+  padding: 15px;
+  width: 80%;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 18px;
+}
+textarea {
+  width: 80%;
+  height: 100px;
+  font-size: 18px;
+  padding: 10px;
+}
+#resultado {
+  margin-top: 15px;
+  font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>DigitAprova 📚⌨️</h1>
+
+<select id="materia" onchange="novaFrase()">
+  <option value="portugues">Português</option>
+  <option value="constitucional">Direito Constitucional</option>
+  <option value="administrativo">Direito Administrativo</option>
+  <option value="informatica">Informática</option>
+  <option value="logica">Raciocínio Lógico</option>
+</select>
+
+<div id="frase"></div>
+
+<textarea id="entrada" placeholder="Digite a frase aqui..." oninput="verificar()"></textarea>
+
+<br>
+<button onclick="novaFrase()">Próxima frase</button>
+<button onclick="refazer()">Refazer frase</button>
+
+<div id="resultado"></div>
+
+<script>
+const frases = {
+
+portugues: [
+"O candidato dedicado alcança melhores resultados.",
+"A leitura diária amplia o vocabulário e a compreensão textual.",
+"A interpretação correta depende da atenção aos detalhes.",
+"O estudo organizado facilita a aprendizagem.",
+"A prática constante melhora o desempenho.",
+"A disciplina é essencial para a aprovação.",
+"O esforço contínuo produz progresso.",
+"A organização do tempo favorece o rendimento.",
+"A persistência supera os obstáculos.",
+"O texto claro transmite a mensagem com precisão.",
+"A coesão garante a ligação entre as ideias.",
+"A coerência assegura sentido ao discurso.",
+"A pontuação adequada evita ambiguidades.",
+"A concordância verbal deve respeitar o sujeito.",
+"A concordância nominal ajusta gênero e número.",
+"O verbo concorda com o núcleo do sujeito.",
+"O adjetivo concorda com o substantivo.",
+"O período simples possui apenas uma oração.",
+"O período composto apresenta mais de uma oração.",
+"A voz ativa destaca quem pratica a ação.",
+"A voz passiva enfatiza quem sofre a ação.",
+"O sujeito pode ser simples, composto ou oculto.",
+"O predicado pode ser verbal, nominal ou verbo-nominal.",
+"O objeto direto completa o sentido do verbo.",
+"O objeto indireto exige preposição.",
+"A crase exige a presença da preposição e do artigo.",
+"Não se usa crase antes de verbos.",
+"A regência verbal determina o uso de preposições.",
+"A próclise ocorre antes do verbo.",
+"A ênclise ocorre depois do verbo.",
+"A denotação indica sentido literal.",
+"A conotação indica sentido figurado.",
+"A sinonímia expressa semelhança de sentido.",
+"A antonímia indica oposição de sentido.",
+"A polissemia ocorre quando uma palavra tem vários sentidos.",
+"A ambiguidade deve ser evitada na redação.",
+"O texto narrativo apresenta fatos e personagens.",
+"O texto descritivo caracteriza pessoas ou lugares.",
+"O texto dissertativo defende um ponto de vista.",
+"O argumento deve ser claro e objetivo.",
+"A tese é a ideia principal do texto.",
+"A conclusão retoma os pontos essenciais.",
+"A progressão textual evita repetições.",
+"O conectivo liga frases e parágrafos.",
+"A conjunção expressa relação entre orações.",
+"O advérbio modifica o verbo.",
+"O pronome substitui o nome.",
+"A linguagem formal exige norma culta.",
+"A norma-padrão é exigida em concursos."
+],
+
+constitucional: [
+"A Constituição Federal é a norma suprema do ordenamento jurídico brasileiro.",
+"Todos são iguais perante a lei, sem distinção de qualquer natureza.",
+"Ninguém será obrigado a fazer ou deixar de fazer algo senão em virtude de lei.",
+"É livre a manifestação do pensamento, sendo vedado o anonimato.",
+"São Poderes da União o Legislativo, o Executivo e o Judiciário.",
+"A dignidade da pessoa humana é fundamento da República.",
+"Os direitos fundamentais têm aplicação imediata.",
+"O direito à vida é protegido como direito fundamental.",
+"O direito à liberdade é assegurado constitucionalmente.",
+"O direito à igualdade veda discriminações.",
+"O direito à propriedade deve atender à função social.",
+"O habeas corpus protege o direito de locomoção.",
+"O mandado de segurança protege direito líquido e certo.",
+"A soberania popular será exercida pelo voto direto e secreto.",
+"A separação dos Poderes evita a concentração de poder.",
+"O controle de constitucionalidade protege a supremacia da Constituição.",
+"A Constituição é rígida quanto ao seu processo de alteração.",
+"Os direitos sociais incluem educação, saúde e trabalho.",
+"A segurança pública é dever do Estado.",
+"A família é base da sociedade.",
+"A criança e o adolescente têm proteção integral.",
+"O idoso tem prioridade na garantia de seus direitos.",
+"A forma federativa de Estado é cláusula pétrea.",
+"O voto é cláusula pétrea.",
+"A separação dos Poderes é cláusula pétrea.",
+"O Supremo Tribunal Federal é o guardião da Constituição.",
+"A União, os Estados e os Municípios são entes federativos.",
+"A autonomia federativa envolve autogoverno.",
+"O controle difuso pode ser exercido por qualquer juiz.",
+"O controle concentrado é exercido pelo STF."
+],
+
+administrativo: [
+"A administração pública deve agir conforme a lei.",
+"O princípio da impessoalidade impede favorecimentos pessoais.",
+"O princípio da moralidade exige conduta ética.",
+"O princípio da publicidade assegura transparência.",
+"O princípio da eficiência busca melhor desempenho.",
+"O interesse público prevalece sobre o privado.",
+"O ato administrativo deve observar a finalidade pública.",
+"O ato administrativo deve ser praticado por agente competente.",
+"A anulação ocorre quando o ato é ilegal.",
+"A revogação ocorre por conveniência e oportunidade.",
+"O poder hierárquico organiza a administração.",
+"O poder disciplinar permite aplicar sanções.",
+"O poder de polícia limita direitos individuais.",
+"A responsabilidade civil do Estado é objetiva.",
+"O dano causado por agente público gera indenização.",
+"A licitação busca a proposta mais vantajosa.",
+"A licitação garante igualdade entre concorrentes.",
+"A inexigibilidade ocorre quando há inviabilidade de competição.",
+"O contrato administrativo possui cláusulas exorbitantes.",
+"O concurso público garante acesso aos cargos.",
+"A estabilidade protege o servidor público.",
+"O processo administrativo garante ampla defesa.",
+"O contraditório é assegurado.",
+"A administração direta integra os entes federativos.",
+"A administração indireta inclui autarquias.",
+"As empresas públicas integram a administração indireta.",
+"As sociedades de economia mista também integram.",
+"A concessão é forma de delegação.",
+"A permissão é ato precário.",
+"A improbidade administrativa viola princípios."
+],
+
+informatica: [
+"O sistema operacional gerencia os recursos do computador.",
+"O hardware corresponde à parte física do computador.",
+"O software corresponde à parte lógica do sistema.",
+"O processador executa instruções.",
+"A memória RAM armazena dados temporários.",
+"O disco rígido armazena dados permanentemente.",
+"O teclado é dispositivo de entrada.",
+"O mouse é dispositivo apontador.",
+"O monitor é dispositivo de saída.",
+"O backup evita perda de dados.",
+"O navegador acessa páginas da internet.",
+"O e-mail é ferramenta de comunicação digital.",
+"O spam é mensagem indesejada.",
+"O download copia arquivos da internet.",
+"O upload envia arquivos para a internet.",
+"O antivírus protege contra ameaças.",
+"O firewall controla o tráfego.",
+"A senha protege o acesso.",
+"A criptografia protege dados.",
+"A computação em nuvem oferece serviços online."
+],
+
+logica: [
+"Uma proposição é uma frase que pode ser verdadeira ou falsa.",
+"A negação inverte o valor lógico.",
+"A conjunção é verdadeira quando ambas são verdadeiras.",
+"A disjunção é falsa quando ambas são falsas.",
+"A condicional é falsa quando a primeira é verdadeira e a segunda é falsa.",
+"A tabela verdade representa os valores lógicos.",
+"O argumento possui premissas e conclusão.",
+"O raciocínio dedutivo parte do geral para o particular.",
+"O raciocínio indutivo parte do particular para o geral.",
+"A interseção reúne elementos comuns.",
+"A união reúne todos os elementos.",
+"O conjunto vazio não possui elementos.",
+"A sequência numérica segue um padrão.",
+"A analogia compara relações.",
+"A classificação separa por características.",
+"A dedução elimina possibilidades.",
+"A coerência garante resposta correta.",
+"A lógica evita contradições.",
+"A leitura atenta evita erros.",
+"A prática melhora o raciocínio."
+]
+
+};
+
+let fraseAtual = "";
+
+function novaFrase() {
+  const materia = document.getElementById("materia").value;
+  const lista = frases[materia];
+  fraseAtual = lista[Math.floor(Math.random() * lista.length)];
+  document.getElementById("frase").innerText = fraseAtual;
+  document.getElementById("entrada").value = "";
+  document.getElementById("resultado").innerText = "";
+}
+
+function refazer() {
+  document.getElementById("entrada").value = "";
+  document.getElementById("resultado").innerText = "";
+}
+
+function verificar() {
+  const digitado = document.getElementById("entrada").value;
+  let erros = 0;
+
+  for (let i = 0; i < digitado.length; i++) {
+    if (digitado[i] !== fraseAtual[i]) {
+      erros++;
+    }
+  }
+
+  if (digitado === fraseAtual) {
+    document.getElementById("resultado").innerText = "✅ Parabéns! Frase correta!";
+  } else {
+    document.getElementById("resultado").innerText = "Erros: " + erros;
+  }
+}
+
+novaFrase();
+</script>
+
+</body>
+</html>
