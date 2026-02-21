@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>DigitAprova</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    #texto {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px auto;
+      width: 80%;
+    }
+    textarea {
+      width: 80%;
+      height: 120px;
+      font-size: 16px;
+      padding: 10px;
+    }
+    #resultado {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>DigitAprova</h1>
+  <p>Treine digitação enquanto estuda para concurso</p>
+
+  <div id="texto"></div>
+
+  <textarea id="entrada" placeholder="Digite o texto acima aqui..."></textarea><br>
+
+  <button onclick="verificar()">Verificar</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    const textos = [
+      "A Constituição Federal é a norma suprema do ordenamento jurídico brasileiro.",
+      "O servidor público deve agir conforme os princípios da legalidade e moralidade.",
+      "A administração pública deve obedecer aos princípios da eficiência e publicidade.",
+      "O concurso público é o meio legal de ingresso no serviço público.",
+      "A digitação correta melhora a concentração e a memorização do conteúdo."
+    ];
+
+    let textoAtual = "";
+
+    function novoTexto() {
+      const indice = Math.floor(Math.random() * textos.length);
+      textoAtual = textos[indice];
+      document.getElementById("texto").innerText = textoAtual;
+      document.getElementById("entrada").value = "";
+      document.getElementById("resultado").innerText = "";
+    }
+
+    function verificar() {
+      const digitado = document.getElementById("entrada").value;
+      if (digitado === textoAtual) {
+        document.getElementById("resultado").innerText = "✅ Parabéns! Texto digitado corretamente.";
+      } else {
+        document.getElementById("resultado").innerText = "❌ Ainda há erros. Continue tentando.";
+      }
+    }
+
+    novoTexto();
+  </script>
+
+</body>
+</html>
