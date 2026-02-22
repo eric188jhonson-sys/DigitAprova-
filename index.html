@@ -314,3 +314,67 @@ function voltar(){
   document.body.querySelector(".container")?.style.setProperty("display","flex");
 }
 </script>
+  <!-- TECLADO VIRTUAL DE APOIO -->
+<div id="teclado" style="margin-top:30px;text-align:center;">
+  <div class="linha">
+    <span class="tecla">Q</span>
+    <span class="tecla">W</span>
+    <span class="tecla">E</span>
+    <span class="tecla">R</span>
+    <span class="tecla">T</span>
+    <span class="tecla">Y</span>
+    <span class="tecla">U</span>
+    <span class="tecla">I</span>
+    <span class="tecla">O</span>
+    <span class="tecla">P</span>
+  </div>
+  <div class="linha">
+    <span class="tecla">A</span>
+    <span class="tecla">S</span>
+    <span class="tecla">D</span>
+    <span class="tecla">F</span>
+    <span class="tecla">G</span>
+    <span class="tecla">H</span>
+    <span class="tecla">J</span>
+    <span class="tecla">K</span>
+    <span class="tecla">L</span>
+  </div>
+  <div class="linha">
+    <span class="tecla">Z</span>
+    <span class="tecla">X</span>
+    <span class="tecla">C</span>
+    <span class="tecla">V</span>
+    <span class="tecla">B</span>
+    <span class="tecla">N</span>
+    <span class="tecla">M</span>
+  </div>
+</div>
+
+<style>
+.tecla{
+  display:inline-block;
+  padding:10px 14px;
+  margin:3px;
+  border-radius:6px;
+  background:#1e293b;
+  color:white;
+  font-weight:bold;
+  min-width:25px;
+}
+.ativa{
+  background:#22c55e !important;
+  color:black;
+}
+</style>
+
+<script>
+document.addEventListener("keydown", function(e){
+  const tecla = e.key.toUpperCase();
+  document.querySelectorAll(".tecla").forEach(t=>{
+    if(t.innerText === tecla){
+      t.classList.add("ativa");
+      setTimeout(()=>t.classList.remove("ativa"),200);
+    }
+  });
+});
+</script>
