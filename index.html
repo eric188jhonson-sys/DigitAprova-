@@ -149,18 +149,23 @@ textarea{
 </div>
 
 <!-- TELA TREINO -->
-<div id="treino">
+<!-- TELA TREINO -->
+<div id="treino" style="display:none;">
+
   <h2 id="tituloMateria"></h2>
+
   <p id="frase"></p>
 
   <textarea id="entrada" rows="4" placeholder="Digite a frase acima..."></textarea>
 
   <br><br>
+
   <button onclick="verificar()">Verificar</button>
   <button onclick="novaFrase()">Nova frase</button>
   <button onclick="voltar()">Voltar</button>
 
   <p id="resultado"></p>
+
 </div>
 
 <script>
@@ -171,56 +176,38 @@ const frases = {
     "Todo poder emana do povo."
   ],
   informatica: [
-    "O hardware é a parte física do computador.",
-    "O sistema operacional gerencia recursos.",
+    "O hardware representa a parte física do computador.",
+    "O software é o conjunto de programas do sistema.",
     "A memória RAM é volátil."
   ],
   logica: [
-    "Se todo A é B e todo B é C, então todo A é C.",
-    "Uma proposição é verdadeira ou falsa.",
-    "A negação inverte o valor lógico."
+    "Se A é verdadeiro e B é falso, então A e B é falso.",
+    "Uma proposição é uma frase que pode ser verdadeira ou falsa.",
+    "A negação de verdadeiro é falso."
   ]
 };
 
-let materiaAtual = "";
-let fraseAtual = "";
+let materiaAtual = "direito";
 
-function iniciar(materia){
-  materiaAtual = materia;
-  document.getElementById("inicio").style.display = "none";
-  document.getElementById("treino").style.display = "block";
-
-  if(materia=="direito") tituloMateria.innerText="📚 Direito";
-  if(materia=="informatica") tituloMateria.innerText="💻 Informática";
-  if(materia=="logica") tituloMateria.innerText="🧠 Raciocínio Lógico";
-
-  novaFrase();
-}
-
-function novaFrase(){
+function novaFrase() {
   const lista = frases[materiaAtual];
-  fraseAtual = lista[Math.floor(Math.random()*lista.length)];
-  frase.innerText = fraseAtual;
-  entrada.value = "";
-  resultado.innerText = "";
+  const frase = lista[Math.floor(Math.random() * lista.length)];
+  document.getElementById("frase").innerText = frase;
+  document.getElementById("entrada").value = "";
+  document.getElementById("resultado").innerText = "";
 }
 
-function verificar(){
-  if(entrada.value === fraseAtual){
-    resultado.innerText = "✅ Perfeito! Você digitou corretamente.";
-    resultado.style.color="green";
+function verificar() {
+  const digitado = document.getElementById("entrada").value;
+  const original = document.getElementById("frase").innerText;
+
+  if (digitado === original) {
+    document.getElementById("resultado").innerText = "✅ Correto!";
   } else {
-    resultado.innerText = "❌ Há diferenças no texto digitado.";
-    resultado.style.color="red";
+    document.getElementById("resultado").innerText = "❌ Há erros na digitação.";
   }
 }
-
-function voltar(){
-  document.getElementById("treino").style.display = "none";
-  document.getElementById("inicio").style.display = "flex";
-}
 </script>
-
 </body>
 <!-- TELA DE TREINO (fica escondida no início) -->
 <div id="treino" style="display:none; text-align:center; padding:40px; color:white;">
