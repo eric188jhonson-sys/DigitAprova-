@@ -380,3 +380,73 @@ window.iniciar = function(materia){
   setTimeout(inserirTeclado, 100);
 };
 </script>
+  <style>
+#teclado {
+  margin-top: 20px;
+  display: none;
+}
+
+.tecla {
+  display: inline-block;
+  border: 1px solid #999;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 3px;
+  min-width: 30px;
+  text-align: center;
+  background: #eee;
+  font-weight: bold;
+}
+
+.tecla.ativa {
+  background: #4CAF50;
+  color: white;
+}
+</style>
+
+<div id="teclado">
+  <div>
+    <span class="tecla">Q</span><span class="tecla">W</span><span class="tecla">E</span><span class="tecla">R</span><span class="tecla">T</span>
+    <span class="tecla">Y</span><span class="tecla">U</span><span class="tecla">I</span><span class="tecla">O</span><span class="tecla">P</span>
+  </div>
+  <div>
+    <span class="tecla">A</span><span class="tecla">S</span><span class="tecla">D</span><span class="tecla">F</span><span class="tecla">G</span>
+    <span class="tecla">H</span><span class="tecla">J</span><span class="tecla">K</span><span class="tecla">L</span>
+  </div>
+  
+  <div>
+    <span class="tecla">Z</span><span class="tecla">X</span><span class="tecla">C</span><span class="tecla">V</span>
+    <span class="tecla">B</span><span class="tecla">N</span><span class="tecla">M</span>
+  </div>
+</div>
+
+<script>
+const entrada = document.getElementById("entrada");
+const teclado = document.getElementById("teclado");
+const treino = document.getElementById("treino");
+
+function mostrarTeclado() {
+  teclado.style.display = "block";
+}
+
+// quando entrar na tela de treino, mostra teclado
+const observer = new MutationObserver(() => {
+  if (treino.style.display !== "none") {
+    mostrarTeclado();
+  }
+});
+observer.observe(treino, { attributes: true });
+
+entrada.addEventListener("keydown", function(e) {
+  document.querySelectorAll(".tecla").forEach(t => t.classList.remove("ativa"));
+
+  const letra = e.key.toUpperCase();
+  const tecla = Array.from(document.querySelectorAll(".tecla"))
+    .find(t => t.textContent === letra);
+
+  if (tecla) {
+    tecla.classList.add("ativa");
+    setTimeout(() => tecla.classList.remove("ativa"), 200);
+  }
+});
+</script>
