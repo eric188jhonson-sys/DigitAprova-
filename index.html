@@ -96,7 +96,8 @@ button{
 </div>
 
 <script>
-let materiaAtual="", respostaAtual="", inicioTempo;
+<script>
+let materiaAtual="", respostaAtual="";
 let pontos=0, acertos=0, erros=0;
 let tempoRestante=60, timer;
 
@@ -105,6 +106,93 @@ const elAcertos=document.getElementById("acertos");
 const elErros=document.getElementById("erros");
 
 const banco = {
+  direito: [],
+  informatica: [],
+  logica: []
+};
+
+// 👉 COLE AQUI SUAS PERGUNTAS (as que já te mandei)
+banco.direito = [
+  {pergunta:"Todo poder emana de quem?", resposta:"Do povo."}
+];
+
+banco.informatica = [
+  {pergunta:"Atalho para copiar no Windows?", resposta:"Ctrl mais C."}
+];
+
+banco.logica = [
+  {pergunta:"Uma proposição pode ser?", resposta:"Verdadeira ou falsa."}
+];
+
+let ordem={direito:[],informatica:[],logica:[]};
+let posicao={direito:0,informatica:0,logica:0};
+
+function atualizarPainel(){
+  elPontos.textContent = pontos;
+  elAcertos.textContent = acertos;
+  elErros.textContent = erros;
+}
+
+function mostrarTreino(m){
+  materiaAtual=m;
+  ordem[m]=[...banco[m]].sort(()=>Math.random()-0.5);
+  posicao[m]=0;
+
+  document.getElementById("inicio").style.display="none";
+  document.getElementById("treino").style.display="block";
+  document.getElementById("tituloMateria").textContent = m.toUpperCase();
+
+  novaPergunta();
+}
+
+function novaPergunta(){
+  if(posicao[materiaAtual]>=ordem[materiaAtual].length){
+    ordem[materiaAtual]=[...banco[materiaAtual]].sort(()=>Math.random()-0.5);
+    posicao[materiaAtual]=0;
+  }
+
+  let q=ordem[materiaAtual][posicao[materiaAtual]++];
+  document.getElementById("pergunta").textContent=q.pergunta;
+  document.getElementById("respostaVisivel").textContent="Resposta correta: "+q.resposta;
+  respostaAtual=q.resposta;
+
+  document.getElementById("entrada").value="";
+  document.getElementById("resultado").textContent="";
+}
+
+function verificar(){
+  let digitado=document.getElementById("entrada").value.trim();
+  if(digitado===respostaAtual){
+    pontos+=10; acertos++;
+    document.getElementById("resultado").textContent="✅ Correto!";
+  }else{
+    erros++;
+    document.getElementById("resultado").textContent="❌ Errado!";
+  }
+  atualizarPainel();
+}
+
+function iniciarSimulado(){
+  tempoRestante=60;
+  document.getElementById("tempo").textContent="⏱ 60s";
+  clearInterval(timer);
+
+  timer=setInterval(()=>{
+    tempoRestante--;
+    document.getElementById("tempo").textContent="⏱ "+tempoRestante+"s";
+    if(tempoRestante<=0){
+      clearInterval(timer);
+      alert("Simulado encerrado! Pontos: "+pontos);
+    }
+  },1000);
+}
+
+function voltar(){
+  clearInterval(timer);
+  document.getElementById("treino").style.display="none";
+  document.getElementById("inicio").style.display="block";
+}
+</script>
 direito: [
 {pergunta:"Todo poder emana de quem?", resposta:"Do povo."},
 {pergunta:"Qual princípio garante a divulgação dos atos administrativos?", resposta:"Princípio da publicidade."},
