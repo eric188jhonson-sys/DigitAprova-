@@ -1,4 +1,4 @@
-<!DOCTYPE html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -114,7 +114,7 @@ button:hover{
   transition:0.2s;
 }
 
-#frase{
+#pergunta{
   font-size:20px;
   margin-top:20px;
 }
@@ -180,33 +180,67 @@ let materiaAtual = "";
 let respostaAtual = "";
 let inicioTempo;
 
+// BANCO DE QUESTÕES
 const banco = {
   direito: [
     { pergunta: "Segundo a Constituição Federal, todo poder emana de quem?", resposta: "Do povo." },
+    { pergunta: "A investidura em cargo público depende de quê?", resposta: "De aprovação prévia em concurso público." },
     { pergunta: "Qual princípio obriga a administração pública a agir conforme a lei?", resposta: "Princípio da legalidade." },
-    { pergunta: "A investidura em cargo público depende de quê?", resposta: "De aprovação prévia em concurso público." }
+    { pergunta: "Qual princípio impede favorecimentos pessoais?", resposta: "Princípio da impessoalidade." },
+    { pergunta: "Qual princípio exige honestidade administrativa?", resposta: "Princípio da moralidade." },
+    { pergunta: "Qual princípio garante divulgação dos atos administrativos?", resposta: "Princípio da publicidade." },
+    { pergunta: "Qual princípio busca melhores resultados?", resposta: "Princípio da eficiência." },
+    { pergunta: "Qual poder elabora as leis?", resposta: "Poder Legislativo." },
+    { pergunta: "Qual poder executa as leis?", resposta: "Poder Executivo." },
+    { pergunta: "Qual poder julga conforme a lei?", resposta: "Poder Judiciário." },
+    { pergunta: "Os direitos fundamentais estão previstos em qual artigo da Constituição?", resposta: "No artigo quinto." },
+    { pergunta: "O concurso público é forma de acesso a que tipo de cargo?", resposta: "Cargo público efetivo." }
   ],
+
   informatica: [
-    { pergunta: "Qual atalho copia um arquivo no Windows?", resposta: "Ctrl + C" },
+    { pergunta: "Qual atalho copia um arquivo no Windows?", resposta: "Ctrl mais C." },
+    { pergunta: "Qual atalho cola um arquivo no Windows?", resposta: "Ctrl mais V." },
+    { pergunta: "Qual atalho recorta um arquivo no Windows?", resposta: "Ctrl mais X." },
     { pergunta: "Qual sistema gerencia os recursos do computador?", resposta: "Sistema operacional." },
-    { pergunta: "O que a internet conecta?", resposta: "Milhões de dispositivos no mundo." }
+    { pergunta: "O que significa a sigla CPU?", resposta: "Unidade central de processamento." },
+    { pergunta: "O que significa a sigla RAM?", resposta: "Memória de acesso aleatório." },
+    { pergunta: "O que é software?", resposta: "Conjunto de programas e instruções." },
+    { pergunta: "O que é hardware?", resposta: "Parte física do computador." },
+    { pergunta: "Qual dispositivo é usado para digitar?", resposta: "Teclado." },
+    { pergunta: "Qual rede mundial conecta computadores?", resposta: "Internet." }
   ],
+
   logica: [
     { pergunta: "Uma proposição pode assumir quais valores?", resposta: "Verdadeiro ou falso." },
-    { pergunta: "Se todo A é B e todo B é C, então o que se pode concluir?", resposta: "Todo A é C." },
-    { pergunta: "O raciocínio lógico busca conclusões de que tipo?", resposta: "Conclusões válidas." }
+    { pergunta: "Se todo A é B e todo B é C, o que se conclui?", resposta: "Todo A é C." },
+    { pergunta: "O raciocínio lógico busca conclusões de que tipo?", resposta: "Conclusões válidas." },
+    { pergunta: "O símbolo ∧ representa qual operação lógica?", resposta: "Conjunção." },
+    { pergunta: "O símbolo ∨ representa qual operação lógica?", resposta: "Disjunção." },
+    { pergunta: "O símbolo ¬ representa qual operação lógica?", resposta: "Negação." },
+    { pergunta: "O que é uma tautologia?", resposta: "Proposição sempre verdadeira." },
+    { pergunta: "O que é uma contradição?", resposta: "Proposição sempre falsa." },
+    { pergunta: "O que é uma contingência?", resposta: "Proposição que pode ser verdadeira ou falsa." }
   ]
 };
 
-let restantes = {
+// CONTROLE DE ORDEM (SEM REPETIR)
+let ordem = {
   direito: [],
   informatica: [],
   logica: []
 };
 
+let posicao = {
+  direito: 0,
+  informatica: 0,
+  logica: 0
+};
+
 function mostrarTreino(materia){
   materiaAtual = materia;
-  restantes[materia] = [...banco[materia]];
+
+  ordem[materia] = [...banco[materia]].sort(() => Math.random() - 0.5);
+  posicao[materia] = 0;
 
   document.getElementById("inicio").style.display="none";
   document.getElementById("treino").style.display="block";
@@ -217,13 +251,13 @@ function mostrarTreino(materia){
 }
 
 function novaPergunta(){
-  if(restantes[materiaAtual].length === 0){
-    restantes[materiaAtual] = [...banco[materiaAtual]];
+  if(posicao[materiaAtual] >= ordem[materiaAtual].length){
+    ordem[materiaAtual] = [...banco[materiaAtual]].sort(() => Math.random() - 0.5);
+    posicao[materiaAtual] = 0;
   }
 
-  let lista = restantes[materiaAtual];
-  let indice = Math.floor(Math.random() * lista.length);
-  let selecionada = lista.splice(indice,1)[0];
+  let selecionada = ordem[materiaAtual][posicao[materiaAtual]];
+  posicao[materiaAtual]++;
 
   document.getElementById("pergunta").innerText = selecionada.pergunta;
   respostaAtual = selecionada.resposta;
