@@ -100,6 +100,10 @@ let materiaAtual="", respostaAtual="", inicioTempo;
 let pontos=0, acertos=0, erros=0;
 let tempoRestante=60, timer;
 
+const elPontos=document.getElementById("pontos");
+const elAcertos=document.getElementById("acertos");
+const elErros=document.getElementById("erros");
+
 const banco = {
   direito: [
     {pergunta:"Todo poder emana de quem?", resposta:"Do povo."},
@@ -134,9 +138,9 @@ function carregarProgresso(){
 }
 
 function atualizarPainel(){
-  pontos.textContent = window.pontos;
-  acertos.textContent = window.acertos;
-  erros.textContent = window.erros;
+  elPontos.textContent = pontos;
+  elAcertos.textContent = acertos;
+  elErros.textContent = erros;
 }
 
 function mostrarTreino(m){
@@ -160,7 +164,7 @@ function novaPergunta(){
 
   let q=ordem[materiaAtual][posicao[materiaAtual]++];
   pergunta.textContent=q.pergunta;
-  respostaVisivel.textContent="Resposta: "+q.resposta;
+  respostaVisivel.textContent="Resposta correta: "+q.resposta;
   respostaAtual=q.resposta;
 
   entrada.value="";
