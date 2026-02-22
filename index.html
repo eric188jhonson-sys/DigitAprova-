@@ -315,46 +315,38 @@ function voltar(){
 }
 </script>
   <script>
-/* CRIA O TECLADO DENTRO DA TELA DE TREINO */
-const tecladoHTML = `
-<div id="teclado" style="margin-top:30px;text-align:center;">
-  <div>
-    <span class="tecla">Q</span>
-    <span class="tecla">W</span>
-    <span class="tecla">E</span>
-    <span class="tecla">R</span>
-    <span class="tecla">T</span>
-    <span class="tecla">Y</span>
-    <span class="tecla">U</span>
-    <span class="tecla">I</span>
-    <span class="tecla">O</span>
-    <span class="tecla">P</span>
-  </div>
-  <div>
-    <span class="tecla">A</span>
-    <span class="tecla">S</span>
-    <span class="tecla">D</span>
-    <span class="tecla">F</span>
-    <span class="tecla">G</span>
-    <span class="tecla">H</span>
-    <span class="tecla">J</span>
-    <span class="tecla">K</span>
-    <span class="tecla">L</span>
-  </div>
-  <div>
-    <span class="tecla">Z</span>
-    <span class="tecla">X</span>
-    <span class="tecla">C</span>
-    <span class="tecla">V</span>
-    <span class="tecla">B</span>
-    <span class="tecla">N</span>
-    <span class="tecla">M</span>
-  </div>
-</div>
-`;
+function inserirTeclado(){
+  const fraseEl = document.getElementById("frase");
+  const resultadoEl = document.getElementById("resultado");
 
-const estiloTeclado = document.createElement("style");
-estiloTeclado.innerHTML = `
+  if (!document.getElementById("teclado") && fraseEl) {
+    const tecladoHTML = `
+    <div id="teclado" style="margin-top:30px;text-align:center;">
+      <div>
+        <span class="tecla">Q</span><span class="tecla">W</span><span class="tecla">E</span>
+        <span class="tecla">R</span><span class="tecla">T</span><span class="tecla">Y</span>
+        <span class="tecla">U</span><span class="tecla">I</span><span class="tecla">O</span>
+        <span class="tecla">P</span>
+      </div>
+      <div>
+        <span class="tecla">A</span><span class="tecla">S</span><span class="tecla">D</span>
+        <span class="tecla">F</span><span class="tecla">G</span><span class="tecla">H</span>
+        <span class="tecla">J</span><span class="tecla">K</span><span class="tecla">L</span>
+      </div>
+      <div>
+        <span class="tecla">Z</span><span class="tecla">X</span><span class="tecla">C</span>
+        <span class="tecla">V</span><span class="tecla">B</span><span class="tecla">N</span>
+        <span class="tecla">M</span>
+      </div>
+    </div>
+    `;
+
+    fraseEl.insertAdjacentHTML("afterend", tecladoHTML);
+  }
+}
+
+const estilo = document.createElement("style");
+estilo.innerHTML = `
 .tecla{
   display:inline-block;
   padding:10px 14px;
@@ -370,17 +362,8 @@ estiloTeclado.innerHTML = `
   color:black;
 }
 `;
-document.head.appendChild(estiloTeclado);
+document.head.appendChild(estilo);
 
-/* INSERE O TECLADO NA TELA DE TREINO */
-function inserirTeclado(){
-  const treino = document.getElementById("treino");
-  if(treino && !document.getElementById("teclado")){
-    treino.insertAdjacentHTML("beforeend", tecladoHTML);
-  }
-}
-
-/* DESTACA A TECLA DIGITADA */
 document.addEventListener("keydown", function(e){
   const tecla = e.key.toUpperCase();
   document.querySelectorAll(".tecla").forEach(t=>{
@@ -391,11 +374,9 @@ document.addEventListener("keydown", function(e){
   });
 });
 
-/* GARANTE QUE O TECLADO APAREÇA AO ENTRAR NO TREINO */
-const antigoIniciar = window.iniciar;
+const iniciarAntigo = window.iniciar;
 window.iniciar = function(materia){
-  if(antigoIniciar) antigoIniciar(materia);
+  if(iniciarAntigo) iniciarAntigo(materia);
   setTimeout(inserirTeclado, 100);
 };
 </script>
- 
