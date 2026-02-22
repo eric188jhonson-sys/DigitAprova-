@@ -1,31 +1,88 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
- <title>DigitAprova</title>
- <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>DigitAprova</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: rgba(0,0,0,0.4);
+      padding: 40px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 36px;
+      color: #38bdf8;
+    }
+
+    p {
+      margin-bottom: 30px;
+      font-size: 16px;
+      color: #e5e7eb;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    button {
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+  </style>
 </head>
 <body>
- <header>
- <h1>DigitAprova</h1>
- </header>
- <main>
- <section id="modo-treino">
- <h2>Treino de Digitação</h2>
- <textarea id="texto-treino"></textarea>
- <button id="iniciar-treino">Iniciar Treino</button>
- </section>
- <section id="modo-desafio">
- <h2>Desafio com Tempo</h2>
- <textarea id="texto-desafio"></textarea>
- <button id="iniciar-desafio">Iniciar Desafio</button>
- </section>
- <section id="modo-simulado">
- <h2>Simulado</h2>
- <textarea id="texto-simulado"></textarea>
- <button id="iniciar-simulado">Iniciar Simulado</button>
- </section>
- </main>
- <script src="script.js"></script>
+
+  <div class="container">
+    <h1>DigitAprova</h1>
+    <p>Aprenda conteúdos de concurso enquanto treina digitação.</p>
+
+    <div class="buttons">
+      <button>📚 Direito</button>
+      <button>💻 Informática</button>
+      <button>🧠 Raciocínio Lógico</button>
+    </div>
+
+    <footer>
+      Versão 1.0 • Projeto educacional
+    </footer>
+  </div>
+
 </body>
 </html>
