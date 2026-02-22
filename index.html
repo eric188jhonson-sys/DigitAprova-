@@ -106,23 +106,24 @@ const elAcertos=document.getElementById("acertos");
 const elErros=document.getElementById("erros");
 
 const banco = {
-  direito: [],
-  informatica: [],
-  logica: []
+  direito: [
+    {pergunta:"Todo poder emana de quem?", resposta:"Do povo."},
+    {pergunta:"Qual princípio garante a divulgação dos atos administrativos?", resposta:"Princípio da publicidade."},
+    {pergunta:"Qual princípio obriga a Administração a agir conforme a lei?", resposta:"Princípio da legalidade."}
+  ],
+
+  informatica: [
+    {pergunta:"Atalho para copiar no Windows?", resposta:"Ctrl mais C."},
+    {pergunta:"O que é CPU?", resposta:"Unidade central de processamento."},
+    {pergunta:"O que é RAM?", resposta:"Memória de acesso aleatório."}
+  ],
+
+  logica: [
+    {pergunta:"Uma proposição pode ser?", resposta:"Verdadeira ou falsa."},
+    {pergunta:"Se todo A é B e todo B é C?", resposta:"Todo A é C."},
+    {pergunta:"Símbolo ∧ representa?", resposta:"Conjunção."}
+  ]
 };
-
-// 👉 COLE AQUI SUAS PERGUNTAS (as que já te mandei)
-banco.direito = [
-  {pergunta:"Todo poder emana de quem?", resposta:"Do povo."}
-];
-
-banco.informatica = [
-  {pergunta:"Atalho para copiar no Windows?", resposta:"Ctrl mais C."}
-];
-
-banco.logica = [
-  {pergunta:"Uma proposição pode ser?", resposta:"Verdadeira ou falsa."}
-];
 
 let ordem={direito:[],informatica:[],logica:[]};
 let posicao={direito:0,informatica:0,logica:0};
@@ -147,8 +148,8 @@ function mostrarTreino(m){
 
 function novaPergunta(){
   if(posicao[materiaAtual]>=ordem[materiaAtual].length){
-    ordem[materiaAtual]=[...banco[materiaAtual]].sort(()=>Math.random()-0.5);
-    posicao[materiaAtual]=0;
+    ordem[m]=[...banco[materiaAtual]].sort(()=>Math.random()-0.5);
+    posicao[m]=0;
   }
 
   let q=ordem[materiaAtual][posicao[materiaAtual]++];
