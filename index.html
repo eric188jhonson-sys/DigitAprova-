@@ -5,26 +5,101 @@
 <title>DigitAprova</title>
 
 <style>
-body {
+body{
+  margin:0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color: white;
-  text-align: center;
-  margin: 0;
+  background: linear-gradient(135deg,#1e3c72,#2a5298);
+  color:white;
 }
 
-header {
-  background:#1976d2;
-  padding:15px;
+/* NAVBAR */
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  background: rgba(0,0,0,0.2);
+}
+
+.logo{
   font-size:22px;
+  font-weight:bold;
 }
 
-#inicio, #treino {
-  margin-top:40px;
+.menu a{
+  color:white;
+  margin:0 15px;
+  text-decoration:none;
+  font-weight:500;
 }
 
-button {
-  padding:12px 25px;
+.botao-nav{
+  background:white;
+  color:#2a5298;
+  padding:8px 15px;
+  border-radius:20px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  margin-top:60px;
+}
+
+.hero h1{
+  font-size:36px;
+}
+
+.hero p{
+  font-size:18px;
+  opacity:0.9;
+}
+
+/* CARDS */
+.cards{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  margin-top:50px;
+  flex-wrap:wrap;
+}
+
+.card{
+  background:white;
+  color:#2a5298;
+  padding:30px;
+  width:220px;
+  border-radius:15px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+  transition:0.3s;
+  cursor:pointer;
+}
+
+.card:hover{
+  transform:translateY(-8px);
+}
+
+/* TELA TREINO */
+#treino{
+  display:none;
+  text-align:center;
+  margin-top:50px;
+}
+
+textarea{
+  width:80%;
+  max-width:700px;
+  height:120px;
+  font-size:18px;
+  border-radius:10px;
+  padding:10px;
+  margin-top:15px;
+}
+
+button{
+  padding:10px 20px;
   margin:10px;
   border:none;
   border-radius:8px;
@@ -34,81 +109,75 @@ button {
   cursor:pointer;
 }
 
-textarea {
-  width:80%;
-  max-width:700px;
-  height:120px;
-  font-size:18px;
-  border-radius:10px;
-  padding:10px;
+button:hover{
+  transform:scale(1.05);
+  transition:0.2s;
 }
 
-#frase {
+#frase{
   font-size:22px;
-  margin-bottom:20px;
-}
-
-.teclado {
   margin-top:20px;
-}
-
-.tecla {
-  display:inline-block;
-  background:#333;
-  color:white;
-  padding:10px;
-  margin:3px;
-  border-radius:5px;
-  width:30px;
 }
 </style>
 </head>
 
 <body>
 
-<header>DigitAprova</header>
+<nav>
+  <div class="logo">DigitAprova</div>
+  <div class="menu">
+    <a href="#">Início</a>
+    <a href="#">Progresso</a>
+    <a href="#">Sobre</a>
+  </div>
+  <a href="#" class="botao-nav">Entrar</a>
+</nav>
 
+<!-- TELA INICIAL -->
 <div id="inicio">
-  <h2>Escolha uma matéria</h2>
-  <button type="button" onclick="mostrarTreino('direito')">📚 Direito</button><br>
-  <button type="button" onclick="mostrarTreino('informatica')">💻 Informática</button><br>
-  <button type="button" onclick="mostrarTreino('logica')">🧠 Raciocínio Lógico</button>
+  <div class="hero">
+    <h1>Treine para concursos digitando</h1>
+    <p>Melhore sua velocidade e precisão com frases reais.</p>
+  </div>
+
+  <div class="cards">
+    <div class="card" onclick="mostrarTreino('direito')">
+      <h3>📚 Direito</h3>
+      <p>Leis e princípios jurídicos.</p>
+    </div>
+
+    <div class="card" onclick="mostrarTreino('informatica')">
+      <h3>💻 Informática</h3>
+      <p>Termos técnicos e conceitos digitais.</p>
+    </div>
+
+    <div class="card" onclick="mostrarTreino('logica')">
+      <h3>🧠 Raciínio Lógico</h3>
+      <p>Proposições e estruturas lógicas.</p>
+    </div>
+  </div>
 </div>
 
-<div id="treino" style="display:none;">
+<!-- TELA TREINO -->
+<div id="treino">
   <h2 id="tituloMateria"></h2>
 
   <p id="frase"></p>
 
-  <textarea id="entrada" placeholder="Digite a frase acima..."></textarea><br><br>
+  <textarea id="entrada" placeholder="Digite a frase acima..."></textarea><br>
 
-  <button type="button" onclick="verificar()">Verificar</button>
-  <button type="button" onclick="novaFrase()">Nova frase</button>
-  <button type="button" onclick="voltar()">Voltar</button>
+  <button onclick="verificar()">Verificar</button>
+  <button onclick="novaFrase()">Nova frase</button>
+  <button onclick="voltar()">Voltar</button>
 
   <p id="resultado"></p>
-
-  <div class="teclado">
-    <div>
-      <span class="tecla">Q</span><span class="tecla">W</span><span class="tecla">E</span><span class="tecla">R</span>
-      <span class="tecla">T</span><span class="tecla">Y</span><span class="tecla">U</span><span class="tecla">I</span>
-      <span class="tecla">O</span><span class="tecla">P</span>
-    </div>
-    <div>
-      <span class="tecla">A</span><span class="tecla">S</span><span class="tecla">D</span><span class="tecla">F</span>
-      <span class="tecla">G</span><span class="tecla">H</span><span class="tecla">J</span>
-      <span class="tecla">K</span><span class="tecla">L</span>
-    </div>
-    <div>
-      <span class="tecla">Z</span><span class="tecla">X</span><span class="tecla">C</span>
-      <span class="tecla">V</span><span class="tecla">B</span><span class="tecla">N</span><span class="tecla">M</span>
-    </div>
-  </div>
+  <p id="tempo"></p>
 </div>
 
 <script>
 let materiaAtual = "";
 let fraseAtual = "";
+let inicioTempo;
 
 const frases = {
   direito: [
@@ -128,36 +197,56 @@ const frases = {
   ]
 };
 
-function mostrarTreino(materia) {
+function mostrarTreino(materia){
   materiaAtual = materia;
-  document.getElementById("inicio").style.display = "none";
-  document.getElementById("treino").style.display = "block";
+  document.getElementById("inicio").style.display="none";
+  document.getElementById("treino").style.display="block";
   document.getElementById("tituloMateria").innerText =
-    materia.charAt(0).toUpperCase() + materia.slice(1);
+  materia.charAt(0).toUpperCase()+materia.slice(1);
   novaFrase();
 }
 
-function novaFrase() {
+function novaFrase(){
   let lista = frases[materiaAtual];
-  let indice = Math.floor(Math.random() * lista.length);
+  let indice = Math.floor(Math.random()*lista.length);
   fraseAtual = lista[indice];
   document.getElementById("frase").innerText = fraseAtual;
-  document.getElementById("entrada").value = "";
-  document.getElementById("resultado").innerText = "";
+  document.getElementById("entrada").value="";
+  document.getElementById("resultado").innerText="";
+  document.getElementById("tempo").innerText="";
+  inicioTempo = new Date();
 }
 
-function verificar() {
+function verificar(){
   let digitado = document.getElementById("entrada").value.trim();
-  if (digitado === fraseAtual) {
-    document.getElementById("resultado").innerText = "✅ Correto!";
-  } else {
-    document.getElementById("resultado").innerText = "❌ Há erros na digitação.";
+  let total = fraseAtual.length;
+  let corretos = 0;
+
+  for(let i=0;i<total;i++){
+    if(digitado[i]===fraseAtual[i]){
+      corretos++;
+    }
   }
+
+  let porcentagem = Math.round((corretos/total)*100);
+  let fimTempo = new Date();
+  let segundos = Math.floor((fimTempo-inicioTempo)/1000);
+
+  if(digitado===fraseAtual){
+    document.getElementById("resultado").innerText =
+    "✅ Correto! Precisão: 100%";
+  }else{
+    document.getElementById("resultado").innerText =
+    "❌ Precisão: "+porcentagem+"%";
+  }
+
+  document.getElementById("tempo").innerText =
+  "⏱ Tempo: "+segundos+" segundos";
 }
 
-function voltar() {
-  document.getElementById("treino").style.display = "none";
-  document.getElementById("inicio").style.display = "block";
+function voltar(){
+  document.getElementById("treino").style.display="none";
+  document.getElementById("inicio").style.display="block";
 }
 </script>
 
