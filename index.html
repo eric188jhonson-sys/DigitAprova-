@@ -10,6 +10,7 @@ body{
   background:#f1f5f9;
 }
 
+/* HEADER */
 header{
   background:#0284c7;
   color:white;
@@ -26,6 +27,7 @@ nav a{
   font-weight:bold;
 }
 
+/* LAYOUT */
 .container{
   display:flex;
   padding:20px;
@@ -39,17 +41,12 @@ nav a{
   box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-.sidebar h3{
-  margin-top:0;
-}
-
 .menu-item{
   padding:10px;
   margin:5px 0;
   background:#e0f2fe;
   border-radius:8px;
   cursor:pointer;
-  transition:.3s;
 }
 
 .menu-item:hover{
@@ -67,19 +64,6 @@ nav a{
   padding:20px;
   margin-bottom:20px;
   box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-.progress{
-  background:#e5e7eb;
-  border-radius:20px;
-  overflow:hidden;
-  height:20px;
-}
-
-.progress-bar{
-  background:#22c55e;
-  width:0%;
-  height:100%;
 }
 
 .level{
@@ -104,6 +88,19 @@ button{
 button:hover{
   background:#0369a1;
 }
+
+/* TELA TREINO */
+#treino{
+  display:none;
+  padding:30px;
+}
+
+textarea{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  font-size:16px;
+}
 </style>
 </head>
 
@@ -115,51 +112,114 @@ button:hover{
     <a href="#">Lições</a>
     <a href="#">Progresso</a>
     <a href="#">Temas</a>
-    <a href="#">Entrar</a>
   </nav>
 </header>
 
-<div class="container">
+<!-- TELA INICIAL -->
+<div id="inicio" class="container">
 
   <div class="sidebar">
     <h3>Matérias</h3>
-    <div class="menu-item">📚 Direito</div>
-    <div class="menu-item">💻 Informática</div>
-    <div class="menu-item">🧠 Raciocínio Lógico</div>
+    <div class="menu-item" onclick="iniciar('direito')">📚 Direito</div>
+    <div class="menu-item" onclick="iniciar('informatica')">💻 Informática</div>
+    <div class="menu-item" onclick="iniciar('logica')">🧠 Raciocínio Lógico</div>
   </div>
 
   <div class="main">
-
-    <div class="card">
-      <h3>Progresso geral</h3>
-      <div class="progress">
-        <div class="progress-bar"></div>
-      </div>
-      <p>0% completo</p>
-    </div>
-
     <div class="card">
       <h3>Lições - Nível Iniciante</h3>
 
       <div class="level">
-        <span>1️⃣ Introdução</span>
-        <button>Iniciar</button>
+        <span>Introdução</span>
+        <button onclick="iniciar('direito')">Iniciar</button>
       </div>
 
       <div class="level">
-        <span>2️⃣ Frases básicas</span>
-        <button>Iniciar</button>
+        <span>Frases básicas</span>
+        <button onclick="iniciar('informatica')">Iniciar</button>
       </div>
 
       <div class="level">
-        <span>3️⃣ Treino de precisão</span>
-        <button>Iniciar</button>
+        <span>Treino lógico</span>
+        <button onclick="iniciar('logica')">Iniciar</button>
       </div>
     </div>
-
   </div>
 
 </div>
+
+<!-- TELA TREINO -->
+<div id="treino">
+  <h2 id="tituloMateria"></h2>
+  <p id="frase"></p>
+
+  <textarea id="entrada" rows="4" placeholder="Digite a frase acima..."></textarea>
+
+  <br><br>
+  <button onclick="verificar()">Verificar</button>
+  <button onclick="novaFrase()">Nova frase</button>
+  <button onclick="voltar()">Voltar</button>
+
+  <p id="resultado"></p>
+</div>
+
+<script>
+const frases = {
+  direito: [
+    "A Constituição é a lei fundamental do Estado.",
+    "O princípio da legalidade exige atuação conforme a lei.",
+    "Todo poder emana do povo."
+  ],
+  informatica: [
+    "O hardware é a parte física do computador.",
+    "O sistema operacional gerencia recursos.",
+    "A memória RAM é volátil."
+  ],
+  logica: [
+    "Se todo A é B e todo B é C, então todo A é C.",
+    "Uma proposição é verdadeira ou falsa.",
+    "A negação inverte o valor lógico."
+  ]
+};
+
+let materiaAtual = "";
+let fraseAtual = "";
+
+function iniciar(materia){
+  materiaAtual = materia;
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("treino").style.display = "block";
+
+  if(materia=="direito") tituloMateria.innerText="📚 Direito";
+  if(materia=="informatica") tituloMateria.innerText="💻 Informática";
+  if(materia=="logica") tituloMateria.innerText="🧠 Raciocínio Lógico";
+
+  novaFrase();
+}
+
+function novaFrase(){
+  const lista = frases[materiaAtual];
+  fraseAtual = lista[Math.floor(Math.random()*lista.length)];
+  frase.innerText = fraseAtual;
+  entrada.value = "";
+  resultado.innerText = "";
+}
+
+function verificar(){
+  if(entrada.value === fraseAtual){
+    resultado.innerText = "✅ Perfeito! Você digitou corretamente.";
+    resultado.style.color="green";
+  } else {
+    resultado.innerText = "❌ Há diferenças no texto digitado.";
+    resultado.style.color="red";
+  }
+}
+
+function voltar(){
+  document.getElementById("treino").style.display = "none";
+  document.getElementById("inicio").style.display = "flex";
+}
+</script>
 
 </body>
 </html>
