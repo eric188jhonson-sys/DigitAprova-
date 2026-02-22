@@ -86,3 +86,84 @@
 
 </body>
 </html>
+<!-- TELA DE TREINO -->
+<div class="container" id="treino" style="display:none;">
+  <h1 id="tituloMateria">Treino</h1>
+  <p id="frase"></p>
+
+  <textarea id="entrada" placeholder="Digite a frase acima..." rows="4" style="width:100%;border-radius:10px;padding:10px;font-size:16px;"></textarea>
+
+  <div class="buttons" style="margin-top:15px;">
+    <button onclick="verificar()">✅ Verificar</button>
+    <button onclick="novaFrase()">🔄 Nova frase</button>
+    <button onclick="voltar()">⬅ Voltar</button>
+  </div>
+
+  <p id="resultado" style="margin-top:15px;"></p>
+</div>
+
+<script>
+  const frases = {
+    direito: [
+      "A Constituição Federal é a norma suprema do ordenamento jurídico.",
+      "O princípio da legalidade obriga a administração pública a agir conforme a lei.",
+      "Todo poder emana do povo, que o exerce por meio de representantes eleitos."
+    ],
+    informatica: [
+      "O hardware corresponde à parte física do computador.",
+      "O sistema operacional gerencia os recursos do computador.",
+      "A memória RAM armazena dados temporariamente."
+    ],
+    logica: [
+      "Se todo A é B e todo B é C, então todo A é C.",
+      "Uma proposição é verdadeira ou falsa, não existindo terceira possibilidade.",
+      "A negação de uma proposição inverte seu valor lógico."
+    ]
+  };
+
+  let materiaAtual = "";
+  let fraseAtual = "";
+
+  const botoes = document.querySelectorAll(".buttons button");
+
+  botoes[0].onclick = () => iniciar("direito");
+  botoes[1].onclick = () => iniciar("informatica");
+  botoes[2].onclick = () => iniciar("logica");
+
+  function iniciar(materia) {
+    materiaAtual = materia;
+    document.querySelector(".container").style.display = "none";
+    document.getElementById("treino").style.display = "block";
+
+    if (materia === "direito") tituloMateria.innerText = "📚 Direito";
+    if (materia === "informatica") tituloMateria.innerText = "💻 Informática";
+    if (materia === "logica") tituloMateria.innerText = "🧠 Raciocínio Lógico";
+
+    novaFrase();
+  }
+
+  function novaFrase() {
+    const lista = frases[materiaAtual];
+    fraseAtual = lista[Math.floor(Math.random() * lista.length)];
+    document.getElementById("frase").innerText = fraseAtual;
+    document.getElementById("entrada").value = "";
+    document.getElementById("resultado").innerText = "";
+  }
+
+  function verificar() {
+    const digitado = document.getElementById("entrada").value;
+
+    if (digitado === fraseAtual) {
+      resultado.innerText = "✅ Perfeito! Frase digitada corretamente.";
+      resultado.style.color = "lightgreen";
+    } else {
+      resultado.innerText = "❌ Há diferenças entre o texto digitado e a frase.";
+      resultado.style.color = "salmon";
+    }
+  }
+
+  function voltar() {
+    document.getElementById("treino").style.display = "none";
+    document.querySelector(".container").style.display = "block";
+  }
+</script>
