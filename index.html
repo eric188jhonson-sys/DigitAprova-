@@ -1,106 +1,31 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DigitAprova</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .aba {
-      display: none;
-      padding: 20px;
-    }
-    .aba.active {
-      display: block;
-    }
-    .tab {
-      overflow: hidden;
-      border: 1px solid #ccc;
-      background-color: #f1f1f1;
-    }
-    .tab button {
-      background-color: inherit;
-      float: left;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      padding: 14px 16px;
-      transition: 0.3s;
-    }
-    .tab button.active {
-      background-color: #ccc;
-    }
-  </style>
+ <title>DigitAprova</title>
+ <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<div class="tab">
-  <button class="tablinks active" onclick="openAba(event, 'Simulado')">Simulado</button>
-  <button class="tablinks" onclick="openAba(event, 'Configuracoes')">Configurações</button>
-  <button class="tablinks" onclick="openAba(event, 'Resultados')">Resultados</button>
-  <button class="tablinks" onclick="openAba(event, 'Ajuda')">Ajuda</button>
-</div>
-
-<div id="Simulado" class="aba active">
-  <h2>DigitAprova (Modo Simulado)</h2>
-  <p>Timer: 30 segundos</p>
-  <textarea placeholder="Digite a frase aqui..."></textarea>
-  <button>Iniciar simulado</button>
-</div>
-
-<div id="Configuracoes" class="aba">
-  <h2>Configurações</h2>
-  <p>Opções de idioma:</p>
-  <select>
-    <option>Português</option>
-    <option>Inglês</option>
-  </select>
-  <p>Tempo do simulado:</p>
-  <input type="number" value="30">
-</div>
-
-<div id="Resultados" class="aba">
-  <h2>Resultados</h2>
-  <p>Histórico de desempenho:</p>
-  <table>
-    <tr>
-      <th>Data</th>
-      <th>Velocidade</th>
-      <th>Precisão</th>
-    </tr>
-    <tr>
-      <td>2023-01-01</td>
-      <td>50 wpm</td>
-      <td>90%</td>
-    </tr>
-  </table>
-</div>
-
-<div id="Ajuda" class="aba">
-  <h2>Ajuda</h2>
-  <p>Instruções de uso:</p>
-  <ul>
-    <li>Selecione o idioma</li>
-    <li>Inicie o simulado</li>
-    <li>Digite a frase</li>
-  </ul>
-</div>
-
-<script>
-  function openAba(evt, abaName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("aba");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(abaName).style.display = "block";
-    evt.currentTarget.className += " active";
-  }
-</script>
-
+ <header>
+ <h1>DigitAprova</h1>
+ </header>
+ <main>
+ <section id="modo-treino">
+ <h2>Treino de Digitação</h2>
+ <textarea id="texto-treino"></textarea>
+ <button id="iniciar-treino">Iniciar Treino</button>
+ </section>
+ <section id="modo-desafio">
+ <h2>Desafio com Tempo</h2>
+ <textarea id="texto-desafio"></textarea>
+ <button id="iniciar-desafio">Iniciar Desafio</button>
+ </section>
+ <section id="modo-simulado">
+ <h2>Simulado</h2>
+ <textarea id="texto-simulado"></textarea>
+ <button id="iniciar-simulado">Iniciar Simulado</button>
+ </section>
+ </main>
+ <script src="script.js"></script>
 </body>
 </html>
