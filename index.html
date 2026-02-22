@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>DigitAprova</title>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>DigitAprova</title>
 
 <style>
 body {
@@ -32,10 +37,6 @@ button {
   color:black;
   font-size:16px;
   cursor:pointer;
-}
-
-button:hover {
-  background:#00ffcc;
 }
 
 textarea {
@@ -74,10 +75,10 @@ textarea {
 
 <!-- TELA INICIAL -->
 <div id="inicio">
-  <h2>Aprenda conteúdos enquanto treina digitação</h2>
-  <button onclick="mostrarTreino('direito')">📚 Direito</button><br>
-  <button onclick="mostrarTreino('informatica')">💻 Informática</button><br>
-  <button onclick="mostrarTreino('logica')">🧠 Raciocínio Lógico</button>
+  <h2>Escolha uma matéria</h2>
+  <button type="button" onclick="mostrarTreino('direito')">📚 Direito</button><br>
+  <button type="button" onclick="mostrarTreino('informatica')">💻 Informática</button><br>
+  <button type="button" onclick="mostrarTreino('logica')">🧠 Raciocínio Lógico</button>
 </div>
 
 <!-- TELA TREINO -->
@@ -88,13 +89,12 @@ textarea {
 
   <textarea id="entrada" placeholder="Digite a frase acima..."></textarea><br><br>
 
-  <button onclick="verificar()">Verificar</button>
-  <button onclick="novaFrase()">Nova frase</button>
-  <button onclick="voltar()">Voltar</button>
+  <button type="button" onclick="verificar()">Verificar</button>
+  <button type="button" onclick="novaFrase()">Nova frase</button>
+  <button type="button" onclick="voltar()">Voltar</button>
 
   <p id="resultado"></p>
 
-  <!-- TECLADO AUXILIAR -->
   <div class="teclado">
     <div>
       <span class="tecla">Q</span><span class="tecla">W</span><span class="tecla">E</span><span class="tecla">R</span>
@@ -129,9 +129,9 @@ const frases = {
     "O sistema operacional gerencia os recursos do hardware."
   ],
   logica: [
-    "Se todo A é B então todo B não é necessariamente A.",
     "Uma proposição pode ser verdadeira ou falsa.",
-    "O raciocínio lógico busca conclusões válidas."
+    "O raciocínio lógico busca conclusões válidas.",
+    "Se todo A é B então todo B não é necessariamente A."
   ]
 };
 
@@ -141,7 +141,7 @@ function mostrarTreino(materia) {
   document.getElementById("treino").style.display = "block";
   document.getElementById("tituloMateria").innerText =
     materia.charAt(0).toUpperCase() + materia.slice(1);
-  novaFrase(); // FAZ A FRASE APARECER
+  novaFrase();
 }
 
 function novaFrase() {
