@@ -3,161 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <title>DigitAprova</title>
+
 <style>
-body{
-  margin:0;
+body {
   font-family: Arial, sans-serif;
-  background:#f1f5f9;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color: white;
+  text-align: center;
+  margin: 0;
 }
 
-/* HEADER */
-header{
-  background:#0284c7;
-  color:white;
-  padding:15px 30px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-nav a{
-  color:white;
-  margin-left:15px;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-/* LAYOUT */
-.container{
-  display:flex;
-  padding:20px;
-}
-
-.sidebar{
-  width:250px;
-  background:white;
-  border-radius:10px;
+header {
+  background:#1976d2;
   padding:15px;
-  box-shadow:0 0 10px rgba(0,0,0,0.1);
+  font-size:22px;
 }
 
-.menu-item{
-  padding:10px;
-  margin:5px 0;
-  background:#e0f2fe;
-  border-radius:8px;
-  cursor:pointer;
+#inicio, #treino {
+  margin-top:40px;
 }
 
-.menu-item:hover{
-  background:#bae6fd;
-}
-
-.main{
-  flex:1;
-  margin-left:20px;
-}
-
-.card{
-  background:white;
-  border-radius:10px;
-  padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-.level{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px;
-  margin-top:10px;
-  background:#f8fafc;
-  border-radius:8px;
-}
-
-button{
-  background:#0284c7;
-  color:white;
+button {
+  padding:12px 25px;
+  margin:10px;
   border:none;
-  padding:8px 15px;
   border-radius:8px;
+  background:#00c6ff;
+  color:black;
+  font-size:16px;
   cursor:pointer;
 }
 
-button:hover{
-  background:#0369a1;
+button:hover {
+  background:#00ffcc;
 }
 
-/* TELA TREINO */
-#treino{
-  display:none;
-  padding:30px;
-}
-
-textarea{
-  width:100%;
+textarea {
+  width:80%;
+  max-width:700px;
+  height:120px;
+  font-size:18px;
+  border-radius:10px;
   padding:10px;
-  border-radius:8px;
-  font-size:16px;
+}
+
+#frase {
+  font-size:22px;
+  margin-bottom:20px;
+}
+
+.teclado {
+  margin-top:20px;
+}
+
+.tecla {
+  display:inline-block;
+  background:#333;
+  color:white;
+  padding:10px;
+  margin:3px;
+  border-radius:5px;
+  width:30px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <h2>DigitAprova</h2>
-  <nav>
-    <a href="#">Lições</a>
-    <a href="#">Progresso</a>
-    <a href="#">Temas</a>
-  </nav>
-</header>
+<header>DigitAprova</header>
 
 <!-- TELA INICIAL -->
-<div id="inicio" class="container">
-
-  <div class="sidebar">
-    <h3>Matérias</h3>
-    <div class="menu-item" onclick="iniciar('direito')">📚 Direito</div>
-    <div class="menu-item" onclick="iniciar('informatica')">💻 Informática</div>
-    <div class="menu-item" onclick="iniciar('logica')">🧠 Raciocínio Lógico</div>
-  </div>
-
-  <div class="main">
-    <div class="card">
-      <h3>Lições - Nível Iniciante</h3>
-
-      <div class="level">
-        <span>Introdução</span>
-        <button onclick="iniciar('direito')">Iniciar</button>
-      </div>
-
-      <div class="level">
-        <span>Frases básicas</span>
-        <button onclick="iniciar('informatica')">Iniciar</button>
-      </div>
-
-      <div class="level">
-        <span>Treino lógico</span>
-        <button onclick="iniciar('logica')">Iniciar</button>
-      </div>
-    </div>
-  </div>
-
+<div id="inicio">
+  <h2>Aprenda conteúdos enquanto treina digitação</h2>
+  <button onclick="mostrarTreino('direito')">📚 Direito</button><br>
+  <button onclick="mostrarTreino('informatica')">💻 Informática</button><br>
+  <button onclick="mostrarTreino('logica')">🧠 Raciocínio Lógico</button>
 </div>
 
 <!-- TELA TREINO -->
 <div id="treino" style="display:none;">
-
   <h2 id="tituloMateria"></h2>
 
   <p id="frase"></p>
 
-  <textarea id="entrada" rows="4" placeholder="Digite a frase acima..."></textarea>
-
-  <br><br>
+  <textarea id="entrada" placeholder="Digite a frase acima..."></textarea><br><br>
 
   <button onclick="verificar()">Verificar</button>
   <button onclick="novaFrase()">Nova frase</button>
@@ -165,9 +94,29 @@ textarea{
 
   <p id="resultado"></p>
 
+  <!-- TECLADO AUXILIAR -->
+  <div class="teclado">
+    <div>
+      <span class="tecla">Q</span><span class="tecla">W</span><span class="tecla">E</span><span class="tecla">R</span>
+      <span class="tecla">T</span><span class="tecla">Y</span><span class="tecla">U</span><span class="tecla">I</span>
+      <span class="tecla">O</span><span class="tecla">P</span>
+    </div>
+    <div>
+      <span class="tecla">A</span><span class="tecla">S</span><span class="tecla">D</span><span class="tecla">F</span>
+      <span class="tecla">G</span><span class="tecla">H</span><span class="tecla">J</span>
+      <span class="tecla">K</span><span class="tecla">L</span>
+    </div>
+    <div>
+      <span class="tecla">Z</span><span class="tecla">X</span><span class="tecla">C</span>
+      <span class="tecla">V</span><span class="tecla">B</span><span class="tecla">N</span><span class="tecla">M</span>
+    </div>
+  </div>
 </div>
 
 <script>
+let materiaAtual = "";
+let fraseAtual = "";
+
 const frases = {
   direito: [
     "A Constituição é a lei fundamental do Estado.",
@@ -175,35 +124,49 @@ const frases = {
     "Todo poder emana do povo."
   ],
   informatica: [
-    "O hardware representa a parte física do computador.",
-    "O software é o conjunto de programas do sistema.",
-    "A memória RAM é volátil."
+    "O computador processa dados por meio de algoritmos.",
+    "A internet conecta milhões de dispositivos no mundo.",
+    "O sistema operacional gerencia os recursos do hardware."
   ],
   logica: [
-    "Se A é verdadeiro e B é falso, então A e B é falso.",
-    "Uma proposição é uma frase que pode ser verdadeira ou falsa.",
-    "A negação de verdadeiro é falso."
+    "Se todo A é B então todo B não é necessariamente A.",
+    "Uma proposição pode ser verdadeira ou falsa.",
+    "O raciocínio lógico busca conclusões válidas."
   ]
 };
 
-let materiaAtual = "direito";
+function mostrarTreino(materia) {
+  materiaAtual = materia;
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("treino").style.display = "block";
+  document.getElementById("tituloMateria").innerText =
+    materia.charAt(0).toUpperCase() + materia.slice(1);
+  novaFrase(); // FAZ A FRASE APARECER
+}
 
 function novaFrase() {
-  const lista = frases[materiaAtual];
-  const frase = lista[Math.floor(Math.random() * lista.length)];
-  document.getElementById("frase").innerText = frase;
+  let lista = frases[materiaAtual];
+  let indice = Math.floor(Math.random() * lista.length);
+  fraseAtual = lista[indice];
+  document.getElementById("frase").innerText = fraseAtual;
   document.getElementById("entrada").value = "";
   document.getElementById("resultado").innerText = "";
 }
 
 function verificar() {
-  const digitado = document.getElementById("entrada").value;
-  const original = document.getElementById("frase").innerText;
-
-  if (digitado === original) {
+  let digitado = document.getElementById("entrada").value.trim();
+  if (digitado === fraseAtual) {
     document.getElementById("resultado").innerText = "✅ Correto!";
   } else {
     document.getElementById("resultado").innerText = "❌ Há erros na digitação.";
   }
 }
+
+function voltar() {
+  document.getElementById("treino").style.display = "none";
+  document.getElementById("inicio").style.display = "block";
+}
 </script>
+
+</body>
+</html>
