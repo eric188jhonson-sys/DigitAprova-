@@ -222,4 +222,95 @@ function voltar(){
 </script>
 
 </body>
-</html>
+<!-- TELA DE TREINO (fica escondida no início) -->
+<div id="treino" style="display:none; text-align:center; padding:40px; color:white;">
+  <h2 id="tituloMateria"></h2>
+  <p id="frase" style="font-size:20px; margin-bottom:20px;"></p>
+
+  <textarea id="entrada" rows="4" 
+    placeholder="Digite a frase acima..."
+    style="width:80%;max-width:600px;padding:10px;border-radius:10px;font-size:16px;"></textarea>
+
+  <br><br>
+
+  <button onclick="verificar()" style="padding:10px 20px;border-radius:10px;">Verificar</button>
+  <button onclick="novaFrase()" style="padding:10px 20px;border-radius:10px;">Nova frase</button>
+  <button onclick="voltar()" style="padding:10px 20px;border-radius:10px;">Voltar</button>
+
+  <p id="resultado" style="margin-top:15px;font-size:18px;"></p>
+</div>
+
+<script>
+const frases = {
+  direito: [
+    "A Constituição Federal é a lei suprema do Estado.",
+    "O princípio da legalidade exige atuação conforme a lei.",
+    "Todo poder emana do povo."
+  ],
+  informatica: [
+    "O hardware corresponde à parte física do computador.",
+    "O sistema operacional gerencia os recursos do sistema.",
+    "A memória RAM armazena dados temporariamente."
+  ],
+  logica: [
+    "Se todo A é B e todo B é C, então todo A é C.",
+    "Uma proposição é verdadeira ou falsa.",
+    "A negação de uma proposição inverte seu valor lógico."
+  ]
+};
+
+let materiaAtual = "";
+let fraseAtual = "";
+
+/* pega os botões da tela inicial */
+const botoes = document.querySelectorAll("button");
+
+/* associa ações aos botões pelo texto */
+botoes.forEach(btn => {
+  if (btn.innerText.includes("Direito")) {
+    btn.onclick = () => iniciar("direito");
+  }
+  if (btn.innerText.includes("Informática")) {
+    btn.onclick = () => iniciar("informatica");
+  }
+  if (btn.innerText.includes("Raciocínio")) {
+    btn.onclick = () => iniciar("logica");
+  }
+});
+
+function iniciar(materia){
+  materiaAtual = materia;
+
+  document.body.querySelector(".container")?.style.setProperty("display","none");
+  document.getElementById("treino").style.display = "block";
+
+  if(materia==="direito") tituloMateria.innerText="📚 Direito";
+  if(materia==="informatica") tituloMateria.innerText="💻 Informática";
+  if(materia==="logica") tituloMateria.innerText="🧠 Raciocínio Lógico";
+
+  novaFrase();
+}
+
+function novaFrase(){
+  const lista = frases[materiaAtual];
+  fraseAtual = lista[Math.floor(Math.random()*lista.length)];
+  frase.innerText = fraseAtual;
+  entrada.value = "";
+  resultado.innerText = "";
+}
+
+function verificar(){
+  if(entrada.value === fraseAtual){
+    resultado.innerText = "✅ Perfeito! Você digitou corretamente.";
+    resultado.style.color = "lightgreen";
+  } else {
+    resultado.innerText = "❌ Há diferenças no texto digitado.";
+    resultado.style.color = "salmon";
+  }
+}
+
+function voltar(){
+  document.getElementById("treino").style.display = "none";
+  document.body.querySelector(".container")?.style.setProperty("display","flex");
+}
+</script>
