@@ -1,0 +1,14 @@
+// data.json
+{
+ "frases": [
+ {
+ "texto": "A Constituição Federal é a norma suprema do ordenamento jurídico brasileiro.",
+ "assunto": "Direito Constitucional"
+ },
+ {
+ "texto": "O princípio da legalidade é um dos princípios fundamentais do Direito Administrativo.",
+ "assunto": "Direito Administrativo"
+ },
+ // ...
+ ]
+}
