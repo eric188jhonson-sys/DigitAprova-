@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -115,7 +115,7 @@ button:hover{
 }
 
 #frase{
-  font-size:22px;
+  font-size:20px;
   margin-top:20px;
 }
 </style>
@@ -137,23 +137,23 @@ button:hover{
 <div id="inicio">
   <div class="hero">
     <h1>Treine para concursos digitando</h1>
-    <p>Melhore sua velocidade e precisão com frases reais.</p>
+    <p>Digite respostas corretas de questões de concurso.</p>
   </div>
 
   <div class="cards">
     <div class="card" onclick="mostrarTreino('direito')">
       <h3>📚 Direito</h3>
-      <p>Leis e princípios jurídicos.</p>
+      <p>Questões jurídicas.</p>
     </div>
 
     <div class="card" onclick="mostrarTreino('informatica')">
       <h3>💻 Informática</h3>
-      <p>Termos técnicos e conceitos digitais.</p>
+      <p>Conceitos de tecnologia.</p>
     </div>
 
     <div class="card" onclick="mostrarTreino('logica')">
-      <h3>🧠 Raciínio Lógico</h3>
-      <p>Proposições e estruturas lógicas.</p>
+      <h3>🧠 Raciocínio Lógico</h3>
+      <p>Estruturas lógicas.</p>
     </div>
   </div>
 </div>
@@ -162,12 +162,13 @@ button:hover{
 <div id="treino">
   <h2 id="tituloMateria"></h2>
 
-  <p id="frase"></p>
+  <p id="pergunta"></p>
+  <p><strong>Digite a resposta correta:</strong></p>
 
-  <textarea id="entrada" placeholder="Digite a frase acima..."></textarea><br>
+  <textarea id="entrada" placeholder="Digite a resposta aqui..."></textarea><br>
 
   <button onclick="verificar()">Verificar</button>
-  <button onclick="novaFrase()">Nova frase</button>
+  <button onclick="novaPergunta()">Próxima</button>
   <button onclick="voltar()">Voltar</button>
 
   <p id="resultado"></p>
@@ -176,41 +177,57 @@ button:hover{
 
 <script>
 let materiaAtual = "";
-let fraseAtual = "";
+let respostaAtual = "";
 let inicioTempo;
 
-const frases = {
+const banco = {
   direito: [
-    "A Constituição é a lei fundamental do Estado.",
-    "O princípio da legalidade exige atuação conforme a lei.",
-    "Todo poder emana do povo."
+    { pergunta: "Segundo a Constituição Federal, todo poder emana de quem?", resposta: "Do povo." },
+    { pergunta: "Qual princípio obriga a administração pública a agir conforme a lei?", resposta: "Princípio da legalidade." },
+    { pergunta: "A investidura em cargo público depende de quê?", resposta: "De aprovação prévia em concurso público." }
   ],
   informatica: [
-    "O computador processa dados por meio de algoritmos.",
-    "A internet conecta milhões de dispositivos no mundo.",
-    "O sistema operacional gerencia os recursos do hardware."
+    { pergunta: "Qual atalho copia um arquivo no Windows?", resposta: "Ctrl + C" },
+    { pergunta: "Qual sistema gerencia os recursos do computador?", resposta: "Sistema operacional." },
+    { pergunta: "O que a internet conecta?", resposta: "Milhões de dispositivos no mundo." }
   ],
   logica: [
-    "Uma proposição pode ser verdadeira ou falsa.",
-    "O raciocínio lógico busca conclusões válidas.",
-    "Se todo A é B então todo B não é necessariamente A."
+    { pergunta: "Uma proposição pode assumir quais valores?", resposta: "Verdadeiro ou falso." },
+    { pergunta: "Se todo A é B e todo B é C, então o que se pode concluir?", resposta: "Todo A é C." },
+    { pergunta: "O raciocínio lógico busca conclusões de que tipo?", resposta: "Conclusões válidas." }
   ]
+};
+
+let restantes = {
+  direito: [],
+  informatica: [],
+  logica: []
 };
 
 function mostrarTreino(materia){
   materiaAtual = materia;
+  restantes[materia] = [...banco[materia]];
+
   document.getElementById("inicio").style.display="none";
   document.getElementById("treino").style.display="block";
   document.getElementById("tituloMateria").innerText =
-  materia.charAt(0).toUpperCase()+materia.slice(1);
-  novaFrase();
+    materia.charAt(0).toUpperCase()+materia.slice(1);
+
+  novaPergunta();
 }
 
-function novaFrase(){
-  let lista = frases[materiaAtual];
-  let indice = Math.floor(Math.random()*lista.length);
-  fraseAtual = lista[indice];
-  document.getElementById("frase").innerText = fraseAtual;
+function novaPergunta(){
+  if(restantes[materiaAtual].length === 0){
+    restantes[materiaAtual] = [...banco[materiaAtual]];
+  }
+
+  let lista = restantes[materiaAtual];
+  let indice = Math.floor(Math.random() * lista.length);
+  let selecionada = lista.splice(indice,1)[0];
+
+  document.getElementById("pergunta").innerText = selecionada.pergunta;
+  respostaAtual = selecionada.resposta;
+
   document.getElementById("entrada").value="";
   document.getElementById("resultado").innerText="";
   document.getElementById("tempo").innerText="";
@@ -219,29 +236,26 @@ function novaFrase(){
 
 function verificar(){
   let digitado = document.getElementById("entrada").value.trim();
-  let total = fraseAtual.length;
+  let total = respostaAtual.length;
   let corretos = 0;
 
   for(let i=0;i<total;i++){
-    if(digitado[i]===fraseAtual[i]){
+    if(digitado[i] === respostaAtual[i]){
       corretos++;
     }
   }
 
   let porcentagem = Math.round((corretos/total)*100);
   let fimTempo = new Date();
-  let segundos = Math.floor((fimTempo-inicioTempo)/1000);
+  let segundos = Math.floor((fimTempo - inicioTempo)/1000);
 
-  if(digitado===fraseAtual){
-    document.getElementById("resultado").innerText =
-    "✅ Correto! Precisão: 100%";
-  }else{
-    document.getElementById("resultado").innerText =
-    "❌ Precisão: "+porcentagem+"%";
+  if(digitado === respostaAtual){
+    document.getElementById("resultado").innerText = "✅ Correto! 100%";
+  } else {
+    document.getElementById("resultado").innerText = "❌ Precisão: " + porcentagem + "%";
   }
 
-  document.getElementById("tempo").innerText =
-  "⏱ Tempo: "+segundos+" segundos";
+  document.getElementById("tempo").innerText = "⏱ Tempo: " + segundos + " segundos";
 }
 
 function voltar(){
