@@ -11,8 +11,6 @@ body{
   background: linear-gradient(135deg,#1e3c72,#2a5298);
   color:white;
 }
-
-/* NAVBAR */
 nav{
   display:flex;
   justify-content:space-between;
@@ -20,104 +18,31 @@ nav{
   padding:15px 40px;
   background: rgba(0,0,0,0.2);
 }
+.logo{font-size:22px;font-weight:bold;}
+.menu a{color:white;margin:0 15px;text-decoration:none;}
+.botao-nav{background:white;color:#2a5298;padding:8px 15px;border-radius:20px;text-decoration:none;font-weight:bold;}
 
-.logo{
-  font-size:22px;
-  font-weight:bold;
-}
-
-.menu a{
-  color:white;
-  margin:0 15px;
-  text-decoration:none;
-  font-weight:500;
-}
-
-.botao-nav{
-  background:white;
-  color:#2a5298;
-  padding:8px 15px;
-  border-radius:20px;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-/* HERO */
-.hero{
-  text-align:center;
-  margin-top:60px;
-}
-
-.hero h1{
-  font-size:36px;
-}
-
-.hero p{
-  font-size:18px;
-  opacity:0.9;
-}
-
-/* CARDS */
-.cards{
-  display:flex;
-  justify-content:center;
-  gap:30px;
-  margin-top:50px;
-  flex-wrap:wrap;
-}
-
+.hero{text-align:center;margin-top:60px;}
+.cards{display:flex;justify-content:center;gap:30px;margin-top:50px;flex-wrap:wrap;}
 .card{
-  background:white;
-  color:#2a5298;
-  padding:30px;
-  width:220px;
-  border-radius:15px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.3);
-  transition:0.3s;
-  cursor:pointer;
+  background:white;color:#2a5298;padding:30px;width:220px;
+  border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.3);
+  cursor:pointer;transition:0.3s;
 }
+.card:hover{transform:translateY(-8px);}
 
-.card:hover{
-  transform:translateY(-8px);
-}
-
-/* TELA TREINO */
-#treino{
-  display:none;
-  text-align:center;
-  margin-top:50px;
-}
-
+#treino{display:none;text-align:center;margin-top:30px;}
 textarea{
-  width:80%;
-  max-width:700px;
-  height:120px;
-  font-size:18px;
-  border-radius:10px;
-  padding:10px;
-  margin-top:15px;
+  width:80%;max-width:700px;height:120px;font-size:18px;
+  border-radius:10px;padding:10px;margin-top:15px;
 }
-
 button{
-  padding:10px 20px;
-  margin:10px;
-  border:none;
-  border-radius:8px;
-  background:#00c6ff;
-  color:black;
-  font-size:16px;
-  cursor:pointer;
+  padding:10px 20px;margin:10px;border:none;border-radius:8px;
+  background:#00c6ff;color:black;font-size:16px;cursor:pointer;
 }
 
-button:hover{
-  transform:scale(1.05);
-  transition:0.2s;
-}
-
-#pergunta{
-  font-size:20px;
-  margin-top:20px;
-}
+#pergunta{font-size:20px;margin-top:20px;}
+#painel{margin-top:15px;font-size:18px;}
 </style>
 </head>
 
@@ -133,169 +58,144 @@ button:hover{
   <a href="#" class="botao-nav">Entrar</a>
 </nav>
 
-<!-- TELA INICIAL -->
 <div id="inicio">
   <div class="hero">
     <h1>Treine para concursos digitando</h1>
-    <p>Digite respostas corretas de questões de concurso.</p>
+    <p>Digite respostas corretas e fixe o conteúdo.</p>
   </div>
 
   <div class="cards">
-    <div class="card" onclick="mostrarTreino('direito')">
-      <h3>📚 Direito</h3>
-      <p>Questões jurídicas.</p>
-    </div>
-
-    <div class="card" onclick="mostrarTreino('informatica')">
-      <h3>💻 Informática</h3>
-      <p>Conceitos de tecnologia.</p>
-    </div>
-
-    <div class="card" onclick="mostrarTreino('logica')">
-      <h3>🧠 Raciocínio Lógico</h3>
-      <p>Estruturas lógicas.</p>
-    </div>
+    <div class="card" onclick="mostrarTreino('direito')">📚 Direito</div>
+    <div class="card" onclick="mostrarTreino('informatica')">💻 Informática</div>
+    <div class="card" onclick="mostrarTreino('logica')">🧠 Lógica</div>
   </div>
 </div>
 
-<!-- TELA TREINO -->
 <div id="treino">
   <h2 id="tituloMateria"></h2>
-
   <p id="pergunta"></p>
-  <p><strong>Digite a resposta correta:</strong></p>
-
-  <textarea id="entrada" placeholder="Digite a resposta aqui..."></textarea><br>
+  <textarea id="entrada" placeholder="Digite a resposta..."></textarea><br>
 
   <button onclick="verificar()">Verificar</button>
   <button onclick="novaPergunta()">Próxima</button>
+  <button onclick="iniciarSimulado()">Modo Simulado</button>
   <button onclick="voltar()">Voltar</button>
+
+  <div id="painel">
+    Pontos: <span id="pontos">0</span> |
+    Acertos: <span id="acertos">0</span> |
+    Erros: <span id="erros">0</span>
+  </div>
 
   <p id="resultado"></p>
   <p id="tempo"></p>
 </div>
 
 <script>
-let materiaAtual = "";
-let respostaAtual = "";
-let inicioTempo;
+let materiaAtual="", respostaAtual="", inicioTempo;
+let pontos=0, acertos=0, erros=0;
+let modoSimulado=false, tempoRestante=60, timer;
 
-// BANCO DE QUESTÕES
 const banco = {
   direito: [
-    { pergunta: "Segundo a Constituição Federal, todo poder emana de quem?", resposta: "Do povo." },
-    { pergunta: "A investidura em cargo público depende de quê?", resposta: "De aprovação prévia em concurso público." },
-    { pergunta: "Qual princípio obriga a administração pública a agir conforme a lei?", resposta: "Princípio da legalidade." },
-    { pergunta: "Qual princípio impede favorecimentos pessoais?", resposta: "Princípio da impessoalidade." },
-    { pergunta: "Qual princípio exige honestidade administrativa?", resposta: "Princípio da moralidade." },
-    { pergunta: "Qual princípio garante divulgação dos atos administrativos?", resposta: "Princípio da publicidade." },
-    { pergunta: "Qual princípio busca melhores resultados?", resposta: "Princípio da eficiência." },
-    { pergunta: "Qual poder elabora as leis?", resposta: "Poder Legislativo." },
-    { pergunta: "Qual poder executa as leis?", resposta: "Poder Executivo." },
-    { pergunta: "Qual poder julga conforme a lei?", resposta: "Poder Judiciário." },
-    { pergunta: "Os direitos fundamentais estão previstos em qual artigo da Constituição?", resposta: "No artigo quinto." },
-    { pergunta: "O concurso público é forma de acesso a que tipo de cargo?", resposta: "Cargo público efetivo." }
+    {pergunta:"Todo poder emana de quem?", resposta:"Do povo."},
+    {pergunta:"Qual princípio exige agir conforme a lei?", resposta:"Legalidade."},
+    {pergunta:"Qual poder elabora as leis?", resposta:"Poder Legislativo."}
   ],
-
   informatica: [
-    { pergunta: "Qual atalho copia um arquivo no Windows?", resposta: "Ctrl mais C." },
-    { pergunta: "Qual atalho cola um arquivo no Windows?", resposta: "Ctrl mais V." },
-    { pergunta: "Qual atalho recorta um arquivo no Windows?", resposta: "Ctrl mais X." },
-    { pergunta: "Qual sistema gerencia os recursos do computador?", resposta: "Sistema operacional." },
-    { pergunta: "O que significa a sigla CPU?", resposta: "Unidade central de processamento." },
-    { pergunta: "O que significa a sigla RAM?", resposta: "Memória de acesso aleatório." },
-    { pergunta: "O que é software?", resposta: "Conjunto de programas e instruções." },
-    { pergunta: "O que é hardware?", resposta: "Parte física do computador." },
-    { pergunta: "Qual dispositivo é usado para digitar?", resposta: "Teclado." },
-    { pergunta: "Qual rede mundial conecta computadores?", resposta: "Internet." }
+    {pergunta:"Atalho copiar no Windows?", resposta:"Ctrl mais C."},
+    {pergunta:"O que é CPU?", resposta:"Unidade central de processamento."},
+    {pergunta:"Qual sistema gerencia o computador?", resposta:"Sistema operacional."}
   ],
-
   logica: [
-    { pergunta: "Uma proposição pode assumir quais valores?", resposta: "Verdadeiro ou falso." },
-    { pergunta: "Se todo A é B e todo B é C, o que se conclui?", resposta: "Todo A é C." },
-    { pergunta: "O raciocínio lógico busca conclusões de que tipo?", resposta: "Conclusões válidas." },
-    { pergunta: "O símbolo ∧ representa qual operação lógica?", resposta: "Conjunção." },
-    { pergunta: "O símbolo ∨ representa qual operação lógica?", resposta: "Disjunção." },
-    { pergunta: "O símbolo ¬ representa qual operação lógica?", resposta: "Negação." },
-    { pergunta: "O que é uma tautologia?", resposta: "Proposição sempre verdadeira." },
-    { pergunta: "O que é uma contradição?", resposta: "Proposição sempre falsa." },
-    { pergunta: "O que é uma contingência?", resposta: "Proposição que pode ser verdadeira ou falsa." }
+    {pergunta:"Uma proposição é verdadeira ou falsa?", resposta:"Verdadeira ou falsa."},
+    {pergunta:"Se todo A é B e todo B é C?", resposta:"Todo A é C."},
+    {pergunta:"Símbolo ∧ representa?", resposta:"Conjunção."}
   ]
 };
 
-// CONTROLE DE ORDEM (SEM REPETIR)
-let ordem = {
-  direito: [],
-  informatica: [],
-  logica: []
-};
+let ordem={direito:[],informatica:[],logica:[]};
+let posicao={direito:0,informatica:0,logica:0};
 
-let posicao = {
-  direito: 0,
-  informatica: 0,
-  logica: 0
-};
+function salvarProgresso(){
+  localStorage.setItem("digitaprova", JSON.stringify({pontos,acertos,erros}));
+}
 
-function mostrarTreino(materia){
-  materiaAtual = materia;
+function carregarProgresso(){
+  let dados=JSON.parse(localStorage.getItem("digitaprova"));
+  if(dados){
+    pontos=dados.pontos; acertos=dados.acertos; erros=dados.erros;
+  }
+  atualizarPainel();
+}
 
-  ordem[materia] = [...banco[materia]].sort(() => Math.random() - 0.5);
-  posicao[materia] = 0;
+function atualizarPainel(){
+  pontosEl.textContent=pontos;
+  acertosEl.textContent=acertos;
+  errosEl.textContent=erros;
+}
 
+function mostrarTreino(m){
+  materiaAtual=m;
+  ordem[m]=[...banco[m]].sort(()=>Math.random()-0.5);
+  posicao[m]=0;
   document.getElementById("inicio").style.display="none";
   document.getElementById("treino").style.display="block";
-  document.getElementById("tituloMateria").innerText =
-    materia.charAt(0).toUpperCase()+materia.slice(1);
-
+  tituloMateria.textContent=m.toUpperCase();
+  carregarProgresso();
   novaPergunta();
 }
 
 function novaPergunta(){
-  if(posicao[materiaAtual] >= ordem[materiaAtual].length){
-    ordem[materiaAtual] = [...banco[materiaAtual]].sort(() => Math.random() - 0.5);
-    posicao[materiaAtual] = 0;
+  if(posicao[materiaAtual]>=ordem[materiaAtual].length){
+    ordem[materiaAtual]=[...banco[materiaAtual]].sort(()=>Math.random()-0.5);
+    posicao[materiaAtual]=0;
   }
-
-  let selecionada = ordem[materiaAtual][posicao[materiaAtual]];
-  posicao[materiaAtual]++;
-
-  document.getElementById("pergunta").innerText = selecionada.pergunta;
-  respostaAtual = selecionada.resposta;
-
-  document.getElementById("entrada").value="";
-  document.getElementById("resultado").innerText="";
-  document.getElementById("tempo").innerText="";
-  inicioTempo = new Date();
+  let q=ordem[materiaAtual][posicao[materiaAtual]++];
+  pergunta.textContent=q.pergunta;
+  respostaAtual=q.resposta;
+  entrada.value="";
+  resultado.textContent="";
+  inicioTempo=new Date();
 }
 
 function verificar(){
-  let digitado = document.getElementById("entrada").value.trim();
-  let total = respostaAtual.length;
-  let corretos = 0;
+  let digitado=entrada.value.trim();
+  if(digitado===respostaAtual){
+    pontos+=10; acertos++;
+    resultado.textContent="✅ Correto!";
+  }else{
+    erros++;
+    resultado.textContent="❌ Errado!";
+  }
+  salvarProgresso();
+  atualizarPainel();
+}
 
-  for(let i=0;i<total;i++){
-    if(digitado[i] === respostaAtual[i]){
-      corretos++;
+function iniciarSimulado(){
+  modoSimulado=true;
+  tempoRestante=60;
+  tempo.textContent="⏱ 60s";
+  timer=setInterval(()=>{
+    tempoRestante--;
+    tempo.textContent="⏱ "+tempoRestante+"s";
+    if(tempoRestante<=0){
+      clearInterval(timer);
+      alert("Simulado encerrado! Pontos: "+pontos);
+      modoSimulado=false;
     }
-  }
-
-  let porcentagem = Math.round((corretos/total)*100);
-  let fimTempo = new Date();
-  let segundos = Math.floor((fimTempo - inicioTempo)/1000);
-
-  if(digitado === respostaAtual){
-    document.getElementById("resultado").innerText = "✅ Correto! 100%";
-  } else {
-    document.getElementById("resultado").innerText = "❌ Precisão: " + porcentagem + "%";
-  }
-
-  document.getElementById("tempo").innerText = "⏱ Tempo: " + segundos + " segundos";
+  },1000);
 }
 
 function voltar(){
+  clearInterval(timer);
   document.getElementById("treino").style.display="none";
   document.getElementById("inicio").style.display="block";
 }
+
+const pontosEl=document.getElementById("pontos");
+const acertosEl=document.getElementById("acertos");
+const errosEl=document.getElementById("erros");
 </script>
 
 </body>
