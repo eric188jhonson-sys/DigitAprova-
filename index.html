@@ -96,7 +96,6 @@ button{
 </div>
 
 <script>
-<script>
 let materiaAtual="", respostaAtual="";
 let pontos=0, acertos=0, erros=0;
 let tempoRestante=60, timer;
@@ -108,20 +107,16 @@ const elErros=document.getElementById("erros");
 const banco = {
   direito: [
     {pergunta:"Todo poder emana de quem?", resposta:"Do povo."},
-    {pergunta:"Qual princípio garante a divulgação dos atos administrativos?", resposta:"Princípio da publicidade."},
-    {pergunta:"Qual princípio obriga a Administração a agir conforme a lei?", resposta:"Princípio da legalidade."}
+    {pergunta:"Qual princípio garante a divulgação dos atos administrativos?", resposta:"Princípio da publicidade."}
   ],
 
   informatica: [
     {pergunta:"Atalho para copiar no Windows?", resposta:"Ctrl mais C."},
-    {pergunta:"O que é CPU?", resposta:"Unidade central de processamento."},
-    {pergunta:"O que é RAM?", resposta:"Memória de acesso aleatório."}
+    {pergunta:"O que é CPU?", resposta:"Unidade central de processamento."}
   ],
 
   logica: [
-    {pergunta:"Uma proposição pode ser?", resposta:"Verdadeira ou falsa."},
-    {pergunta:"Se todo A é B e todo B é C?", resposta:"Todo A é C."},
-    {pergunta:"Símbolo ∧ representa?", resposta:"Conjunção."}
+    {pergunta:"Uma proposição pode ser?", resposta:"Verdadeira ou falsa."}
   ]
 };
 
@@ -148,8 +143,8 @@ function mostrarTreino(m){
 
 function novaPergunta(){
   if(posicao[materiaAtual]>=ordem[materiaAtual].length){
-    ordem[m]=[...banco[materiaAtual]].sort(()=>Math.random()-0.5);
-    posicao[m]=0;
+    ordem[materiaAtual]=[...banco[materiaAtual]].sort(()=>Math.random()-0.5);
+    posicao[materiaAtual]=0;
   }
 
   let q=ordem[materiaAtual][posicao[materiaAtual]++];
@@ -181,252 +176,6 @@ function iniciarSimulado(){
   timer=setInterval(()=>{
     tempoRestante--;
     document.getElementById("tempo").textContent="⏱ "+tempoRestante+"s";
-    if(tempoRestante<=0){
-      clearInterval(timer);
-      alert("Simulado encerrado! Pontos: "+pontos);
-    }
-  },1000);
-}
-
-function voltar(){
-  clearInterval(timer);
-  document.getElementById("treino").style.display="none";
-  document.getElementById("inicio").style.display="block";
-}
-</script>
-direito: [
-{pergunta:"Todo poder emana de quem?", resposta:"Do povo."},
-{pergunta:"Qual princípio garante a divulgação dos atos administrativos?", resposta:"Princípio da publicidade."},
-{pergunta:"Qual princípio obriga a Administração a agir conforme a lei?", resposta:"Princípio da legalidade."},
-{pergunta:"Qual princípio exige tratamento igual aos administrados?", resposta:"Princípio da impessoalidade."},
-{pergunta:"Qual princípio impõe conduta ética ao administrador público?", resposta:"Princípio da moralidade."},
-{pergunta:"Qual princípio busca melhores resultados com menos recursos?", resposta:"Princípio da eficiência."},
-{pergunta:"Quais são os poderes da União?", resposta:"Executivo, Legislativo e Judiciário."},
-{pergunta:"Qual poder elabora as leis?", resposta:"Poder Legislativo."},
-{pergunta:"Qual poder administra o Estado?", resposta:"Poder Executivo."},
-{pergunta:"Qual poder julga os conflitos?", resposta:"Poder Judiciário."},
-{pergunta:"Qual é a lei suprema do Brasil?", resposta:"Constituição Federal."},
-{pergunta:"Quem exerce o poder executivo federal?", resposta:"O Presidente da República."},
-{pergunta:"Qual direito assegura manifestação do pensamento?", resposta:"Liberdade de expressão."},
-{pergunta:"Qual direito protege a vida?", resposta:"Direito à vida."},
-{pergunta:"Qual direito garante igualdade perante a lei?", resposta:"Princípio da isonomia."},
-{pergunta:"Qual direito protege a liberdade de locomoção?", resposta:"Habeas corpus."},
-{pergunta:"Qual remédio constitucional protege direito líquido e certo?", resposta:"Mandado de segurança."},
-{pergunta:"Qual remédio constitucional garante acesso a informações?", resposta:"Habeas data."},
-{pergunta:"Qual remédio constitucional protege o patrimônio público?", resposta:"Ação popular."},
-{pergunta:"Quem pode propor ação popular?", resposta:"Qualquer cidadão."},
-{pergunta:"Qual é a forma de governo do Brasil?", resposta:"República."},
-{pergunta:"Qual é o sistema de governo do Brasil?", resposta:"Presidencialismo."},
-{pergunta:"Qual é a forma de Estado do Brasil?", resposta:"Estado federativo."},
-{pergunta:"Quantos são os poderes da República?", resposta:"Três poderes."},
-{pergunta:"O Brasil é um Estado democrático de quê?", resposta:"Estado democrático de direito."},
-{pergunta:"Quem elabora a Constituição?", resposta:"Poder Constituinte."},
-{pergunta:"Quem julga ações diretas de inconstitucionalidade?", resposta:"Supremo Tribunal Federal."},
-{pergunta:"Qual órgão guarda a Constituição?", resposta:"Supremo Tribunal Federal."},
-{pergunta:"Qual é a idade mínima para ser Presidente?", resposta:"Trinta e cinco anos."},
-{pergunta:"Qual é o mandato do Presidente da República?", resposta:"Quatro anos."},
-{pergunta:"Quem exerce a soberania?", resposta:"O povo."},
-{pergunta:"Qual princípio garante acesso aos cargos públicos por concurso?", resposta:"Princípio da igualdade."},
-{pergunta:"Qual tipo de ato administrativo possui presunção de legalidade?", resposta:"Todo ato administrativo."},
-{pergunta:"O que é licitação?", resposta:"Procedimento para contratação pela Administração Pública."},
-{pergunta:"Qual lei regula as licitações?", resposta:"Lei quatorze mil cento e trinta e três."},
-{pergunta:"Qual princípio da licitação garante igualdade entre concorrentes?", resposta:"Princípio da isonomia."},
-{pergunta:"Qual princípio da licitação busca proposta mais vantajosa?", resposta:"Princípio da vantajosidade."},
-{pergunta:"Qual é a finalidade da Administração Pública?", resposta:"Atender ao interesse público."},
-{pergunta:"Qual princípio impede promoção pessoal?", resposta:"Princípio da impessoalidade."},
-{pergunta:"Quem exerce o poder de polícia?", resposta:"A Administração Pública."},
-{pergunta:"O que é poder de polícia?", resposta:"Limitação de direitos em favor do interesse público."},
-{pergunta:"Qual princípio exige transparência?", resposta:"Princípio da publicidade."},
-{pergunta:"Qual direito garante acesso ao Judiciário?", resposta:"Direito de ação."},
-{pergunta:"Qual direito assegura contraditório e ampla defesa?", resposta:"Devido processo legal."},
-{pergunta:"Qual ramo do direito trata da Administração Pública?", resposta:"Direito Administrativo."},
-{pergunta:"Qual ramo do direito trata da Constituição?", resposta:"Direito Constitucional."},
-{pergunta:"Qual ramo do direito trata dos crimes?", resposta:"Direito Penal."},
-{pergunta:"Qual ramo do direito trata dos contratos entre particulares?", resposta:"Direito Civil."},
-{pergunta:"Qual é o princípio básico do processo penal?", resposta:"Presunção de inocência."},
-{pergunta:"Quem acusa no processo penal?", resposta:"Ministério Público."},
-{pergunta:"Quem julga em primeira instância?", resposta:"Juiz."},
-{pergunta:"Qual é o objetivo da pena?", resposta:"Reprimir e prevenir o crime."},
-{pergunta:"Qual sanção é aplicada a servidor público?", resposta:"Sanção administrativa."},
-{pergunta:"Qual é a principal função do Estado?", resposta:"Garantir direitos fundamentais."},
-{pergunta:"Quem fiscaliza as contas públicas?", resposta:"Tribunal de Contas."},
-{pergunta:"Quem legisla sobre leis federais?", resposta:"Congresso Nacional."},
-{pergunta:"Quem compõe o Congresso Nacional?", resposta:"Câmara e Senado."},
-{pergunta:"Qual é a casa legislativa dos deputados?", resposta:"Câmara dos Deputados."},
-{pergunta:"Qual é a casa legislativa dos senadores?", resposta:"Senado Federal."},
-{pergunta:"Quantos senadores cada estado possui?", resposta:"Três senadores."},
-{pergunta:"Qual direito protege a intimidade?", resposta:"Direito à privacidade."},
-{pergunta:"Qual princípio rege os atos administrativos?", resposta:"Supremacia do interesse público."},
-{pergunta:"Qual princípio protege a confiança do cidadão?", resposta:"Segurança jurídica."},
-{pergunta:"Qual é o objetivo da Constituição?", resposta:"Organizar o Estado e garantir direitos."},
-{pergunta:"Quem exerce a cidadania?", resposta:"O cidadão."},
-{pergunta:"Qual é a base da democracia?", resposta:"Voto."},
-{pergunta:"Qual é o instrumento de participação direta?", resposta:"Plebiscito."},
-{pergunta:"Qual instrumento consulta o povo depois do ato?", resposta:"Referendo."},
-{pergunta:"Qual instrumento permite iniciativa popular?", resposta:"Projeto de lei popular."},
-{pergunta:"Quem é chefe de Estado e de Governo?", resposta:"Presidente da República."},
-{pergunta:"Qual direito protege a propriedade?", resposta:"Direito de propriedade."},
-{pergunta:"Qual direito assegura reunião pacífica?", resposta:"Direito de reunião."},
-{pergunta:"Qual direito assegura associação?", resposta:"Liberdade de associação."},
-{pergunta:"Qual é o valor máximo da pena de prisão no Brasil?", resposta:"Trinta anos."}
-], 
-  
-informatica: [
-{pergunta:"Atalho para copiar no Windows?", resposta:"Ctrl mais C."},
-{pergunta:"Atalho para colar no Windows?", resposta:"Ctrl mais V."},
-{pergunta:"Atalho para recortar no Windows?", resposta:"Ctrl mais X."},
-{pergunta:"Atalho para selecionar tudo?", resposta:"Ctrl mais A."},
-{pergunta:"Atalho para salvar um arquivo?", resposta:"Ctrl mais S."},
-{pergunta:"O que é CPU?", resposta:"Unidade central de processamento."},
-{pergunta:"O que é RAM?", resposta:"Memória de acesso aleatório."},
-{pergunta:"O que é HD?", resposta:"Disco rígido."},
-{pergunta:"O que é SSD?", resposta:"Unidade de estado sólido."},
-{pergunta:"O que é hardware?", resposta:"Parte física do computador."},
-{pergunta:"O que é software?", resposta:"Parte lógica do computador."},
-{pergunta:"Qual sistema operacional da Microsoft?", resposta:"Windows."},
-{pergunta:"Qual sistema operacional de código aberto?", resposta:"Linux."},
-{pergunta:"O que é navegador?", resposta:"Programa para acessar a internet."},
-{pergunta:"O que é internet?", resposta:"Rede mundial de computadores."},
-{pergunta:"O que é e-mail?", resposta:"Correio eletrônico."},
-{pergunta:"O que é backup?", resposta:"Cópia de segurança."},
-{pergunta:"O que é pendrive?", resposta:"Dispositivo de armazenamento portátil."},
-{pergunta:"O que é impressora?", resposta:"Dispositivo de saída."},
-{pergunta:"O que é monitor?", resposta:"Dispositivo de saída."},
-{pergunta:"O que é teclado?", resposta:"Dispositivo de entrada."},
-{pergunta:"O que é mouse?", resposta:"Dispositivo de entrada."},
-{pergunta:"O que é scanner?", resposta:"Dispositivo de entrada."},
-{pergunta:"O que é modem?", resposta:"Dispositivo que conecta à internet."},
-{pergunta:"O que é roteador?", resposta:"Distribui a conexão de internet."},
-{pergunta:"O que é firewall?", resposta:"Sistema de proteção de rede."},
-{pergunta:"O que é antivírus?", resposta:"Programa de proteção contra malware."},
-{pergunta:"O que é malware?", resposta:"Programa malicioso."},
-{pergunta:"O que é vírus?", resposta:"Tipo de malware."},
-{pergunta:"O que é phishing?", resposta:"Golpe para roubo de dados."},
-{pergunta:"O que é spam?", resposta:"Mensagem indesejada."},
-{pergunta:"O que é nuvem?", resposta:"Armazenamento online."},
-{pergunta:"O que é download?", resposta:"Baixar arquivos."},
-{pergunta:"O que é upload?", resposta:"Enviar arquivos."},
-{pergunta:"O que é PDF?", resposta:"Formato de documento."},
-{pergunta:"O que é Word?", resposta:"Editor de texto."},
-{pergunta:"O que é Excel?", resposta:"Planilha eletrônica."},
-{pergunta:"O que é PowerPoint?", resposta:"Programa de apresentações."},
-{pergunta:"O que é sistema operacional?", resposta:"Gerencia os recursos do computador."},
-{pergunta:"O que é bit?", resposta:"Menor unidade de informação."},
-{pergunta:"O que é byte?", resposta:"Conjunto de oito bits."},
-{pergunta:"O que é banco de dados?", resposta:"Conjunto organizado de dados."},
-{pergunta:"O que é rede local?", resposta:"Rede em área limitada."},
-{pergunta:"O que é IP?", resposta:"Identificação do computador na rede."},
-{pergunta:"O que é URL?", resposta:"Endereço de um site."},
-{pergunta:"O que é site?", resposta:"Página na internet."},
-{pergunta:"O que é link?", resposta:"Ligação entre páginas."},
-{pergunta:"O que é navegador padrão?", resposta:"Programa principal para acessar a web."},
-{pergunta:"O que é formatação?", resposta:"Preparar disco para uso."},
-{pergunta:"O que é driver?", resposta:"Programa que controla hardware."},
-{pergunta:"O que é atualização?", resposta:"Versão mais recente do software."},
-{pergunta:"O que é login?", resposta:"Identificação do usuário."},
-{pergunta:"O que é senha?", resposta:"Código de acesso."},
-{pergunta:"O que é autenticação?", resposta:"Verificação de identidade."},
-{pergunta:"O que é criptografia?", resposta:"Proteção de dados."},
-{pergunta:"O que é protocolo?", resposta:"Conjunto de regras de comunicação."},
-{pergunta:"O que é http?", resposta:"Protocolo de navegação."},
-{pergunta:"O que é https?", resposta:"Protocolo seguro."},
-{pergunta:"O que é armazenamento?", resposta:"Guardar dados."},
-{pergunta:"O que é cache?", resposta:"Memória temporária."},
-{pergunta:"O que é multitarefa?", resposta:"Executar vários programas ao mesmo tempo."},
-{pergunta:"O que é interface gráfica?", resposta:"Tela visual do sistema."},
-{pergunta:"O que é ícone?", resposta:"Representação gráfica de um programa."},
-{pergunta:"O que é área de trabalho?", resposta:"Tela principal do sistema."},
-{pergunta:"O que é pasta?", resposta:"Local para guardar arquivos."},
-{pergunta:"O que é arquivo?", resposta:"Conjunto de informações gravadas."},
-{pergunta:"O que é extensão de arquivo?", resposta:"Final do nome do arquivo."},
-{pergunta:"O que é navegador Google?", resposta:"Google Chrome."},
-{pergunta:"O que é navegador da Microsoft?", resposta:"Microsoft Edge."},
-{pergunta:"O que é navegador da Mozilla?", resposta:"Firefox."},
-{pergunta:"O que é rede social?", resposta:"Plataforma de interação online."},
-{pergunta:"O que é aplicativo?", resposta:"Programa para celular ou computador."},
-{pergunta:"O que é sistema mobile?", resposta:"Sistema para dispositivos móveis."},
-{pergunta:"O que é Android?", resposta:"Sistema operacional móvel."},
-{pergunta:"O que é iOS?", resposta:"Sistema operacional da Apple."}
-],}
-  
-  logica: [
-    {pergunta:"Uma proposição pode ser?", resposta:"Verdadeira ou falsa."},
-    {pergunta:"Se todo A é B e todo B é C?", resposta:"Todo A é C."},
-    {pergunta:"Símbolo ∧ representa?", resposta:"Conjunção."}
-  ]
-};
-
-let ordem={direito:[],informatica:[],logica:[]};
-let posicao={direito:0,informatica:0,logica:0};
-
-function salvarProgresso(){
-  localStorage.setItem("digitaprova", JSON.stringify({pontos,acertos,erros}));
-}
-
-function carregarProgresso(){
-  let dados=JSON.parse(localStorage.getItem("digitaprova"));
-  if(dados){
-    pontos=dados.pontos; acertos=dados.acertos; erros=dados.erros;
-  }
-  atualizarPainel();
-}
-
-function atualizarPainel(){
-  elPontos.textContent = pontos;
-  elAcertos.textContent = acertos;
-  elErros.textContent = erros;
-}
-
-function mostrarTreino(m){
-  materiaAtual=m;
-  ordem[m]=[...banco[m]].sort(()=>Math.random()-0.5);
-  posicao[m]=0;
-
-  document.getElementById("inicio").style.display="none";
-  document.getElementById("treino").style.display="block";
-  tituloMateria.textContent=m.toUpperCase();
-
-  carregarProgresso();
-  novaPergunta();
-}
-
-function novaPergunta(){
-  if(posicao[materiaAtual]>=ordem[materiaAtual].length){
-    ordem[materiaAtual]=[...banco[materiaAtual]].sort(()=>Math.random()-0.5);
-    posicao[materiaAtual]=0;
-  }
-
-  let q=ordem[materiaAtual][posicao[materiaAtual]++];
-  pergunta.textContent=q.pergunta;
-  respostaVisivel.textContent="Resposta correta: "+q.resposta;
-  respostaAtual=q.resposta;
-
-  entrada.value="";
-  resultado.textContent="";
-  inicioTempo=new Date();
-}
-
-function verificar(){
-  let digitado=entrada.value.trim();
-  if(digitado===respostaAtual){
-    pontos+=10; acertos++;
-    resultado.textContent="✅ Correto!";
-  }else{
-    erros++;
-    resultado.textContent="❌ Errado!";
-  }
-  salvarProgresso();
-  atualizarPainel();
-}
-
-function iniciarSimulado(){
-  tempoRestante=60;
-  tempo.textContent="⏱ 60s";
-  clearInterval(timer);
-
-  timer=setInterval(()=>{
-    tempoRestante--;
-    tempo.textContent="⏱ "+tempoRestante+"s";
     if(tempoRestante<=0){
       clearInterval(timer);
       alert("Simulado encerrado! Pontos: "+pontos);
