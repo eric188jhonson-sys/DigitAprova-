@@ -314,9 +314,11 @@ function voltar(){
   document.body.querySelector(".container")?.style.setProperty("display","flex");
 }
 </script>
-  <!-- TECLADO VIRTUAL DE APOIO -->
+  <script>
+/* CRIA O TECLADO DENTRO DA TELA DE TREINO */
+const tecladoHTML = `
 <div id="teclado" style="margin-top:30px;text-align:center;">
-  <div class="linha">
+  <div>
     <span class="tecla">Q</span>
     <span class="tecla">W</span>
     <span class="tecla">E</span>
@@ -328,7 +330,7 @@ function voltar(){
     <span class="tecla">O</span>
     <span class="tecla">P</span>
   </div>
-  <div class="linha">
+  <div>
     <span class="tecla">A</span>
     <span class="tecla">S</span>
     <span class="tecla">D</span>
@@ -339,7 +341,7 @@ function voltar(){
     <span class="tecla">K</span>
     <span class="tecla">L</span>
   </div>
-  <div class="linha">
+  <div>
     <span class="tecla">Z</span>
     <span class="tecla">X</span>
     <span class="tecla">C</span>
@@ -349,8 +351,10 @@ function voltar(){
     <span class="tecla">M</span>
   </div>
 </div>
+`;
 
-<style>
+const estiloTeclado = document.createElement("style");
+estiloTeclado.innerHTML = `
 .tecla{
   display:inline-block;
   padding:10px 14px;
@@ -365,9 +369,18 @@ function voltar(){
   background:#22c55e !important;
   color:black;
 }
-</style>
+`;
+document.head.appendChild(estiloTeclado);
 
-<script>
+/* INSERE O TECLADO NA TELA DE TREINO */
+function inserirTeclado(){
+  const treino = document.getElementById("treino");
+  if(treino && !document.getElementById("teclado")){
+    treino.insertAdjacentHTML("beforeend", tecladoHTML);
+  }
+}
+
+/* DESTACA A TECLA DIGITADA */
 document.addEventListener("keydown", function(e){
   const tecla = e.key.toUpperCase();
   document.querySelectorAll(".tecla").forEach(t=>{
@@ -377,4 +390,12 @@ document.addEventListener("keydown", function(e){
     }
   });
 });
+
+/* GARANTE QUE O TECLADO APAREÇA AO ENTRAR NO TREINO */
+const antigoIniciar = window.iniciar;
+window.iniciar = function(materia){
+  if(antigoIniciar) antigoIniciar(materia);
+  setTimeout(inserirTeclado, 100);
+};
 </script>
+ 
