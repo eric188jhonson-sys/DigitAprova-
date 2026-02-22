@@ -42,6 +42,7 @@ button{
 }
 
 #pergunta{font-size:20px;margin-top:20px;}
+#respostaVisivel{color:#00ffcc;font-weight:bold;margin-top:10px;}
 #painel{margin-top:15px;font-size:18px;}
 </style>
 </head>
@@ -61,7 +62,7 @@ button{
 <div id="inicio">
   <div class="hero">
     <h1>Treine para concursos digitando</h1>
-    <p>Digite respostas corretas e fixe o conteúdo.</p>
+    <p>Digite exatamente a resposta correta.</p>
   </div>
 
   <div class="cards">
@@ -73,8 +74,11 @@ button{
 
 <div id="treino">
   <h2 id="tituloMateria"></h2>
+
   <p id="pergunta"></p>
-  <textarea id="entrada" placeholder="Digite a resposta..."></textarea><br>
+  <p id="respostaVisivel"></p>
+
+  <textarea id="entrada" placeholder="Digite exatamente a resposta acima..."></textarea><br>
 
   <button onclick="verificar()">Verificar</button>
   <button onclick="novaPergunta()">Próxima</button>
@@ -94,7 +98,7 @@ button{
 <script>
 let materiaAtual="", respostaAtual="", inicioTempo;
 let pontos=0, acertos=0, erros=0;
-let modoSimulado=false, tempoRestante=60, timer;
+let tempoRestante=60, timer;
 
 const banco = {
   direito: [
@@ -108,7 +112,7 @@ const banco = {
     {pergunta:"Qual sistema gerencia o computador?", resposta:"Sistema operacional."}
   ],
   logica: [
-    {pergunta:"Uma proposição é verdadeira ou falsa?", resposta:"Verdadeira ou falsa."},
+    {pergunta:"Uma proposição pode ser?", resposta:"Verdadeira ou falsa."},
     {pergunta:"Se todo A é B e todo B é C?", resposta:"Todo A é C."},
     {pergunta:"Símbolo ∧ representa?", resposta:"Conjunção."}
   ]
@@ -130,18 +134,20 @@ function carregarProgresso(){
 }
 
 function atualizarPainel(){
-  pontosEl.textContent=pontos;
-  acertosEl.textContent=acertos;
-  errosEl.textContent=erros;
+  pontos.textContent = window.pontos;
+  acertos.textContent = window.acertos;
+  erros.textContent = window.erros;
 }
 
 function mostrarTreino(m){
   materiaAtual=m;
   ordem[m]=[...banco[m]].sort(()=>Math.random()-0.5);
   posicao[m]=0;
+
   document.getElementById("inicio").style.display="none";
   document.getElementById("treino").style.display="block";
   tituloMateria.textContent=m.toUpperCase();
+
   carregarProgresso();
   novaPergunta();
 }
@@ -151,9 +157,12 @@ function novaPergunta(){
     ordem[materiaAtual]=[...banco[materiaAtual]].sort(()=>Math.random()-0.5);
     posicao[materiaAtual]=0;
   }
+
   let q=ordem[materiaAtual][posicao[materiaAtual]++];
   pergunta.textContent=q.pergunta;
+  respostaVisivel.textContent="Resposta: "+q.resposta;
   respostaAtual=q.resposta;
+
   entrada.value="";
   resultado.textContent="";
   inicioTempo=new Date();
@@ -173,16 +182,16 @@ function verificar(){
 }
 
 function iniciarSimulado(){
-  modoSimulado=true;
   tempoRestante=60;
   tempo.textContent="⏱ 60s";
+  clearInterval(timer);
+
   timer=setInterval(()=>{
     tempoRestante--;
     tempo.textContent="⏱ "+tempoRestante+"s";
     if(tempoRestante<=0){
       clearInterval(timer);
       alert("Simulado encerrado! Pontos: "+pontos);
-      modoSimulado=false;
     }
   },1000);
 }
@@ -192,10 +201,6 @@ function voltar(){
   document.getElementById("treino").style.display="none";
   document.getElementById("inicio").style.display="block";
 }
-
-const pontosEl=document.getElementById("pontos");
-const acertosEl=document.getElementById("acertos");
-const errosEl=document.getElementById("erros");
 </script>
 
 </body>
