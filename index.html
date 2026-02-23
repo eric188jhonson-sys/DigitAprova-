@@ -58,6 +58,7 @@ button{
   </div>
   <a href="#" class="botao-nav">Entrar</a>
 </nav>
+
 <div id="login" style="text-align:center; margin-top:100px;">
   <h2>Digite seu nome</h2>
   <input id="nomeUsuario" placeholder="Seu nome">
@@ -71,13 +72,31 @@ button{
     <p>Digite exatamente a resposta correta.</p>
   </div>
 
-<div class="cards">
-  <div class="card" onclick="mostrarTreino('direito')">📚 Direito</div>
-  <div class="card" onclick="mostrarTreino('informatica')">💻 Informática</div>
-  <div class="card" onclick="mostrarTreino('logica')">🧠 Lógica</div>
-  <div class="card" onclick="mostrarTreino('portugues')">✍ Português</div>
+  <div class="cards">
+    <div class="card" onclick="mostrarTreino('direito')">📚 Direito</div>
+    <div class="card" onclick="mostrarTreino('informatica')">💻 Informática</div>
+    <div class="card" onclick="mostrarTreino('logica')">🧠 Lógica</div>
+    <div class="card" onclick="mostrarTreino('portugues')">✍ Português</div>
+  </div>
 </div>
-</div>
+
+<script>
+function entrar(){
+  let nome = document.getElementById("nomeUsuario").value;
+
+  if(nome.trim() === ""){
+    alert("Digite seu nome");
+    return;
+  }
+
+  document.getElementById("login").style.display = "none";
+  document.getElementById("inicio").style.display = "block";
+}
+
+function mostrarTreino(materia){
+  alert("Você clicou em: " + materia);
+}
+</script>
 
 <div id="treino">
   <h2 id="tituloMateria"></h2>
