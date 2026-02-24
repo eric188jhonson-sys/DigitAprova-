@@ -6,50 +6,135 @@
 
 <style>
 body {
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(to bottom, #e3f2fd, #ffffff);
+}
+
+header {
+    background: #1565c0;
+    color: white;
+    padding: 20px;
     text-align: center;
-    padding: 30px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+#banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #bbdefb;
+    padding: 20px;
+}
+
+#banner img {
+    width: 120px;
+    margin-right: 20px;
+}
+
+#banner p {
+    font-size: 18px;
+    max-width: 500px;
 }
 
 #container {
     background: white;
-    padding: 20px;
-    max-width: 700px;
-    margin: auto;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    text-align: center;
 }
 
 #frase {
     font-size: 18px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    color: #0d47a1;
 }
 
 textarea {
-    width: 90%;
+    width: 95%;
     height: 100px;
     font-size: 16px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #90caf9;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 10px 25px;
     font-size: 16px;
-    margin-top: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
+    background: #1565c0;
+    color: white;
+}
+
+button:hover {
+    background: #0d47a1;
 }
 
 #resultado {
-    margin-top: 15px;
+    margin-top: 10px;
     font-weight: bold;
+}
+
+#concursos {
+    margin-top: 40px;
+}
+
+#concursos h2 {
+    color: #1565c0;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.card {
+    background: #e3f2fd;
+    padding: 15px;
+    width: 150px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+footer {
+    background: #1565c0;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 40px;
 }
 </style>
 </head>
 
 <body>
 
+<header>
+    <h1>📚 DigitAprova</h1>
+    <p>Aprenda para concursos enquanto treina digitação</p>
+</header>
+
+<div id="banner">
+    <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png">
+    <p>
+        Treine sua digitação enquanto estuda conteúdos que realmente caem em concursos públicos.
+        Mais foco, mais memorização e mais aprovação.
+    </p>
+</div>
+
 <div id="container">
-    <h1>DigitAprova</h1>
+    <h2>✍️ Treino de Digitação</h2>
     <p>Digite corretamente a frase abaixo:</p>
 
     <div id="frase"></div>
@@ -62,13 +147,29 @@ button {
     <div id="resultado"></div>
 </div>
 
+<div id="concursos">
+    <h2>🎯 Principais concursos</h2>
+    <div class="cards">
+        <div class="card">📖 INSS</div>
+        <div class="card">⚖️ TRT</div>
+        <div class="card">🏛️ TJ</div>
+        <div class="card">👮 Polícia Civil</div>
+        <div class="card">🧑‍💼 Prefeituras</div>
+        <div class="card">🏦 Bancos</div>
+    </div>
+</div>
+
+<footer>
+    © 2026 DigitAprova - Estude digitando
+</footer>
+
 <script>
 let frases = [
     "A administração pública deve obedecer aos princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência.",
     "O concurso público é o meio constitucional de acesso aos cargos públicos.",
-    "O servidor público deve agir conforme a lei e o interesse público.",
     "A Constituição Federal é a norma suprema do ordenamento jurídico.",
-    "O Poder Executivo é responsável pela administração do Estado."
+    "O servidor público deve agir conforme a lei e o interesse público.",
+    "Os atos administrativos devem respeitar os princípios constitucionais."
 ];
 
 let indice = 0;
@@ -84,10 +185,10 @@ function verificar() {
     let fraseCorreta = frases[indice];
 
     if (textoDigitado === fraseCorreta) {
-        document.getElementById("resultado").innerText = "✅ Parabéns! Você digitou corretamente.";
+        document.getElementById("resultado").innerText = "✅ Perfeito! Digitação correta.";
         document.getElementById("resultado").style.color = "green";
     } else {
-        document.getElementById("resultado").innerText = "❌ Ainda há erros. Confira a digitação.";
+        document.getElementById("resultado").innerText = "❌ Ainda há erros. Tente novamente.";
         document.getElementById("resultado").style.color = "red";
     }
 }
