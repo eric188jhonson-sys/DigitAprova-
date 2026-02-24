@@ -12,8 +12,6 @@ body{
   color:white;
   text-align:center;
 }
-
-/* MENU */
 nav{
   display:flex;
   justify-content: space-between;
@@ -21,7 +19,6 @@ nav{
   padding:15px 40px;
   background:#18335f;
 }
-
 nav .menu a{
   color:white;
   text-decoration:none;
@@ -29,15 +26,13 @@ nav .menu a{
   font-weight:bold;
   cursor:pointer;
 }
-
 input, textarea{
   padding:10px;
-  width:250px;
+  width:260px;
   border-radius:6px;
   border:none;
   margin:5px;
 }
-
 button{
   padding:10px 20px;
   border:none;
@@ -45,8 +40,6 @@ button{
   cursor:pointer;
   margin:5px;
 }
-
-/* CARDS */
 .cards{
   display:flex;
   justify-content:center;
@@ -54,7 +47,6 @@ button{
   margin-top:40px;
   flex-wrap:wrap;
 }
-
 .card{
   background:white;
   color:black;
@@ -63,25 +55,19 @@ button{
   cursor:pointer;
   font-size:18px;
 }
-
-.tela{
-  display:none;
-}
+.tela{display:none;}
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
 <div id="loginScreen">
   <h1>DigitAprova</h1>
-  <p>Digite seu nome e senha</p>
-  <input type="text" id="username" placeholder="Nome"><br>
-  <input type="password" id="password" placeholder="Senha"><br><br>
+  <input id="username" placeholder="Nome"><br>
+  <input id="password" type="password" placeholder="Senha"><br><br>
   <button onclick="login()">Entrar</button>
 </div>
 
-<!-- MENU -->
 <nav id="menu" style="display:none;">
   <div>DigitAprova</div>
   <div class="menu">
@@ -91,7 +77,6 @@ button{
   </div>
 </nav>
 
-<!-- INÍCIO -->
 <div id="inicio" class="tela">
   <h1>Escolha uma matéria</h1>
   <div class="cards">
@@ -102,39 +87,27 @@ button{
   </div>
 </div>
 
-<!-- PROGRESSO -->
 <div id="progresso" class="tela">
   <h1>Seu progresso</h1>
-  <p>Pontos: <span id="pontos">0</span></p>
-  <p>Acertos: <span id="acertos">0</span></p>
-  <p>Erros: <span id="erros">0</span></p>
+  Pontos: <span id="pontos">0</span><br>
+  Acertos: <span id="acertos">0</span><br>
+  Erros: <span id="erros">0</span>
 </div>
 
-<!-- SOBRE -->
 <div id="sobre" class="tela">
-  <h1>Sobre o DigitAprova</h1>
-  <p>Aprenda conteúdos de concurso público enquanto treina digitação.</p>
+  <h1>Sobre</h1>
+  <p>Estude para concurso treinando digitação.</p>
 </div>
 
-<!-- TREINO -->
 <div id="treino" class="tela">
   <h2 id="tituloMateria"></h2>
   <p id="pergunta"></p>
   <p id="respostaVisivel"></p>
-
-  <textarea id="entrada" placeholder="Digite exatamente a resposta acima..."></textarea><br>
-
+  <textarea id="entrada"></textarea><br>
   <button onclick="verificar()">Verificar</button>
   <button onclick="novaPergunta()">Próxima</button>
   <button onclick="iniciarSimulado()">Modo Simulado</button>
   <button onclick="voltar()">Voltar</button>
-
-  <div id="painel">
-    Pontos: <span id="pontos2">0</span> |
-    Acertos: <span id="acertos2">0</span> |
-    Erros: <span id="erros2">0</span>
-  </div>
-
   <p id="resultado"></p>
   <p id="tempo"></p>
 </div>
@@ -145,101 +118,6 @@ let pontos=0, acertos=0, erros=0;
 let tempoRestante=60, timer;
 
 const banco = {
-  direito:[
-    {p:"O princípio da legalidade significa que:", r:"ninguém será obrigado a fazer ou deixar de fazer algo senão em virtude de lei."},
-    {p:"A Constituição Federal é:", r:"a lei suprema do Estado."}
-  ],
-  informatica:[
-    {p:"O que é hardware?", r:"parte física do computador."},
-    {p:"O que é software?", r:"conjunto de programas e sistemas."}
-  ],
-  logica:[
-    {p:"Se todo A é B e todo B é C então:", r:"todo A é C."},
-    {p:"Uma proposição é:", r:"uma frase que pode ser verdadeira ou falsa."}
-  ],
-  portugues:[
-    {p:"O sujeito da frase é:", r:"termo sobre o qual se declara algo."},
-    {p:"O verbo indica:", r:"ação estado ou fenômeno."}
-  ]
-};
-
-function esconderTudo(){
-  document.querySelectorAll(".tela").forEach(t=>t.style.display="none");
-}
-
-function mostrarInicio(){esconderTudo(); document.getElementById("inicio").style.display="block";}
-function mostrarProgresso(){esconderTudo(); document.getElementById("progresso").style.display="block";}
-function mostrarSobre(){esconderTudo(); document.getElementById("sobre").style.display="block";}
-
-function login(){
-  let user=document.getElementById("username").value;
-  let pass=document.getElementById("password").value;
-  if(user==""||pass==""){alert("Digite nome e senha");return;}
-  document.getElementById("loginScreen").style.display="none";
-  document.getElementById("menu").style.display="flex";
-  mostrarInicio();
-}
-
-function iniciar(materia){
-  materiaAtual=materia;
-  document.getElementById("tituloMateria").innerText=materia.toUpperCase();
-  esconderTudo();
-  document.getElementById("treino").style.display="block";
-  novaPergunta();
-}
-
-function novaPergunta(){
-  let lista=banco[materiaAtual];
-  let q=lista[Math.floor(Math.random()*lista.length)];
-  document.getElementById("pergunta").innerText=q.p;
-  document.getElementById("respostaVisivel").innerText=q.r;
-  respostaAtual=q.r;
-  document.getElementById("entrada").value="";
-  document.getElementById("resultado").innerText="";
-}
-
-function verificar(){
-  let digitado=document.getElementById("entrada").value.trim();
-  if(digitado===respostaAtual){
-    pontos+=10; acertos++;
-    document.getElementById("resultado").innerText="✅ Correto!";
-  }else{
-    erros++;
-    document.getElementById("resultado").innerText="❌ Errado!";
-  }
-  atualizarPainel();
-}
-
-function atualizarPainel(){
-  document.getElementById("pontos").innerText=pontos;
-  document.getElementById("acertos").innerText=acertos;
-  document.getElementById("erros").innerText=erros;
-  document.getElementById("pontos2").innerText=pontos;
-  document.getElementById("acertos2").innerText=acertos;
-  document.getElementById("erros2").innerText=erros;
-}
-
-function iniciarSimulado(){
-  tempoRestante=60;
-  document.getElementById("tempo").innerText="Tempo: "+tempoRestante;
-  timer=setInterval(()=>{
-    tempoRestante--;
-    document.getElementById("tempo").innerText="Tempo: "+tempoRestante;
-    if(tempoRestante<=0){
-      clearInterval(timer);
-      alert("Tempo encerrado!");
-    }
-  },1000);
-}
-
-function voltar(){
-  esconderTudo();
-  mostrarInicio();
-}
-</script>
-
-</body>
-</html>
   direito: [
     {pergunta:"Todo poder emana de quem?", resposta:"Do povo."},
 {pergunta:"Qual princípio garante a divulgação dos atos administrativos?", resposta:"Princípio da publicidade."},
