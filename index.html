@@ -100,13 +100,11 @@ input{
 <!-- PROGRESSO -->
 <div id="progresso" class="tela">
   <h1>Seu progresso</h1>
-  <p>Aqui aparecerão seus pontos futuramente.</p>
 </div>
 
 <!-- SOBRE -->
 <div id="sobre" class="tela">
   <h1>Sobre o DigitAprova</h1>
-  <p>Plataforma para estudar para concursos treinando digitação.</p>
 </div>
 
 <script>
@@ -132,10 +130,10 @@ function mostrarSobre(){
 }
 
 function login(){
-  let nome = document.getElementById("username").value;
-  let senha = document.getElementById("password").value;
+  let user = document.getElementById("username").value;
+  let pass = document.getElementById("password").value;
 
-  if(nome.trim()=="" || senha.trim()==""){
+  if(user.trim()==="" || pass.trim()===""){
     alert("Digite nome e senha");
     return;
   }
@@ -147,19 +145,6 @@ function login(){
 
 </body>
 </html>
-function login(){
-  let user = document.getElementById("username").value;
-  let pass = document.getElementById("password").value;
-
-  if(user.trim()==="" || pass.trim()===""){
-    alert("Digite nome e senha");
-    return;
-  }
-
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("mainScreen").style.display = "block";
-}
-</script>
 
 <div id="treino">
   <h2 id="tituloMateria"></h2>
