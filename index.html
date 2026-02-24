@@ -7,19 +7,15 @@
 <style>
 body {
     margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: linear-gradient(to bottom, #e3f2fd, #ffffff);
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #e1f5fe, #ffffff);
 }
 
 header {
-    background: #1565c0;
+    background: #0d47a1;
     color: white;
     padding: 20px;
     text-align: center;
-}
-
-header h1 {
-    margin: 0;
 }
 
 #banner {
@@ -31,7 +27,7 @@ header h1 {
 }
 
 #banner img {
-    width: 120px;
+    width: 140px;
     margin-right: 20px;
 }
 
@@ -46,7 +42,7 @@ header h1 {
     margin: 30px auto;
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
     text-align: center;
 }
 
@@ -62,7 +58,7 @@ textarea {
     font-size: 16px;
     padding: 10px;
     border-radius: 8px;
-    border: 1px solid #90caf9;
+    border: 1px solid #64b5f6;
 }
 
 button {
@@ -72,7 +68,7 @@ button {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    background: #1565c0;
+    background: #1976d2;
     color: white;
 }
 
@@ -87,29 +83,30 @@ button:hover {
 
 #concursos {
     margin-top: 40px;
+    text-align: center;
 }
 
 #concursos h2 {
-    color: #1565c0;
+    color: #0d47a1;
 }
 
-.cards {
+.galeria {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
 }
 
-.card {
-    background: #e3f2fd;
-    padding: 15px;
-    width: 150px;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+.galeria img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
 }
 
 footer {
-    background: #1565c0;
+    background: #0d47a1;
     color: white;
     text-align: center;
     padding: 10px;
@@ -126,10 +123,10 @@ footer {
 </header>
 
 <div id="banner">
-    <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png">
+    <img src="imagens/livros.png">
     <p>
         Treine sua digitação enquanto estuda conteúdos que realmente caem em concursos públicos.
-        Mais foco, mais memorização e mais aprovação.
+        Estudo ativo, memorização e aprovação.
     </p>
 </div>
 
@@ -149,13 +146,13 @@ footer {
 
 <div id="concursos">
     <h2>🎯 Principais concursos</h2>
-    <div class="cards">
-        <div class="card">📖 INSS</div>
-        <div class="card">⚖️ TRT</div>
-        <div class="card">🏛️ TJ</div>
-        <div class="card">👮 Polícia Civil</div>
-        <div class="card">🧑‍💼 Prefeituras</div>
-        <div class="card">🏦 Bancos</div>
+    <div class="galeria">
+        <img src="imagens/inss.jpg">
+        <img src="imagens/trt.jpg">
+        <img src="imagens/tj.jpg">
+        <img src="imagens/policia.jpg">
+        <img src="imagens/banco.jpg">
+        <img src="imagens/prefeitura.jpg">
     </div>
 </div>
 
