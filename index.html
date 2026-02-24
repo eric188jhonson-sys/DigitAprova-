@@ -5,516 +5,103 @@
 <title>DigitAprova</title>
 
 <style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(#1e3c72,#2a5298);
-  color:white;
-  text-align:center;
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    text-align: center;
+    padding: 30px;
 }
-nav{
-  display:flex;
-  justify-content: space-between;
-  align-items:center;
-  padding:15px 40px;
-  background:#18335f;
+
+#container {
+    background: white;
+    padding: 20px;
+    max-width: 700px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-nav .menu a{
-  color:white;
-  text-decoration:none;
-  margin:0 15px;
-  font-weight:bold;
-  cursor:pointer;
+
+#frase {
+    font-size: 18px;
+    margin-bottom: 20px;
 }
-input, textarea{
-  padding:10px;
-  width:260px;
-  border-radius:6px;
-  border:none;
-  margin:5px;
+
+textarea {
+    width: 90%;
+    height: 100px;
+    font-size: 16px;
 }
-button{
-  padding:10px 20px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  margin:5px;
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
 }
-.cards{
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  margin-top:40px;
-  flex-wrap:wrap;
+
+#resultado {
+    margin-top: 15px;
+    font-weight: bold;
 }
-.card{
-  background:white;
-  color:black;
-  padding:20px 40px;
-  border-radius:15px;
-  cursor:pointer;
-  font-size:18px;
-}
-.tela{display:none;}
 </style>
 </head>
 
 <body>
 
-<div id="loginScreen">
-  <h1>DigitAprova</h1>
-  <input id="username" placeholder="Nome"><br>
-  <input id="password" type="password" placeholder="Senha"><br><br>
-  <button onclick="login()">Entrar</button>
-</div>
+<div id="container">
+    <h1>DigitAprova</h1>
+    <p>Digite corretamente a frase abaixo:</p>
 
-<nav id="menu" style="display:none;">
-  <div>DigitAprova</div>
-  <div class="menu">
-    <a onclick="mostrarInicio()">Início</a>
-    <a onclick="mostrarProgresso()">Progresso</a>
-    <a onclick="mostrarSobre()">Sobre</a>
-  </div>
-</nav>
+    <div id="frase"></div>
 
-<div id="inicio" class="tela">
-  <h1>Escolha uma matéria</h1>
-  <div class="cards">
-    <div class="card" onclick="iniciar('direito')">📚 Direito</div>
-    <div class="card" onclick="iniciar('informatica')">💻 Informática</div>
-    <div class="card" onclick="iniciar('logica')">🧠 Lógica</div>
-    <div class="card" onclick="iniciar('portugues')">✍ Português</div>
-  </div>
-</div>
+    <textarea id="entrada" placeholder="Digite aqui..."></textarea><br>
 
-<div id="progresso" class="tela">
-  <h1>Seu progresso</h1>
-  Pontos: <span id="pontos">0</span><br>
-  Acertos: <span id="acertos">0</span><br>
-  Erros: <span id="erros">0</span>
-</div>
+    <button onclick="verificar()">Verificar</button>
+    <button onclick="proximaFrase()">Próxima frase</button>
 
-<div id="sobre" class="tela">
-  <h1>Sobre</h1>
-  <p>Estude para concurso treinando digitação.</p>
-</div>
-
-<div id="treino" class="tela">
-  <h2 id="tituloMateria"></h2>
-  <p id="pergunta"></p>
-  <p id="respostaVisivel"></p>
-  <textarea id="entrada"></textarea><br>
-  <button onclick="verificar()">Verificar</button>
-  <button onclick="novaPergunta()">Próxima</button>
-  <button onclick="iniciarSimulado()">Modo Simulado</button>
-  <button onclick="voltar()">Voltar</button>
-  <p id="resultado"></p>
-  <p id="tempo"></p>
+    <div id="resultado"></div>
 </div>
 
 <script>
-let materiaAtual="", respostaAtual="";
-let pontos=0, acertos=0, erros=0;
-let tempoRestante=60, timer;
+let frases = [
+    "A administração pública deve obedecer aos princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência.",
+    "O concurso público é o meio constitucional de acesso aos cargos públicos.",
+    "O servidor público deve agir conforme a lei e o interesse público.",
+    "A Constituição Federal é a norma suprema do ordenamento jurídico.",
+    "O Poder Executivo é responsável pela administração do Estado."
+];
 
-const banco = {
-  direito: [
-    {pergunta:"Todo poder emana de quem?", resposta:"Do povo."},
-{pergunta:"Qual princípio garante a divulgação dos atos administrativos?", resposta:"Princípio da publicidade."},
-{pergunta:"Qual princípio obriga a Administração a agir conforme a lei?", resposta:"Princípio da legalidade."},
-{pergunta:"Qual princípio exige tratamento igual aos administrados?", resposta:"Princípio da impessoalidade."},
-{pergunta:"Qual princípio impõe conduta ética ao administrador público?", resposta:"Princípio da moralidade."},
-{pergunta:"Qual princípio busca melhores resultados com menos recursos?", resposta:"Princípio da eficiência."},
-{pergunta:"Quais são os poderes da União?", resposta:"Executivo, Legislativo e Judiciário."},
-{pergunta:"Qual poder elabora as leis?", resposta:"Poder Legislativo."},
-{pergunta:"Qual poder administra o Estado?", resposta:"Poder Executivo."},
-{pergunta:"Qual poder julga os conflitos?", resposta:"Poder Judiciário."},
-{pergunta:"Qual é a lei suprema do Brasil?", resposta:"Constituição Federal."},
-{pergunta:"Quem exerce o poder executivo federal?", resposta:"O Presidente da República."},
-{pergunta:"Qual direito assegura manifestação do pensamento?", resposta:"Liberdade de expressão."},
-{pergunta:"Qual direito protege a vida?", resposta:"Direito à vida."},
-{pergunta:"Qual direito garante igualdade perante a lei?", resposta:"Princípio da isonomia."},
-{pergunta:"Qual direito protege a liberdade de locomoção?", resposta:"Habeas corpus."},
-{pergunta:"Qual remédio constitucional protege direito líquido e certo?", resposta:"Mandado de segurança."},
-{pergunta:"Qual remédio constitucional garante acesso a informações?", resposta:"Habeas data."},
-{pergunta:"Qual remédio constitucional protege o patrimônio público?", resposta:"Ação popular."},
-{pergunta:"Quem pode propor ação popular?", resposta:"Qualquer cidadão."},
-{pergunta:"Qual é a forma de governo do Brasil?", resposta:"República."},
-{pergunta:"Qual é o sistema de governo do Brasil?", resposta:"Presidencialismo."},
-{pergunta:"Qual é a forma de Estado do Brasil?", resposta:"Estado federativo."},
-{pergunta:"Quantos são os poderes da República?", resposta:"Três poderes."},
-{pergunta:"O Brasil é um Estado democrático de quê?", resposta:"Estado democrático de direito."},
-{pergunta:"Quem elabora a Constituição?", resposta:"Poder Constituinte."},
-{pergunta:"Quem julga ações diretas de inconstitucionalidade?", resposta:"Supremo Tribunal Federal."},
-{pergunta:"Qual órgão guarda a Constituição?", resposta:"Supremo Tribunal Federal."},
-{pergunta:"Qual é a idade mínima para ser Presidente?", resposta:"Trinta e cinco anos."},
-{pergunta:"Qual é o mandato do Presidente da República?", resposta:"Quatro anos."},
-{pergunta:"Quem exerce a soberania?", resposta:"O povo."},
-{pergunta:"Qual princípio garante acesso aos cargos públicos por concurso?", resposta:"Princípio da igualdade."},
-{pergunta:"O que é licitação?", resposta:"Procedimento para contratação pela Administração Pública."},
-{pergunta:"Qual lei regula as licitações?", resposta:"Lei quatorze mil cento e trinta e três."},
-{pergunta:"Qual princípio da licitação garante igualdade?", resposta:"Princípio da isonomia."},
-{pergunta:"Qual princípio da licitação busca proposta mais vantajosa?", resposta:"Princípio da vantajosidade."},
-{pergunta:"Qual é a finalidade da Administração Pública?", resposta:"Atender ao interesse público."},
-{pergunta:"Qual princípio impede promoção pessoal?", resposta:"Princípio da impessoalidade."},
-{pergunta:"Quem exerce o poder de polícia?", resposta:"A Administração Pública."},
-{pergunta:"O que é poder de polícia?", resposta:"Limitação de direitos em favor do interesse público."},
-{pergunta:"Qual princípio exige transparência?", resposta:"Princípio da publicidade."},
-{pergunta:"Qual direito garante acesso ao Judiciário?", resposta:"Direito de ação."},
-{pergunta:"Qual direito assegura contraditório e ampla defesa?", resposta:"Devido processo legal."},
-{pergunta:"Qual ramo do direito trata da Administração Pública?", resposta:"Direito Administrativo."},
-{pergunta:"Qual ramo do direito trata da Constituição?", resposta:"Direito Constitucional."},
-{pergunta:"Qual ramo do direito trata dos crimes?", resposta:"Direito Penal."},
-{pergunta:"Qual ramo do direito trata dos contratos?", resposta:"Direito Civil."},
-{pergunta:"Qual princípio básico do processo penal?", resposta:"Presunção de inocência."},
-{pergunta:"Quem acusa no processo penal?", resposta:"Ministério Público."},
-{pergunta:"Quem julga em primeira instância?", resposta:"Juiz."},
-{pergunta:"Qual é o objetivo da pena?", resposta:"Reprimir e prevenir o crime."},
-{pergunta:"Quem fiscaliza as contas públicas?", resposta:"Tribunal de Contas."},
-{pergunta:"Quem legisla sobre leis federais?", resposta:"Congresso Nacional."},
-{pergunta:"Quem compõe o Congresso Nacional?", resposta:"Câmara e Senado."},
-{pergunta:"Quantos senadores cada estado possui?", resposta:"Três senadores."},
-{pergunta:"Qual direito protege a intimidade?", resposta:"Direito à privacidade."},
-{pergunta:"Qual princípio protege a confiança do cidadão?", resposta:"Segurança jurídica."},
-{pergunta:"Qual é a base da democracia?", resposta:"Voto."},
-{pergunta:"Qual instrumento de participação direta?", resposta:"Plebiscito."},
-{pergunta:"Qual instrumento consulta o povo depois do ato?", resposta:"Referendo."},
-{pergunta:"Qual instrumento permite iniciativa popular?", resposta:"Projeto de lei popular."},
-{pergunta:"Quem é chefe de Estado e de Governo?", resposta:"Presidente da República."},
-{pergunta:"Qual direito protege a propriedade?", resposta:"Direito de propriedade."},
-{pergunta:"Qual direito assegura reunião pacífica?", resposta:"Direito de reunião."},
-{pergunta:"Qual direito assegura associação?", resposta:"Liberdade de associação."},
-{pergunta:"Qual é o valor máximo da pena no Brasil?", resposta:"Trinta anos."},
-{pergunta:"Qual princípio rege os atos administrativos?", resposta:"Supremacia do interesse público."},
-{pergunta:"Qual é o objetivo da Constituição?", resposta:"Organizar o Estado e garantir direitos."},
-{pergunta:"Quem exerce a cidadania?", resposta:"O cidadão."},
-{pergunta:"Qual é a principal função do Estado?", resposta:"Garantir direitos fundamentais."},
-{pergunta:"Quem controla a constitucionalidade das leis?", resposta:"Poder Judiciário."},
-{pergunta:"Qual princípio veda tortura?", resposta:"Dignidade da pessoa humana."},
-{pergunta:"Qual é o fundamento da República?", resposta:"Cidadania."},
-{pergunta:"Qual direito assegura sigilo de correspondência?", resposta:"Direito à privacidade."},
-{pergunta:"Qual é a base do Estado brasileiro?", resposta:"Soberania popular."},
-{pergunta:"Qual direito assegura ampla defesa?", resposta:"Devido processo legal."},
-{pergunta:"Qual direito assegura presunção de inocência?", resposta:"Presunção de inocência."},
-{pergunta:"Qual direito assegura legalidade penal?", resposta:"Princípio da legalidade."},
-{pergunta:"Qual é o símbolo máximo da Constituição?", resposta:"Supremo Tribunal Federal."},
-{pergunta:"Quem promulga as leis?", resposta:"Presidente da República."},
-{pergunta:"Quem pode propor ação direta de inconstitucionalidade?", resposta:"Autoridades legitimadas."},
-{pergunta:"Qual princípio rege os contratos administrativos?", resposta:"Supremacia do interesse público."},
-{pergunta:"Qual princípio garante estabilidade das relações jurídicas?", resposta:"Segurança jurídica."}
-  ],
+let indice = 0;
 
- informatica: [
-{pergunta:"Atalho para copiar no Windows?", resposta:"Ctrl mais C."},
-{pergunta:"Atalho para colar no Windows?", resposta:"Ctrl mais V."},
-{pergunta:"Atalho para recortar no Windows?", resposta:"Ctrl mais X."},
-{pergunta:"Atalho para selecionar tudo?", resposta:"Ctrl mais A."},
-{pergunta:"Atalho para salvar arquivo?", resposta:"Ctrl mais S."},
-{pergunta:"Atalho para desfazer ação?", resposta:"Ctrl mais Z."},
-{pergunta:"Atalho para refazer ação?", resposta:"Ctrl mais Y."},
-{pergunta:"Atalho para imprimir?", resposta:"Ctrl mais P."},
-{pergunta:"O que é CPU?", resposta:"Unidade central de processamento."},
-{pergunta:"O que é RAM?", resposta:"Memória de acesso aleatório."},
-{pergunta:"O que é HD?", resposta:"Disco rígido."},
-{pergunta:"O que é SSD?", resposta:"Unidade de estado sólido."},
-{pergunta:"O que é hardware?", resposta:"Parte física do computador."},
-{pergunta:"O que é software?", resposta:"Parte lógica do computador."},
-{pergunta:"O que é sistema operacional?", resposta:"Gerencia os recursos do computador."},
-{pergunta:"Qual sistema operacional da Microsoft?", resposta:"Windows."},
-{pergunta:"Qual sistema operacional de código aberto?", resposta:"Linux."},
-{pergunta:"O que é navegador?", resposta:"Programa para acessar a internet."},
-{pergunta:"O que é internet?", resposta:"Rede mundial de computadores."},
-{pergunta:"O que é e-mail?", resposta:"Correio eletrônico."},
-{pergunta:"O que é backup?", resposta:"Cópia de segurança."},
-{pergunta:"O que é pendrive?", resposta:"Dispositivo portátil de armazenamento."},
-{pergunta:"O que é impressora?", resposta:"Dispositivo de saída."},
-{pergunta:"O que é monitor?", resposta:"Dispositivo de saída."},
-{pergunta:"O que é teclado?", resposta:"Dispositivo de entrada."},
-{pergunta:"O que é mouse?", resposta:"Dispositivo de entrada."},
-{pergunta:"O que é scanner?", resposta:"Dispositivo de entrada."},
-{pergunta:"O que é modem?", resposta:"Dispositivo de conexão à internet."},
-{pergunta:"O que é roteador?", resposta:"Distribui a conexão de internet."},
-{pergunta:"O que é firewall?", resposta:"Sistema de proteção de rede."},
-{pergunta:"O que é antivírus?", resposta:"Programa contra malware."},
-{pergunta:"O que é malware?", resposta:"Programa malicioso."},
-{pergunta:"O que é vírus?", resposta:"Tipo de malware."},
-{pergunta:"O que é phishing?", resposta:"Golpe para roubo de dados."},
-{pergunta:"O que é spam?", resposta:"Mensagem indesejada."},
-{pergunta:"O que é nuvem?", resposta:"Armazenamento online."},
-{pergunta:"O que é download?", resposta:"Baixar arquivos."},
-{pergunta:"O que é upload?", resposta:"Enviar arquivos."},
-{pergunta:"O que é PDF?", resposta:"Formato de documento."},
-{pergunta:"O que é Word?", resposta:"Editor de texto."},
-{pergunta:"O que é Excel?", resposta:"Planilha eletrônica."},
-{pergunta:"O que é PowerPoint?", resposta:"Programa de apresentações."},
-{pergunta:"O que é bit?", resposta:"Menor unidade de informação."},
-{pergunta:"O que é byte?", resposta:"Conjunto de oito bits."},
-{pergunta:"O que é banco de dados?", resposta:"Conjunto organizado de dados."},
-{pergunta:"O que é rede local?", resposta:"Rede em área limitada."},
-{pergunta:"O que é IP?", resposta:"Identificação do computador na rede."},
-{pergunta:"O que é URL?", resposta:"Endereço de site."},
-{pergunta:"O que é site?", resposta:"Página na internet."},
-{pergunta:"O que é link?", resposta:"Ligação entre páginas."},
-{pergunta:"O que é driver?", resposta:"Programa que controla hardware."},
-{pergunta:"O que é formatação?", resposta:"Preparar disco para uso."},
-{pergunta:"O que é login?", resposta:"Identificação do usuário."},
-{pergunta:"O que é senha?", resposta:"Código secreto de acesso."},
-{pergunta:"O que é autenticação?", resposta:"Verificação de identidade."},
-{pergunta:"O que é criptografia?", resposta:"Proteção de dados."},
-{pergunta:"O que é protocolo?", resposta:"Conjunto de regras de comunicação."},
-{pergunta:"O que é HTTP?", resposta:"Protocolo de navegação."},
-{pergunta:"O que é HTTPS?", resposta:"Protocolo seguro."},
-{pergunta:"O que é cache?", resposta:"Memória temporária."},
-{pergunta:"O que é multitarefa?", resposta:"Executar vários programas ao mesmo tempo."},
-{pergunta:"O que é interface gráfica?", resposta:"Tela visual do sistema."},
-{pergunta:"O que é ícone?", resposta:"Imagem de um programa."},
-{pergunta:"O que é área de trabalho?", resposta:"Tela principal do sistema."},
-{pergunta:"O que é pasta?", resposta:"Local para guardar arquivos."},
-{pergunta:"O que é arquivo?", resposta:"Conjunto de dados gravados."},
-{pergunta:"O que é extensão de arquivo?", resposta:"Final do nome do arquivo."},
-{pergunta:"O que é navegador do Google?", resposta:"Google Chrome."},
-{pergunta:"O que é navegador da Microsoft?", resposta:"Microsoft Edge."},
-{pergunta:"O que é navegador da Mozilla?", resposta:"Firefox."},
-{pergunta:"O que é Android?", resposta:"Sistema operacional móvel."},
-{pergunta:"O que é iOS?", resposta:"Sistema operacional da Apple."},
-{pergunta:"O que é aplicativo?", resposta:"Programa para celular ou computador."},
-{pergunta:"O que é sistema mobile?", resposta:"Sistema para dispositivos móveis."},
-{pergunta:"O que é Bluetooth?", resposta:"Tecnologia de conexão sem fio."},
-{pergunta:"O que é Wi-Fi?", resposta:"Conexão sem fio à internet."},
-{pergunta:"O que é servidor?", resposta:"Computador que fornece serviços."},
-{pergunta:"O que é cliente?", resposta:"Computador que solicita serviços."},
-{pergunta:"O que é streaming?", resposta:"Transmissão de dados em tempo real."},
-{pergunta:"O que é armazenamento?", resposta:"Guardar dados."},
-{pergunta:"O que é sistema de arquivos?", resposta:"Organização dos dados no disco."},
-{pergunta:"O que é comando?", resposta:"Instrução dada ao computador."},
-{pergunta:"O que é terminal?", resposta:"Interface de texto."},
-{pergunta:"O que é software livre?", resposta:"Programa de código aberto."},
-{pergunta:"O que é software proprietário?", resposta:"Programa com licença paga."},
-{pergunta:"O que é atualização?", resposta:"Versão mais recente do software."},
-{pergunta:"O que é logoff?", resposta:"Encerrar sessão."},
-{pergunta:"O que é reiniciar?", resposta:"Desligar e ligar novamente."},
-{pergunta:"O que é desligar?", resposta:"Encerrar funcionamento."},
-{pergunta:"O que é screenshot?", resposta:"Captura de tela."},
-{pergunta:"O que é barra de tarefas?", resposta:"Área de programas abertos."},
-{pergunta:"O que é navegador padrão?", resposta:"Programa principal de internet."},
-{pergunta:"O que é lixo eletrônico?", resposta:"Resíduo tecnológico."},
-{pergunta:"O que é rede social?", resposta:"Plataforma de interação online."},
-{pergunta:"O que é chatbot?", resposta:"Programa que conversa com usuários."},
-{pergunta:"O que é inteligência artificial?", resposta:"Sistema que simula raciocínio humano."},
-{pergunta:"O que é QR Code?", resposta:"Código de leitura digital."},
-{pergunta:"O que é pen drive?", resposta:"Dispositivo portátil de memória."},
-{pergunta:"O que é nuvem híbrida?", resposta:"Combinação de nuvem pública e privada."},
-{pergunta:"O que é armazenamento externo?", resposta:"Dispositivo fora do computador."},
-{pergunta:"O que é atalho?", resposta:"Forma rápida de executar comando."}
-],
-  logica: [
-{pergunta:"O que é uma proposição?", resposta:"É uma frase que pode ser verdadeira ou falsa."},
-{pergunta:"O que é uma proposição simples?", resposta:"É aquela que não contém conectivos lógicos."},
-{pergunta:"O que é uma proposição composta?", resposta:"É formada por duas ou mais proposições simples."},
-{pergunta:"Qual o símbolo da negação?", resposta:"Não ou símbolo de negação."},
-{pergunta:"O que é a negação de uma proposição?", resposta:"A inversão do seu valor lógico."},
-{pergunta:"O que é conjunção?", resposta:"Ligação lógica pelo conectivo e."},
-{pergunta:"O que é disjunção?", resposta:"Ligação lógica pelo conectivo ou."},
-{pergunta:"O que é condicional?", resposta:"Ligação lógica do tipo se então."},
-{pergunta:"O que é bicondicional?", resposta:"Ligação lógica do tipo se e somente se."},
-{pergunta:"Quando uma conjunção é verdadeira?", resposta:"Quando ambas as proposições são verdadeiras."},
-{pergunta:"Quando uma disjunção é falsa?", resposta:"Quando ambas as proposições são falsas."},
-{pergunta:"Quando um condicional é falso?", resposta:"Quando a primeira é verdadeira e a segunda é falsa."},
-{pergunta:"Quando o bicondicional é verdadeiro?", resposta:"Quando ambas têm o mesmo valor lógico."},
-{pergunta:"O que é tautologia?", resposta:"Proposição sempre verdadeira."},
-{pergunta:"O que é contradição?", resposta:"Proposição sempre falsa."},
-{pergunta:"O que é contingência?", resposta:"Proposição que pode ser verdadeira ou falsa."},
-{pergunta:"O que é equivalência lógica?", resposta:"Quando duas proposições têm a mesma tabela verdade."},
-{pergunta:"O que é argumento válido?", resposta:"Aquele cuja conclusão decorre das premissas."},
-{pergunta:"O que é silogismo?", resposta:"Raciocínio com duas premissas e uma conclusão."},
-{pergunta:"O que é conjunto?", resposta:"Reunião de elementos."},
-{pergunta:"O que é subconjunto?", resposta:"Conjunto contido em outro."},
-{pergunta:"O que é interseção?", resposta:"Elementos comuns entre conjuntos."},
-{pergunta:"O que é união?", resposta:"Reunião dos elementos dos conjuntos."},
-{pergunta:"O que é conjunto vazio?", resposta:"Conjunto sem elementos."},
-{pergunta:"O que é conjunto universo?", resposta:"Conjunto de todos os elementos considerados."},
-{pergunta:"O que é complemento?", resposta:"Elementos que não pertencem ao conjunto."},
-{pergunta:"O que é diagrama de Venn?", resposta:"Representação gráfica de conjuntos."},
-{pergunta:"O que é porcentagem?", resposta:"Razão sobre cem."},
-{pergunta:"O que é razão?", resposta:"Comparação entre duas grandezas."},
-{pergunta:"O que é proporção?", resposta:"Igualdade entre duas razões."},
-{pergunta:"O que é regra de três simples?", resposta:"Cálculo entre grandezas proporcionais."},
-{pergunta:"O que é regra de três composta?", resposta:"Cálculo com mais de duas grandezas."},
-{pergunta:"O que é grandeza diretamente proporcional?", resposta:"Aumenta quando a outra aumenta."},
-{pergunta:"O que é grandeza inversamente proporcional?", resposta:"Diminui quando a outra aumenta."},
-{pergunta:"O que é média aritmética?", resposta:"Soma dos valores dividida pela quantidade."},
-{pergunta:"O que é sequência lógica?", resposta:"Conjunto de números com padrão definido."},
-{pergunta:"O que é progressão aritmética?", resposta:"Sequência com diferença constante."},
-{pergunta:"O que é progressão geométrica?", resposta:"Sequência com razão constante."},
-{pergunta:"O que é análise combinatória?", resposta:"Estudo das formas de contagem."},
-{pergunta:"O que é permutação?", resposta:"Arranjo de todos os elementos."},
-{pergunta:"O que é arranjo?", resposta:"Escolha ordenada de elementos."},
-{pergunta:"O que é combinação?", resposta:"Escolha sem considerar a ordem."},
-{pergunta:"O que é fatorial?", resposta:"Produto dos números naturais até um valor."},
-{pergunta:"O que é probabilidade?", resposta:"Chance de ocorrência de um evento."},
-{pergunta:"Qual o valor máximo da probabilidade?", resposta:"Um."},
-{pergunta:"Qual o valor mínimo da probabilidade?", resposta:"Zero."},
-{pergunta:"O que é evento certo?", resposta:"Acontece sempre."},
-{pergunta:"O que é evento impossível?", resposta:"Nunca acontece."},
-{pergunta:"O que é evento aleatório?", resposta:"Pode ou não acontecer."},
-{pergunta:"O que é evento independente?", resposta:"Não depende de outro evento."},
-{pergunta:"O que é evento dependente?", resposta:"Depende de outro evento."},
-{pergunta:"O que é raciocínio dedutivo?", resposta:"Parte do geral para o particular."},
-{pergunta:"O que é raciocínio indutivo?", resposta:"Parte do particular para o geral."},
-{pergunta:"O que é negação de e?", resposta:"Transforma em ou com negações."},
-{pergunta:"O que é negação de ou?", resposta:"Transforma em e com negações."},
-{pergunta:"O que é princípio da não contradição?", resposta:"Uma proposição não pode ser verdadeira e falsa ao mesmo tempo."},
-{pergunta:"O que é princípio do terceiro excluído?", resposta:"Toda proposição é verdadeira ou falsa."},
-{pergunta:"O que é tabela verdade?", resposta:"Tabela dos valores lógicos das proposições."},
-{pergunta:"O que é quantificador universal?", resposta:"Expressão todo."},
-{pergunta:"O que é quantificador existencial?", resposta:"Expressão existe."}
-],
-  portugues: [
-{pergunta:"O que é um substantivo?", resposta:"Palavra que nomeia seres, objetos, lugares ou ideias."},
-{pergunta:"O que é um adjetivo?", resposta:"Palavra que caracteriza o substantivo."},
-{pergunta:"O que é um verbo?", resposta:"Palavra que indica ação, estado ou fenômeno."},
-{pergunta:"O que é um advérbio?", resposta:"Palavra que modifica o verbo, o adjetivo ou outro advérbio."},
-{pergunta:"O que é pronome?", resposta:"Palavra que substitui ou acompanha o substantivo."},
-{pergunta:"O que é artigo?", resposta:"Palavra que antecede o substantivo."},
-{pergunta:"O que é preposição?", resposta:"Palavra que liga termos da oração."},
-{pergunta:"O que é conjunção?", resposta:"Palavra que liga orações ou termos semelhantes."},
-{pergunta:"O que é interjeição?", resposta:"Palavra que expressa emoção ou reação."},
-{pergunta:"O que é sujeito?", resposta:"Termo sobre o qual se declara algo."},
-{pergunta:"O que é predicado?", resposta:"Tudo o que se declara sobre o sujeito."},
-{pergunta:"O que é núcleo do sujeito?", resposta:"Palavra principal do sujeito."},
-{pergunta:"O que é predicativo?", resposta:"Termo que atribui característica ao sujeito ou objeto."},
-{pergunta:"O que é objeto direto?", resposta:"Complemento do verbo sem preposição."},
-{pergunta:"O que é objeto indireto?", resposta:"Complemento do verbo com preposição."},
-{pergunta:"O que é complemento nominal?", resposta:"Termo que completa o sentido de um nome."},
-{pergunta:"O que é adjunto adnominal?", resposta:"Termo que acompanha e caracteriza o substantivo."},
-{pergunta:"O que é adjunto adverbial?", resposta:"Termo que indica circunstância."},
-{pergunta:"O que é aposto?", resposta:"Termo que explica ou especifica outro."},
-{pergunta:"O que é vocativo?", resposta:"Termo usado para chamar alguém."},
-{pergunta:"O que é concordância verbal?", resposta:"Relação entre verbo e sujeito."},
-{pergunta:"O que é concordância nominal?", resposta:"Relação entre nomes da frase."},
-{pergunta:"O que é regência verbal?", resposta:"Relação do verbo com seus complementos."},
-{pergunta:"O que é regência nominal?", resposta:"Relação do nome com seus complementos."},
-{pergunta:"O que é crase?", resposta:"Fusão da preposição a com o artigo a."},
-{pergunta:"Quando ocorre crase?", resposta:"Antes de palavras femininas que exigem preposição a."},
-{pergunta:"O que é ortografia?", resposta:"Forma correta de escrever as palavras."},
-{pergunta:"O que é acentuação gráfica?", resposta:"Uso de acentos para indicar tonicidade."},
-{pergunta:"O que é paroxítona?", resposta:"Palavra com penúltima sílaba tônica."},
-{pergunta:"O que é oxítona?", resposta:"Palavra com última sílaba tônica."},
-{pergunta:"O que é proparoxítona?", resposta:"Palavra com antepenúltima sílaba tônica."},
-{pergunta:"O que é hiato?", resposta:"Separação de vogais em sílabas diferentes."},
-{pergunta:"O que é ditongo?", resposta:"Encontro de vogal e semivogal na mesma sílaba."},
-{pergunta:"O que é tritongo?", resposta:"Encontro de semivogal, vogal e semivogal."},
-{pergunta:"O que é sinônimo?", resposta:"Palavra de sentido semelhante."},
-{pergunta:"O que é antônimo?", resposta:"Palavra de sentido oposto."},
-{pergunta:"O que é homônimo?", resposta:"Palavras iguais na forma e diferentes no sentido."},
-{pergunta:"O que é parônimo?", resposta:"Palavras parecidas na forma e no som."},
-{pergunta:"O que é polissemia?", resposta:"Palavra com vários sentidos."},
-{pergunta:"O que é denotação?", resposta:"Sentido literal da palavra."},
-{pergunta:"O que é conotação?", resposta:"Sentido figurado da palavra."},
-{pergunta:"O que é figura de linguagem?", resposta:"Recurso expressivo da língua."},
-{pergunta:"O que é metáfora?", resposta:"Comparação implícita."},
-{pergunta:"O que é comparação?", resposta:"Relação entre dois elementos com conectivo."},
-{pergunta:"O que é hipérbole?", resposta:"Exagero intencional."},
-{pergunta:"O que é eufemismo?", resposta:"Suavização de uma ideia."},
-{pergunta:"O que é ironia?", resposta:"Expressar o contrário do que se pensa."},
-{pergunta:"O que é pontuação?", resposta:"Uso de sinais para organizar o texto."},
-{pergunta:"Função da vírgula?", resposta:"Separar termos e orações."},
-{pergunta:"Função do ponto final?", resposta:"Encerrar uma frase declarativa."},
-{pergunta:"Função do ponto de interrogação?", resposta:"Indicar pergunta."},
-{pergunta:"Função do ponto de exclamação?", resposta:"Indicar emoção ou ênfase."},
-{pergunta:"Função dos dois pontos?", resposta:"Introduzir explicação ou fala."},
-{pergunta:"Função do ponto e vírgula?", resposta:"Separar ideias relacionadas."},
-{pergunta:"O que é período simples?", resposta:"Frase com um verbo."},
-{pergunta:"O que é período composto?", resposta:"Frase com dois ou mais verbos."},
-{pergunta:"O que é oração?", resposta:"Enunciado com verbo."},
-{pergunta:"O que é oração coordenada?", resposta:"Independente sintaticamente."},
-{pergunta:"O que é oração subordinada?", resposta:"Depende de outra oração."},
-{pergunta:"O que é voz ativa?", resposta:"Sujeito pratica a ação."},
-{pergunta:"O que é voz passiva?", resposta:"Sujeito sofre a ação."},
-{pergunta:"O que é sujeito indeterminado?", resposta:"Quando não se identifica quem pratica a ação."},
-{pergunta:"O que é sujeito oculto?", resposta:"Não aparece, mas é identificado pelo verbo."},
-{pergunta:"O que é predicado verbal?", resposta:"Núcleo é o verbo."},
-{pergunta:"O que é predicado nominal?", resposta:"Núcleo é o predicativo."},
-{pergunta:"O que é predicado verbo-nominal?", resposta:"Possui verbo e predicativo."},
-{pergunta:"O que é coesão?", resposta:"Ligação entre partes do texto."},
-{pergunta:"O que é coerência?", resposta:"Sentido lógico do texto."},
-{pergunta:"O que é interpretação de texto?", resposta:"Compreensão do sentido do texto."},
-{pergunta:"O que é tipologia textual?", resposta:"Classificação do texto quanto à forma."},
-{pergunta:"O que é texto narrativo?", resposta:"Relata fatos."},
-{pergunta:"O que é texto descritivo?", resposta:"Descreve características."},
-{pergunta:"O que é texto dissertativo?", resposta:"Expõe ideias e opiniões."}
-],
-};
-
-let ordem={direito:[],informatica:[],logica:[],portugues:[]};
-let posicao={direito:0,informatica:0,logica:0,portugues:0};
-
-function atualizarPainel(){
-  elPontos.textContent = pontos;
-  elAcertos.textContent = acertos;
-  elErros.textContent = erros;
+function mostrarFrase() {
+    document.getElementById("frase").innerText = frases[indice];
+    document.getElementById("entrada").value = "";
+    document.getElementById("resultado").innerText = "";
 }
 
-function mostrarTreino(m){
-  materiaAtual=m;
-  ordem[m]=[...banco[m]].sort(()=>Math.random()-0.5);
-  posicao[m]=0;
+function verificar() {
+    let textoDigitado = document.getElementById("entrada").value;
+    let fraseCorreta = frases[indice];
 
-  document.getElementById("inicio").style.display="none";
-  document.getElementById("treino").style.display="block";
-  document.getElementById("tituloMateria").textContent = m.toUpperCase();
-
-  novaPergunta();
-}
-
-function novaPergunta(){
-  if(posicao[materiaAtual]>=ordem[materiaAtual].length){
-    ordem[materiaAtual]=[...banco[materiaAtual]].sort(()=>Math.random()-0.5);
-    posicao[materiaAtual]=0;
-  }
-
-  let q=ordem[materiaAtual][posicao[materiaAtual]++];
-  document.getElementById("pergunta").textContent=q.pergunta;
-  document.getElementById("respostaVisivel").textContent="Resposta correta: "+q.resposta;
-  respostaAtual=q.resposta;
-
-  document.getElementById("entrada").value="";
-  document.getElementById("resultado").textContent="";
-}
-
-function verificar(){
-  let digitado=document.getElementById("entrada").value.trim();
-  if(digitado===respostaAtual){
-    pontos+=10; acertos++;
-    document.getElementById("resultado").textContent="✅ Correto!";
-  }else{
-    erros++;
-    document.getElementById("resultado").textContent="❌ Errado!";
-  }
-  atualizarPainel();
-}
-
-function iniciarSimulado(){
-  tempoRestante=60;
-  document.getElementById("tempo").textContent="⏱ 60s";
-  clearInterval(timer);
-
-  timer=setInterval(()=>{
-    tempoRestante--;
-    document.getElementById("tempo").textContent="⏱ "+tempoRestante+"s";
-    if(tempoRestante<=0){
-      clearInterval(timer);
-      alert("Simulado encerrado! Pontos: "+pontos);
+    if (textoDigitado === fraseCorreta) {
+        document.getElementById("resultado").innerText = "✅ Parabéns! Você digitou corretamente.";
+        document.getElementById("resultado").style.color = "green";
+    } else {
+        document.getElementById("resultado").innerText = "❌ Ainda há erros. Confira a digitação.";
+        document.getElementById("resultado").style.color = "red";
     }
-  },1000);
 }
 
-function voltar(){
-  clearInterval(timer);
-  document.getElementById("treino").style.display="none";
-  document.getElementById("inicio").style.display="block";
+function proximaFrase() {
+    indice++;
+    if (indice >= frases.length) {
+        indice = 0;
+    }
+    mostrarFrase();
 }
+
+mostrarFrase();
 </script>
 
 </body>
-</html>>
+</html>
