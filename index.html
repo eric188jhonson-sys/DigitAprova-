@@ -21,11 +21,18 @@ nav{
   background:#18335f;
 }
 
-nav .menu a, nav .botao-nav{
+nav .menu a{
   color:white;
   text-decoration:none;
   margin:0 15px;
   font-weight:bold;
+  cursor:pointer;
+}
+
+/* LOGIN */
+#loginScreen{
+  text-align:center;
+  margin-top:120px;
 }
 
 input{
@@ -63,34 +70,43 @@ input{
 
 <body>
 
+<nav>
+  <div class="menu">
+    <a onclick="mostrarInicio()">Início</a>
+    <a onclick="mostrarProgresso()">Progresso</a>
+    <a onclick="mostrarSobre()">Sobre</a>
+  </div>
+</nav>
+
 <!-- LOGIN -->
 <div id="loginScreen">
-  <h2>Digite seus dados</h2>
-  <input type="text" id="username" placeholder="Seu nome"><br><br>
-  <input type="password" id="password" placeholder="Sua senha"><br><br>
+  <h2>Digite seus dados</h2><br>
+  <input id="username" placeholder="Seu nome"><br><br>
+  <input id="password" type="password" placeholder="Sua senha"><br><br>
   <button onclick="login()">Entrar</button>
 </div>
 
-<!-- CONTEÚDO -->
-<div id="mainScreen" style="display:none;">
+<!-- INÍCIO -->
+<div id="inicio" class="tela">
   <h1>Escolha uma matéria</h1>
-
-  <div class="menu">
-    <button>Direito</button>
-    <button>Informática</button>
-    <button>Lógica</button>
-    <button>Português</button>
+  <div class="cards">
+    <div class="card">📚 Direito</div>
+    <div class="card">💻 Informática</div>
+    <div class="card">🧠 Lógica</div>
+    <div class="card">✍ Português</div>
   </div>
 </div>
+
 <!-- PROGRESSO -->
 <div id="progresso" class="tela">
   <h1>Seu progresso</h1>
+  <p>Aqui aparecerão seus pontos futuramente.</p>
 </div>
 
 <!-- SOBRE -->
 <div id="sobre" class="tela">
   <h1>Sobre o DigitAprova</h1>
-  <p>Plataforma para treinar digitação estudando para concursos.</p>
+  <p>Plataforma para estudar para concursos treinando digitação.</p>
 </div>
 
 <script>
@@ -115,57 +131,22 @@ function mostrarSobre(){
   document.getElementById("sobre").style.display="block";
 }
 
-function entrar(){
-  let nome = document.getElementById("nomeUsuario").value;
-  let senha = document.getElementById("senhaUsuario").value;
+function login(){
+  let nome = document.getElementById("username").value;
+  let senha = document.getElementById("password").value;
 
   if(nome.trim()=="" || senha.trim()==""){
     alert("Digite nome e senha");
     return;
   }
 
-  document.getElementById("login").style.display="none";
+  document.getElementById("loginScreen").style.display="none";
   mostrarInicio();
 }
 </script>
 
 </body>
 </html>
-
-  <a href="#" class="botao-nav" onclick="entrar(); return false;">Entrar</a>
-</nav>
-
-<div id="login" style="text-align:center; margin-top:100px;">
-  <h2>Digite seus dados</h2>
-
-  <input id="nomeUsuario" placeholder="Seu nome"><br><br>
-
-  <input id="senhaUsuario" type="password" placeholder="Sua senha">
-</div>
-
-<div id="inicio" style="display:none;">
-  <h1>Treine para concursos digitando</h1>
-</div>
-
-<div id="progresso" style="display:none;">
-  <h1>Seu progresso</h1>
-  <p>Aqui aparecerão seus pontos, acertos e erros.</p>
-</div>
-
-<div id="sobre" style="display:none;">
-  <h1>Sobre o DigitAprova</h1>
-  <p>Este site foi criado para estudar para concursos treinando digitação.</p>
-</div>
-
-  <div class="cards">
-    <div class="card" onclick="mostrarTreino('direito')">📚 Direito</div>
-    <div class="card" onclick="mostrarTreino('informatica')">💻 Informática</div>
-    <div class="card" onclick="mostrarTreino('logica')">🧠 Lógica</div>
-    <div class="card" onclick="mostrarTreino('portugues')">✍ Português</div>
-  </div>
-</div>
-
-<script>
 function login(){
   let user = document.getElementById("username").value;
   let pass = document.getElementById("password").value;
