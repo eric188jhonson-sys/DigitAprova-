@@ -8,70 +8,31 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+
     background-image: url("fundo.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
     min-height: 100vh;
-    color: white;
 }
 
-/* Camada escura pra melhorar leitura */
+/* camada para leitura */
 .overlay {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0,0,0,0.55);
     min-height: 100vh;
-    padding: 30px;
+    padding: 40px;
+    color: white;
 }
 </style>
 </head>
 
 <body>
+
 <div class="overlay">
     <h1>DigitAprova</h1>
     <p>Estude para concursos enquanto treina digitação.</p>
 </div>
-</body>
-</html>
-<script>
-let frases = [
-    "A administração pública deve obedecer aos princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência.",
-    "O concurso público é o meio constitucional de acesso aos cargos públicos.",
-    "A Constituição Federal é a norma suprema do ordenamento jurídico.",
-    "O servidor público deve agir conforme a lei e o interesse público.",
-    "Os atos administrativos devem respeitar os princípios constitucionais."
-];
-
-let indice = 0;
-
-function mostrarFrase() {
-    document.getElementById("frase").innerText = frases[indice];
-    document.getElementById("entrada").value = "";
-    document.getElementById("resultado").innerText = "";
-}
-
-function verificar() {
-    let textoDigitado = document.getElementById("entrada").value;
-    let fraseCorreta = frases[indice];
-
-    if (textoDigitado === fraseCorreta) {
-        document.getElementById("resultado").innerText = "✅ Perfeito! Digitação correta.";
-        document.getElementById("resultado").style.color = "green";
-    } else {
-        document.getElementById("resultado").innerText = "❌ Ainda há erros. Tente novamente.";
-        document.getElementById("resultado").style.color = "red";
-    }
-}
-
-function proximaFrase() {
-    indice++;
-    if (indice >= frases.length) {
-        indice = 0;
-    }
-    mostrarFrase();
-}
-
-mostrarFrase();
-</script>
 
 </body>
 </html>
