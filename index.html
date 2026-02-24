@@ -49,14 +49,84 @@ button{
 
 <body>
 
-<nav>
-  <div class="logo">DigitAprova</div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>DigitAprova</title>
 
-  <div class="menu">
-    <a href="#">Início</a>
-    <a href="#">Progresso</a>
-    <a href="#">Sobre</a>
-  </div>
+<style>
+#pergunta{font-size:20px;margin-top:20px;}
+#respostaVisivel{color:#00ffcc;font-weight:bold;margin-top:10px;}
+#painel{margin-top:15px;font-size:18px;}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a href="#" onclick="mostrarInicio()">Início</a>
+  <a href="#" onclick="mostrarProgresso()">Progresso</a>
+  <a href="#" onclick="mostrarSobre()">Sobre</a>
+  <a href="#" class="botao-nav" onclick="entrar(); return false;">Entrar</a>
+</nav>
+
+<div id="login" style="text-align:center; margin-top:100px;">
+  <h2>Digite seus dados</h2>
+  <input id="nomeUsuario" placeholder="Seu nome"><br><br>
+  <input id="senhaUsuario" type="password" placeholder="Sua senha">
+</div>
+
+<div id="inicio" style="display:none;">
+  <h1>Treine para concursos digitando</h1>
+</div>
+
+<div id="progresso" style="display:none;">
+  <h1>Seu progresso</h1>
+</div>
+
+<div id="sobre" style="display:none;">
+  <h1>Sobre o DigitAprova</h1>
+</div>
+
+<script>
+function esconderTudo(){
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("progresso").style.display = "none";
+  document.getElementById("sobre").style.display = "none";
+}
+
+function mostrarInicio(){
+  esconderTudo();
+  document.getElementById("inicio").style.display = "block";
+}
+
+function mostrarProgresso(){
+  esconderTudo();
+  document.getElementById("progresso").style.display = "block";
+}
+
+function mostrarSobre(){
+  esconderTudo();
+  document.getElementById("sobre").style.display = "block";
+}
+
+function entrar(){
+  let nome = document.getElementById("nomeUsuario").value;
+  let senha = document.getElementById("senhaUsuario").value;
+
+  if(nome.trim()==="" || senha.trim()===""){
+    alert("Digite nome e senha");
+    return;
+  }
+
+  document.getElementById("login").style.display="none";
+  mostrarInicio();
+}
+</script>
+
+</body>
+</html>
 
   <a href="#" class="botao-nav" onclick="entrar(); return false;">Entrar</a>
 </nav>
@@ -70,10 +140,18 @@ button{
 </div>
 
 <div id="inicio" style="display:none;">
-  <div class="hero">
-    <h1>Treine para concursos digitando</h1>
-    <p>Digite exatamente a resposta correta.</p>
-  </div>
+  <h1>Treine para concursos digitando</h1>
+</div>
+
+<div id="progresso" style="display:none;">
+  <h1>Seu progresso</h1>
+  <p>Aqui aparecerão seus pontos, acertos e erros.</p>
+</div>
+
+<div id="sobre" style="display:none;">
+  <h1>Sobre o DigitAprova</h1>
+  <p>Este site foi criado para estudar para concursos treinando digitação.</p>
+</div>
 
   <div class="cards">
     <div class="card" onclick="mostrarTreino('direito')">📚 Direito</div>
