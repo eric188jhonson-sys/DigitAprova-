@@ -75,12 +75,12 @@ input{
 <!-- LOGIN -->
 <div id="loginScreen">
   <h2>Digite seus dados</h2>
-  <input type="text" id="username" placeholder="Seu nome">
-  <input type="password" id="password" placeholder="Sua senha">
+  <input type="text" id="username" placeholder="Seu nome"><br><br>
+  <input type="password" id="password" placeholder="Sua senha"><br><br>
   <button onclick="login()">Entrar</button>
 </div>
 
-<!-- CONTEÚDO (ESCONDIDO NO INÍCIO) -->
+<!-- CONTEÚDO -->
 <div id="mainScreen" style="display:none;">
   <h1>Escolha uma matéria</h1>
 
@@ -175,20 +175,17 @@ function entrar(){
 </div>
 
 <script>
-function entrar(){
-  let nome = document.getElementById("nomeUsuario").value;
-  let senha = document.getElementById("senhaUsuario").value;
+function login(){
+  let user = document.getElementById("username").value;
+  let pass = document.getElementById("password").value;
 
-  if(nome.trim() === "" || senha.trim() === ""){
+  if(user.trim()==="" || pass.trim()===""){
     alert("Digite nome e senha");
     return;
   }
 
-  console.log("Usuário:", nome);
-  console.log("Senha:", senha);
-
-  document.getElementById("login").style.display = "none";
-  document.getElementById("inicio").style.display = "block";
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("mainScreen").style.display = "block";
 }
 </script>
 
