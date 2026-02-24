@@ -8,112 +8,30 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, #e1f5fe, #ffffff);
-}
-
-header {
-    background: #0d47a1;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-
-#banner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #bbdefb;
-    padding: 20px;
-}
-
-#banner img {
-    width: 140px;
-    margin-right: 20px;
-}
-
-#banner p {
-    font-size: 18px;
-    max-width: 500px;
-}
-
-#container {
-    background: white;
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.15);
-    text-align: center;
-}
-
-#frase {
-    font-size: 18px;
-    margin-bottom: 15px;
-    color: #0d47a1;
-}
-
-textarea {
-    width: 95%;
-    height: 100px;
-    font-size: 16px;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #64b5f6;
-}
-
-button {
-    padding: 10px 25px;
-    font-size: 16px;
-    margin: 10px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background: #1976d2;
+    background-image: url("fundo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
     color: white;
 }
 
-button:hover {
-    background: #0d47a1;
-}
-
-#resultado {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-#concursos {
-    margin-top: 40px;
-    text-align: center;
-}
-
-#concursos h2 {
-    color: #0d47a1;
-}
-
-.galeria {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
-
-.galeria img {
-    width: 180px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+/* Camada escura pra melhorar leitura */
+.overlay {
+    background: rgba(0, 0, 0, 0.6);
+    min-height: 100vh;
+    padding: 30px;
 }
 </style>
 </head>
 
 <body>
-
-<header>
-    <h1>📚 DigitAprova</h1>
-    <p>Aprenda para concursos enquanto treina digitação</p>
-</header>
-
+<div class="overlay">
+    <h1>DigitAprova</h1>
+    <p>Estude para concursos enquanto treina digitação.</p>
+</div>
+</body>
+</html>
 <div id="banner">
     <img src="data:image/svg+xml;utf8,
 <svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>
