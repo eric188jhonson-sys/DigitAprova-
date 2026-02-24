@@ -79,24 +79,24 @@ input{
 </nav>
 
 <!-- LOGIN -->
-<div id="login">
-  <h2>Digite seus dados</h2><br>
-  <input id="nomeUsuario" placeholder="Seu nome"><br><br>
-  <input id="senhaUsuario" type="password" placeholder="Sua senha">
+<div id="loginScreen">
+  <h2>Digite seus dados</h2>
+  <input type="text" id="username" placeholder="Seu nome">
+  <input type="password" id="password" placeholder="Sua senha">
+  <button onclick="login()">Entrar</button>
 </div>
 
-<!-- INÍCIO -->
-<div id="inicio" class="tela">
+<!-- CONTEÚDO (ESCONDIDO NO INÍCIO) -->
+<div id="mainScreen" style="display:none;">
   <h1>Escolha uma matéria</h1>
 
-  <div class="cards">
-    <div class="card">📚 Direito</div>
-    <div class="card">💻 Informática</div>
-    <div class="card">🧠 Lógica</div>
-    <div class="card">✍ Português</div>
+  <div class="menu">
+    <button>Direito</button>
+    <button>Informática</button>
+    <button>Lógica</button>
+    <button>Português</button>
   </div>
 </div>
-
 <!-- PROGRESSO -->
 <div id="progresso" class="tela">
   <h1>Seu progresso</h1>
