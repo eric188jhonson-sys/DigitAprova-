@@ -17,12 +17,60 @@ body {
     min-height: 100vh;
 }
 
-/* camada para leitura */
+/* camada escura para leitura */
 .overlay {
-    background: rgba(0,0,0,0.55);
+    background: rgba(0, 0, 0, 0.6);
     min-height: 100vh;
     padding: 40px;
     color: white;
+}
+
+/* caixa principal */
+.container {
+    background: rgba(255,255,255,0.9);
+    color: #0d47a1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+}
+
+h1 {
+    text-align: center;
+}
+
+#frase {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: 100%;
+    height: 90px;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px 5px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: #1976d2;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0d47a1;
+}
+
+#resultado {
+    font-weight: bold;
+    margin-top: 10px;
 }
 </style>
 </head>
@@ -30,9 +78,62 @@ body {
 <body>
 
 <div class="overlay">
-    <h1>DigitAprova</h1>
-    <p>Estude para concursos enquanto treina digitação.</p>
+    <div class="container">
+        <h1>📚 DigitAprova</h1>
+        <p>Estude para concursos enquanto treina digitação.</p>
+
+        <h3>Digite a frase abaixo:</h3>
+        <div id="frase"></div>
+
+        <textarea id="entrada" placeholder="Digite aqui..."></textarea><br>
+
+        <button onclick="verificar()">Verificar</button>
+        <button onclick="proximaFrase()">Próxima frase</button>
+
+        <div id="resultado"></div>
+    </div>
 </div>
+
+<script>
+let frases = [
+    "A administração pública deve obedecer aos princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência.",
+    "O concurso público é o meio constitucional de acesso aos cargos públicos.",
+    "A Constituição Federal é a norma suprema do ordenamento jurídico.",
+    "Os atos administrativos devem respeitar a lei e o interesse público.",
+    "O servidor público deve agir conforme os princípios constitucionais."
+];
+
+let indice = 0;
+
+function mostrarFrase() {
+    document.getElementById("frase").innerText = frases[indice];
+    document.getElementById("entrada").value = "";
+    document.getElementById("resultado").innerText = "";
+}
+
+function verificar() {
+    let digitado = document.getElementById("entrada").value;
+    let correta = frases[indice];
+
+    if (digitado === correta) {
+        document.getElementById("resultado").innerText = "✅ Digitação correta!";
+        document.getElementById("resultado").style.color = "green";
+    } else {
+        document.getElementById("resultado").innerText = "❌ Ainda há erros. Tente novamente.";
+        document.getElementById("resultado").style.color = "red";
+    }
+}
+
+function proximaFrase() {
+    indice++;
+    if (indice >= frases.length) {
+        indice = 0;
+    }
+    mostrarFrase();
+}
+
+mostrarFrase();
+</script>
 
 </body>
 </html>
