@@ -8,13 +8,13 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-   background-image: url("fundo.png");
+    background-image: url("fundo.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-/* camada para escurecer o fundo */
+/* camada escura sobre a imagem */
 .overlay {
     background: rgba(0,0,0,0.6);
     min-height: 100vh;
@@ -28,10 +28,6 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-header h1 {
-    margin: 0;
 }
 
 nav button {
@@ -88,21 +84,6 @@ nav button:hover {
     padding: 20px;
 }
 
-.progress {
-    background: #e0e0e0;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 20px;
-}
-
-.progress-bar {
-    width: 0%;
-    background: #1976d2;
-    color: white;
-    text-align: center;
-    padding: 5px;
-}
-
 .lesson {
     background: #e3f2fd;
     padding: 15px;
@@ -120,6 +101,17 @@ nav button:hover {
     border-radius: 6px;
     cursor: pointer;
 }
+
+/* área de treino */
+#treino {
+    display: none;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
 </style>
 </head>
 
@@ -129,53 +121,79 @@ nav button:hover {
 <header>
     <h1>📚 DigitAprova</h1>
     <nav>
-        <button>Início</button>
-        <button>Matérias</button>
-        <button>Progresso</button>
-        <button>Entrar</button>
+        <button onclick="voltarInicio()">Início</button>
+        <button onclick="alert('Em construção')">Matérias</button>
+        <button onclick="alert('Progresso em breve')">Progresso</button>
+        <button onclick="alert('Login em breve')">Entrar</button>
     </nav>
 </header>
 
 <div class="main">
 
-    <div class="menu">
-        <h3>📖 Níveis</h3>
-        <div>Iniciante</div>
-        <div>Intermediário</div>
-        <div>Avançado</div>
+<div class="menu">
+    <h3>📖 Níveis</h3>
+    <div onclick="mudarNivel('Iniciante')">Iniciante</div>
+    <div onclick="mudarNivel('Intermediário')">Intermediário</div>
+    <div onclick="mudarNivel('Avançado')">Avançado</div>
 
-        <h3>🎯 Matérias</h3>
-        <div>Direito</div>
-        <div>Informática</div>
-        <div>Raciocínio Lógico</div>
-    </div>
+    <h3>🎯 Matérias</h3>
+    <div onclick="mudarMateria('Direito')">Direito</div>
+    <div onclick="mudarMateria('Informática')">Informática</div>
+    <div onclick="mudarMateria('Raciocínio Lógico')">Raciocínio Lógico</div>
+</div>
 
-    <div class="content">
-        <h2>Progresso</h2>
-        <div class="progress">
-            <div class="progress-bar">0%</div>
-        </div>
+<div class="content" id="conteudo">
 
-        <h2>Lições - Nível Avançado</h2>
+<h2 id="titulo">Bem-vindo ao DigitAprova</h2>
 
-        <div class="lesson">
-            <span>1️⃣ Desenvolvendo Habilidades</span>
-            <button>Iniciar</button>
-        </div>
-
-        <div class="lesson">
-            <span>2️⃣ Números e Letras</span>
-            <button>Iniciar</button>
-        </div>
-
-        <div class="lesson">
-            <span>3️⃣ Textos Jurídicos</span>
-            <button>Iniciar</button>
-        </div>
-    </div>
-
+<div class="lesson">
+    <span>1️⃣ Treino de Digitação</span>
+    <button onclick="iniciarTreino()">Iniciar</button>
 </div>
 
 </div>
+
+<!-- tela de treino -->
+<div class="content" id="treino">
+    <h2 id="frase">Digite: O direito é a base da justiça.</h2>
+    <input type="text" id="campo" oninput="verificar()">
+    <p id="resultado"></p>
+    <button onclick="voltarInicio()">Voltar</button>
+</div>
+
+</div>
+</div>
+
+<script>
+let fraseAtual = "O direito é a base da justiça.";
+
+function mudarMateria(m) {
+    document.getElementById("titulo").innerText = "Matéria: " + m;
+}
+
+function mudarNivel(n) {
+    document.getElementById("titulo").innerText = "Nível: " + n;
+}
+
+function iniciarTreino() {
+    document.getElementById("conteudo").style.display = "none";
+    document.getElementById("treino").style.display = "block";
+}
+
+function voltarInicio() {
+    document.getElementById("conteudo").style.display = "block";
+    document.getElementById("treino").style.display = "none";
+    document.getElementById("campo").value = "";
+    document.getElementById("resultado").innerText = "";
+}
+
+function verificar() {
+    let digitado = document.getElementById("campo").value;
+    if (digitado === fraseAtual) {
+        document.getElementById("resultado").innerText = "✅ Correto!";
+    }
+}
+</script>
+
 </body>
 </html>
