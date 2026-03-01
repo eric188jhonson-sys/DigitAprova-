@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DigitAprova • Treino</title>
+
+  <style>
+    :root{
+      --bg1:#071225;
+      --bg2:#0b1a33;
+      --card:rgba(255,255,255,.08);
+      --border:rgba(255,255,255,.12);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.72);
+
+      --ops:#1e88ff;
+      --mil:#20b35a;
+      --danger:#ff4d4d;
+
+      --shadow: 0 24px 70px rgba(0,0,0,.55);
+      --radius: 22px;
+
+      --navW: 190px;
+      --centerMax: 1180px;
+      --gap: 12px;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(900px 500px at 18% 10%, rgba(30,136,255,.18), transparent 60%),
+        radial-gradient(700px 500px at 85% 35%, rgba(32,179,90,.10), transparent 60%),
+        radial-gradient(600px 420px at 55% 85%, rgba(244,180,0,.10), transparent 65%),
+        linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg1));
+      overflow:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image: radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 22px 22px;
+      opacity:.18;
+      pointer-events:none;
+      z-index:0;
+    }
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: rgba(0,0,0,.14);
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .shell{
+      position:relative;
+      z-index:1;
+      min-height:100vh;
+      display:grid;
+      grid-template-columns: var(--navW) minmax(640px, var(--centerMax)) var(--navW);
+      gap: 14px;
+      align-items:center;
+      justify-content:center;
+      padding: 14px;
+    }
+
+    .nav{
+      height: calc(100vh - 28px);
+      max-height: 92vh;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding: 10px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      overflow:auto;
+    }
+    .nav h3{
+      margin: 2px 2px 2px;
+      font-size: 12px;
+      color: rgba(255,255,255,.70);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+    .nav .hint{
+      font-size: 12px;
+      color: rgba(255,255,255,.65);
+      line-height: 1.35;
+      padding: 6px 6px 0;
+    }
+
+    .nbtn{
+      width:100%;
+      text-align:left;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      cursor:pointer;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.92);
+      font-weight: 1000;
+      font-size: 14px;
+    }
+    .nbtn:hover{ filter: brightness(1.06); }
+    .nbtn.primary{
+      background: linear-gradient(135deg, rgba(30,136,255,.95), rgba(32,179,90,.75));
+      border:none;
+      color:#071225;
+      box-shadow: 0 14px 28px rgba(0,0,0,.25);
+    }
+    .nbtn:disabled{ opacity:.45; cursor:not-allowed; }
+
+    .wrap{
+      max-height: 92vh;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,.05) inset;
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      flex-direction: column;
+    }
+    .wrap::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(900px 260px at 40% 0%, rgba(30,136,255,.18), transparent 60%),
+        radial-gradient(760px 260px at 85% 10%, rgba(32,179,90,.10), transparent 60%);
+      pointer-events:none;
+      z-index:0;
+    }
+    .wrap > *{ position:relative; z-index:1; }
+
+    header{
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .miniTitle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:1000;
+      width:100%;
+      justify-content:center;
+    }
+    .miniDot{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--mil);
+      box-shadow: 0 0 0 4px rgba(32,179,90,.15);
+    }
+    header p{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      width:100%;
+      text-align:center;
+    }
+
+    .badge{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      font-weight: 1000;
+      color: rgba(255,255,255,.88);
+      white-space:nowrap;
+      font-size: 13px;
+      cursor:pointer;
+    }
+
+    .page{ display:none; }
+    .page.active{ display:block; }
+
+    .content{
+      padding: 12px 14px 14px;
+      overflow:hidden;
+      flex: 1;
+      min-height: 0;
+      display:grid;
+      gap: var(--gap);
+      grid-template-rows: auto 1fr;
+    }
+
+    /* ===== Home ===== */
+    .card{
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding: 12px;
+    }
+    .card h2{ margin:0 0 6px; font-size: 18px; }
+    .card p{
+      margin:0 0 10px;
+      color: rgba(255,255,255,.72);
+      line-height: 1.45;
+      font-size: 13px;
+    }
+    .matGrid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .matBtn{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.92);
+      cursor:pointer;
+      font-weight: 1000;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .matBtn:hover{ filter: brightness(1.06); }
+    .tag{ font-size: 12px; color: rgba(255,255,255,.70); font-weight: 900; }
+
+    .qbox{
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding: 10px 12px;
+    }
+    .qmeta{ color: var(--muted); font-size: 13px; font-weight: 1000; margin-bottom: 6px; }
+    .qtext{ margin:0; font-size: 16px; line-height: 1.55; }
+
+    /* ===== Treino ===== */
+    .trainContent{
+      display:grid;
+      gap: var(--gap);
+      grid-template-rows: auto auto auto 1fr;
+      overflow:hidden;
+      min-height: 0;
+    }
+
+    /* “Papel” com linhas, preservando espaços/caracteres */
+    .paper{
+      background:
+        linear-gradient(rgba(255,255,255,.06), rgba(255,255,255,.06)),
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.00) 0px,
+          rgba(255,255,255,0.00) 34px,
+          rgba(255,255,255,0.10) 35px
+        );
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding: 10px 12px 8px;
+      max-height: 36vh;
+      overflow: auto;
+    }
+
+    .lines{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 25px;
+      line-height: 1.55;
+      letter-spacing: .06em;
+      color: rgba(255,255,255,.86);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .ch{ padding: 0 1px; border-radius: 6px; }
+    .ch.ok{ color: rgba(255,255,255,.92); }
+    .ch.bad{ color: var(--danger); text-decoration: underline; text-underline-offset: 6px; }
+    .ch.cursor{
+      background: rgba(30,136,255,.25);
+      outline: 2px solid rgba(30,136,255,.60);
+      color: rgba(255,255,255,.98);
+    }
+
+    .hintLine{
+      margin-top: 10px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .stat{
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      padding: 10px;
+    }
+    .stat .k{ font-size: 12px; color: var(--muted); font-weight: 1000; text-transform: uppercase; letter-spacing:.6px; }
+    .stat .v{ margin-top: 6px; font-size: 16px; font-weight: 1000; }
+
+    .kbdWrap{
+      position:relative;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding: 10px 12px;
+      max-height: 30vh;
+      overflow:auto;
+    }
+    .kbdTitle{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-weight: 1000;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    .row{ display:flex; gap:6px; margin-bottom: 6px; flex-wrap:wrap; }
+    .key{
+      background: #fff;
+      color: #222;
+      border-radius: 10px;
+      padding: 10px 8px;
+      min-width: 40px;
+      text-align:center;
+      font-weight: 1000;
+      box-shadow: 0 8px 18px rgba(0,0,0,.18);
+      user-select:none;
+      font-size: 14px;
+    }
+    .key.wide{ min-width: 78px; }
+    .key.space{ min-width: 260px; }
+    .key.active{
+      background: var(--ops);
+      color: white;
+      box-shadow: 0 0 0 5px rgba(30,136,255,.18);
+    }
+    .key.bad{
+      background: var(--danger);
+      color: white;
+      box-shadow: 0 0 0 5px rgba(255,77,77,.14);
+    }
+
+    #handsOverlay{
+      position:absolute;
+      left: 50%;
+      bottom: 6px;
+      transform: translateX(-50%);
+      width: min(820px, 92%);
+      opacity: .22;
+      pointer-events: none;
+      filter: saturate(1.05) contrast(1.05);
+      display:none;
+    }
+
+    #hiddenInput{
+      position:absolute;
+      left:-9999px;
+      opacity:0;
+    }
+
+    .foot{
+      padding: 10px 16px;
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+      text-align:center;
+      border-top: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.08);
+    }
+
+    /* ===== Login page (NOVO) ===== */
+    .loginShell{
+      display:grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 14px;
+      height: 100%;
+      min-height: 62vh;
+    }
+
+    .loginLeft{
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(700px 380px at 40% 0%, rgba(30,136,255,.22), transparent 60%),
+        rgba(0,0,0,.18);
+    }
+
+    .brandTop{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .brandLogo{
+      width:12px;height:12px;border-radius:999px;
+      background: var(--mil);
+      box-shadow: 0 0 0 6px rgba(32,179,90,.14);
+    }
+    .brandName{ font-weight:1000; letter-spacing:.4px; }
+
+    .loginLeft h2{
+      margin: 12px 0 8px;
+      font-size: 22px;
+    }
+    .loginLeft p{
+      margin: 0 0 12px;
+      color: rgba(255,255,255,.75);
+      line-height: 1.55;
+    }
+
+    .loginBullets{
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: rgba(255,255,255,.82);
+      line-height: 1.75;
+      font-weight: 900;
+    }
+
+    .loginRight{
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+    }
+
+    .loginRight h1{ margin: 0 0 6px; font-size: 28px; }
+    .muted{ color: rgba(255,255,255,.72); }
+
+    .oauthRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .oauthBtn{
+      padding: 12px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.92);
+      font-weight: 1000;
+      cursor:pointer;
+    }
+    #btnGuest{ grid-column: 1 / -1; }
+    .oauthBtn:hover{ filter: brightness(1.06); }
+
+    .divider{
+      margin: 14px 0 10px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: rgba(255,255,255,.55);
+      font-weight: 1000;
+    }
+    .divider::before,.divider::after{
+      content:"";
+      flex:1;
+      height:1px;
+      background: rgba(255,255,255,.12);
+    }
+    .divider span{
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+    }
+
+    .loginForm{
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+
+    .loginForm label{
+      font-size: 13px;
+      font-weight: 1000;
+      color: rgba(255,255,255,.78);
+      margin-top: 6px;
+    }
+    .loginForm input{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.20);
+      color: rgba(255,255,255,.92);
+      outline:none;
+    }
+    .loginForm input:focus{
+      border-color: rgba(30,136,255,.55);
+      box-shadow: 0 0 0 4px rgba(30,136,255,.14);
+    }
+
+    .row2{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top: 6px;
+    }
+
+    .chk{ display:flex; align-items:center; gap:8px; font-weight: 900; color: rgba(255,255,255,.75); }
+
+    .linkBtn{
+      background: transparent;
+      border:none;
+      color: rgba(255,255,255,.78);
+      font-weight: 1000;
+      cursor:pointer;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .loginGo{
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border:none;
+      cursor:pointer;
+      font-weight: 1000;
+      background: linear-gradient(135deg, rgba(255,200,0,.95), rgba(30,136,255,.85));
+      color:#071225;
+    }
+
+    .loginFoot{
+      margin-top: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    @media (max-width: 1200px){ :root{ --navW: 155px; } }
+    @media (max-width: 980px){
+      body{ overflow:auto; }
+      .shell{ grid-template-columns: 1fr; align-items:stretch; }
+      .nav{ max-height:none; height:auto; flex-direction:row; flex-wrap:wrap; }
+      .nbtn{ width:auto; }
+      .wrap{ max-height:none; }
+      .stats{ grid-template-columns: repeat(2, 1fr); }
+      .paper{ max-height: 30vh; }
+      .kbdWrap{ max-height: 30vh; }
+      .matGrid{ grid-template-columns: repeat(2, 1fr); }
+
+      .loginShell{ grid-template-columns: 1fr; }
+      .oauthRow{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <input id="hiddenInput" autocomplete="off" />
+
+  <div class="shell">
+
+    <!-- NAV ESQUERDA -->
+    <aside class="nav">
+      <h3>Navegação</h3>
+      <button class="nbtn" id="btnLogin">🔐 Entrar <span>›</span></button>
+      <button class="nbtn" id="btnStatus">📊 Status <span>›</span></button>
+
+      <h3>Treino</h3>
+      <button class="nbtn primary" id="btnNext" disabled>✅ Próximo <span>›</span></button>
+      <button class="nbtn" id="btnReset">🔁 Reiniciar <span>›</span></button>
+      <button class="nbtn" id="btnFocus">🎯 Focar <span>›</span></button>
+
+      <div class="hint" id="leftHint">Escolha uma matéria na Tela Inicial.</div>
+    </aside>
+
+    <!-- CARD CENTRAL -->
+    <div class="wrap">
+      <header>
+        <div class="miniTitle">
+          <span class="miniDot"></span>
+          <span id="headTitle" style="font-size:22px; letter-spacing:.5px;">DigitAprova</span>
+        </div>
+        <p id="headSub">Treine digitação + memorize questões de concurso.</p>
+
+        <!-- botão de voltar (único) -->
+        <div class="badge" id="badgeRight">Tela Inicial</div>
+      </header>
+
+      <!-- PAGE: HOME -->
+      <div id="pageHome" class="page active">
+        <div class="content">
+          <div class="card">
+            <h2>Escolha a matéria</h2>
+            <p>As matérias abaixo são as mais comuns em concursos. Clique em uma para ir direto ao treino.</p>
+            <div class="matGrid" id="matGrid"></div>
+          </div>
+
+          <div class="card">
+            <h2>Como funciona</h2>
+            <p>Você lê a questão e digita a resposta correta para fixar. O cursor só avança quando você acerta (modo sincronia).</p>
+            <div class="qbox" style="margin-top:10px">
+              <div class="qmeta">Dica</div>
+              <p class="qtext" style="font-size:14px; color:rgba(255,255,255,.80)">
+                Errou? O sistema não avança. Corrija e continue — isso aumenta precisão e memória.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: LOGIN (NOVO HOME) -->
+      <div id="pageLogin" class="page">
+        <div class="content" style="grid-template-rows:1fr;">
+          <div class="loginShell">
+            <div class="loginLeft">
+              <div class="brandTop">
+                <div class="brandLogo"></div>
+                <div class="brandName">DigitAprova</div>
+              </div>
+
+              <h2>Treine digitação e memorize questões de concurso</h2>
+              <p>Entre para salvar seu progresso, manter sequência de dias e acompanhar evolução por matéria.</p>
+
+              <ul class="loginBullets">
+                <li>✅ Progresso por matéria</li>
+                <li>✅ Histórico (precisão / erros / chars)</li>
+                <li>✅ Sequência de dias (streak)</li>
+              </ul>
+            </div>
+
+            <div class="loginRight">
+              <h1>Entrar</h1>
+              <p class="muted">Modo simples: você cria um usuário e senha aqui no próprio navegador.</p>
+
+              <div class="oauthRow">
+                <button class="oauthBtn" id="btnGoogleFake" type="button">G Google</button>
+                <button class="oauthBtn" id="btnMicrosoftFake" type="button">M Microsoft</button>
+                <button class="oauthBtn" id="btnGuest" type="button">👤 Entrar como convidado</button>
+              </div>
+
+              <div class="divider"><span>OU</span></div>
+
+              <form id="loginForm" class="loginForm">
+                <label>Nome de usuário ou e-mail</label>
+                <input id="loginUser" type="text" placeholder="ex: eric.jhonson" required>
+
+                <label>Senha</label>
+                <input id="loginPass" type="password" placeholder="••••••••" required>
+
+                <div class="row2">
+                  <label class="chk">
+                    <input type="checkbox" id="rememberMe" checked>
+                    <span>Lembrar</span>
+                  </label>
+                  <button type="button" class="linkBtn" id="btnForgot">Esqueceu?</button>
+                </div>
+
+                <button class="loginGo" type="submit">Próximo</button>
+              </form>
+
+              <div class="loginFoot">
+                <span id="loginMsg" class="muted"></span>
+                <button class="linkBtn" id="btnLogout" type="button" style="display:none;">Sair</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: TREINO -->
+      <div id="pageTrain" class="page">
+        <div class="content">
+          <div class="trainContent">
+
+            <div class="qbox">
+              <div class="qmeta" id="qMeta">—</div>
+              <p class="qtext" id="qText">—</p>
+            </div>
+
+            <div class="paper">
+              <div id="render" class="lines"></div>
+              <div class="hintLine">
+                <span>📌 Backspace apaga. Enter só se existir no texto-alvo.</span>
+                <span>Objetivo: <strong>100%</strong></span>
+              </div>
+            </div>
+
+            <div class="stats">
+              <div class="stat"><div class="k">Precisão</div><div class="v" id="acc">—</div></div>
+              <div class="stat"><div class="k">Erros</div><div class="v" id="errs">0</div></div>
+              <div class="stat"><div class="k">Chars</div><div class="v" id="chars">0</div></div>
+              <div class="stat"><div class="k">Progresso</div><div class="v" id="prog">0%</div></div>
+            </div>
+
+            <div class="kbdWrap">
+              <div class="kbdTitle">
+                <span>⌨️ Teclado (tecla esperada destacada)</span>
+                <span id="nextKeyLabel">Próxima tecla: —</span>
+              </div>
+
+              <img id="handsOverlay" src="dedos.png" alt="Guia de dedos"/>
+
+              <div id="kbd"></div>
+
+              <div id="fingerHint" style="margin-top:8px;color:rgba(255,255,255,.75);font-weight:900;font-size:13px">
+                Dedo sugerido: —
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="foot" id="footerTxt">DigitAprova • Tela Inicial</div>
+    </div>
+
+    <!-- NAV DIREITA -->
+    <aside class="nav">
+      <h3>Atalhos</h3>
+      <button class="nbtn" id="toggleFont">🔎 Fonte + <span>›</span></button>
+      <button class="nbtn" id="toggleFontDown">🔍 Fonte - <span>›</span></button>
+      <button class="nbtn" id="toggleHands">🖐️ Mãos ON/OFF <span>›</span></button>
+
+      <h3>Info</h3>
+      <div class="hint" id="rightHint">Selecione uma matéria para carregar as questões.</div>
+    </aside>
+
+  </div>
+
+  <script>
+    // ===== Banco de questões por matéria =====
+    const BANK = {
+      "Português": [
+        {
+          meta: "CESPE/CEBRASPE • Português",
+          q: "Digite o texto exatamente como aparece (treino de leitura + digitação).",
+          a: "Yolanda comprou um bouquet de rosas raras. Ela alegrou-se pois decorou seu carro com as rosas. Seu amigo Ruy amarrou uma corda ao redor do arranjo"
+        },
+        {
+          meta: "IBFC • Português",
+          q: "Reescreva sem alterar o sentido: 'Ele não apenas estudou; ele revisou com método.'",
+          a: "Ele não só estudou; revisou com método."
+        }
+      ],
+      "Informática": [
+        { meta: "FGV • Informática", q: "Complete: Em redes, o protocolo HTTP opera, tradicionalmente, na porta ___.", a: "80" },
+        { meta: "CESPE/CEBRASPE • Informática", q: "Defina backup incremental em uma frase.", a: "Backup incremental copia apenas os dados alterados desde o último backup." }
+      ],
+      "RLM": [
+        { meta: "Banca Variada • Raciocínio Lógico", q: "Complete: Uma proposição é verdadeira quando o valor lógico é ___.", a: "V" }
+      ],
+      "Direito Constitucional": [
+        { meta: "IBFC • Constitucional", q: "Complete: A dignidade da pessoa humana é fundamento da República (art. ___, ___).", a: "Art. 1º, III." }
+      ],
+      "Direito Penal": [
+        { meta: "FGV • Direito Penal", q: "Explique de forma objetiva o que é fato típico.", a: "Fato típico é o fato humano que se amolda à descrição legal do tipo penal (subsunção do fato à norma)." }
+      ],
+      "Processo Penal": [
+        { meta: "Banca Variada • Processo Penal", q: "Complete: O inquérito policial tem natureza ___.", a: "administrativa" }
+      ],
+      "Legislação": [
+        { meta: "Banca Variada • Legislação", q: "Defina 'legalidade' em uma frase, no contexto da Administração Pública.", a: "Legalidade é o dever de agir estritamente conforme a lei." }
+      ]
+    };
+
+    const SUBJECTS = [
+      { name: "Português", tag: "Muito cobrada" },
+      { name: "RLM", tag: "Muito cobrada" },
+      { name: "Informática", tag: "Cai bastante" },
+      { name: "Direito Constitucional", tag: "Base" },
+      { name: "Direito Penal", tag: "Base" },
+      { name: "Processo Penal", tag: "Base" },
+      { name: "Legislação", tag: "Conforme edital" }
+    ];
+
+    // ===== Estado =====
+    let currentSubject = null;
+    let EX = [];
+    let exIdx = 0;
+    let target = "";
+    let typed = "";
+    let lastWrong = false;
+    let errorFlashTimer = null;
+    let startedAt = null;
+
+    // ===== DOM =====
+    const $hiddenInput = document.getElementById("hiddenInput");
+
+    const $pageHome = document.getElementById("pageHome");
+    const $pageLogin = document.getElementById("pageLogin");
+    const $pageTrain = document.getElementById("pageTrain");
+
+    const $headSub = document.getElementById("headSub");
+    const $badgeRight = document.getElementById("badgeRight");
+    const $footerTxt = document.getElementById("footerTxt");
+
+    const $leftHint = document.getElementById("leftHint");
+    const $rightHint = document.getElementById("rightHint");
+
+    const $matGrid = document.getElementById("matGrid");
+
+    const $qMeta = document.getElementById("qMeta");
+    const $qText = document.getElementById("qText");
+    const $render = document.getElementById("render");
+
+    const $btnLogin = document.getElementById("btnLogin");
+    const $btnStatus = document.getElementById("btnStatus");
+
+    const $btnNext = document.getElementById("btnNext");
+    const $btnReset = document.getElementById("btnReset");
+    const $btnFocus = document.getElementById("btnFocus");
+
+    const $acc = document.getElementById("acc");
+    const $errs = document.getElementById("errs");
+    const $chars = document.getElementById("chars");
+    const $prog = document.getElementById("prog");
+
+    const $kbd = document.getElementById("kbd");
+    const $nextKeyLabel = document.getElementById("nextKeyLabel");
+    const $fingerHint = document.getElementById("fingerHint");
+
+    const $toggleFont = document.getElementById("toggleFont");
+    const $toggleFontDown = document.getElementById("toggleFontDown");
+    const $toggleHands = document.getElementById("toggleHands");
+    const $handsOverlay = document.getElementById("handsOverlay");
+
+    // ===== DOM LOGIN =====
+    const $loginForm = document.getElementById("loginForm");
+    const $loginUser = document.getElementById("loginUser");
+    const $loginPass = document.getElementById("loginPass");
+    const $rememberMe = document.getElementById("rememberMe");
+    const $loginMsg = document.getElementById("loginMsg");
+    const $btnLogout = document.getElementById("btnLogout");
+    const $btnGuest = document.getElementById("btnGuest");
+    const $btnGoogleFake = document.getElementById("btnGoogleFake");
+    const $btnMicrosoftFake = document.getElementById("btnMicrosoftFake");
+    const $btnForgot = document.getElementById("btnForgot");
+
+    // ===== Pages =====
+    function showHome(){
+      $pageHome.classList.add("active");
+      $pageLogin.classList.remove("active");
+      $pageTrain.classList.remove("active");
+
+      $badgeRight.textContent = "Tela Inicial";
+      $footerTxt.textContent = "DigitAprova • Tela Inicial";
+
+      $leftHint.textContent = "Escolha uma matéria na Tela Inicial.";
+      $rightHint.textContent = "Selecione uma matéria para carregar as questões.";
+
+      $btnNext.disabled = true;
+      $headSub.textContent = "Treine digitação + memorize questões de concurso.";
+      refreshAuthUI();
+    }
+
+    function showLogin(){
+      $pageHome.classList.remove("active");
+      $pageTrain.classList.remove("active");
+      $pageLogin.classList.add("active");
+
+      $badgeRight.textContent = "Tela Inicial";
+      $footerTxt.textContent = "DigitAprova • Entrar";
+
+      $leftHint.textContent = "Entre para salvar seu progresso.";
+      $rightHint.textContent = "Dica: use convidado se preferir.";
+
+      $btnNext.disabled = true;
+      $headSub.textContent = "Entre para salvar seu progresso.";
+      refreshAuthUI();
+    }
+
+    function showTrain(){
+      $pageHome.classList.remove("active");
+      $pageLogin.classList.remove("active");
+      $pageTrain.classList.add("active");
+
+      $badgeRight.textContent = "Tela Inicial";
+      $footerTxt.textContent = `DigitAprova • Treino • ${currentSubject}`;
+
+      $leftHint.textContent = "Use 'Tela Inicial' para trocar a matéria.";
+      $rightHint.textContent = `Você está treinando: ${currentSubject}`;
+
+      $headSub.textContent = `Matéria: ${currentSubject} • Digite exatamente como aparece (modo sincronia).`;
+      refreshAuthUI();
+
+      setTimeout(focusTraining, 30);
+    }
+
+    function focusTraining(){
+      $hiddenInput.focus({preventScroll:true});
+    }
+
+    // ===== Home: matérias =====
+    function buildSubjects(){
+      $matGrid.innerHTML = "";
+      SUBJECTS.forEach(s => {
+        const btn = document.createElement("button");
+        btn.className = "matBtn";
+        btn.innerHTML = `<span>${s.name}</span><span class="tag">${s.tag}</span>`;
+        btn.onclick = () => startSubject(s.name);
+        $matGrid.appendChild(btn);
+      });
+    }
+
+    function startSubject(name){
+      currentSubject = name;
+      EX = BANK[name] || [];
+      exIdx = 0;
+      if(EX.length === 0){
+        alert("Ainda não tem questões nessa matéria.");
+        return;
+      }
+      setExercise(0);
+      showTrain();
+    }
+
+    // ===== Auth (Login simples via localStorage) =====
+    function setUser(user){
+      localStorage.setItem("digitaprov_user", JSON.stringify(user));
+      refreshAuthUI();
+    }
+    function getUser(){
+      const raw = localStorage.getItem("digitaprov_user");
+      return raw ? JSON.parse(raw) : null;
+    }
+    function logout(){
+      localStorage.removeItem("digitaprov_user");
+      refreshAuthUI();
+    }
+    function refreshAuthUI(){
+      const u = getUser();
+      if(u){
+        $btnLogin.innerHTML = "👤 Conta <span>›</span>";
+        if($loginMsg) $loginMsg.textContent = `Logado como: ${u.name}`;
+        if($btnLogout) $btnLogout.style.display = "inline-block";
+      }else{
+        $btnLogin.innerHTML = "🔐 Entrar <span>›</span>";
+        if($loginMsg) $loginMsg.textContent = "";
+        if($btnLogout) $btnLogout.style.display = "none";
+      }
+    }
+
+    // ===== Render texto (sem desalinhamento) =====
+    function escapeHtml(s){
+      return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    }
+
+    function renderText(){
+      const cursorPos = typed.length;
+      let html = "";
+
+      for(let i=0; i<target.length; i++){
+        const c = target[i];
+        const t = typed[i];
+        const isPast = i < typed.length;
+        const isCursor = i === cursorPos;
+
+        let cls = "ch";
+        if(isPast) cls += (t === c) ? " ok" : " bad";
+        if(isCursor) cls += " cursor";
+
+        if(c === "\n"){
+          html += `<span class="${cls}">↵</span>\n`;
+          continue;
+        }
+        const show = (c === " ") ? "&nbsp;" : escapeHtml(c);
+        html += `<span class="${cls}">${show}</span>`;
+      }
+
+      if(cursorPos === target.length){
+        html += `<span class="ch cursor">&nbsp;</span>`;
+      }
+
+      $render.innerHTML = html || "—";
+    }
+
+    // ===== Teclado =====
+    const KEYBOARD = [
+      ["`","1","2","3","4","5","6","7","8","9","0","-","=","Backspace"],
+      ["Tab","Q","W","E","R","T","Y","U","I","O","P","[","]","\\"],
+      ["Caps","A","S","D","F","G","H","J","K","L",";","'","Enter"],
+      ["Shift","Z","X","C","V","B","N","M",",",".","/","ShiftR"],
+      ["Ctrl","Alt","Space","AltGr","CtrlR"]
+    ];
+
+    function expectedKeyForChar(ch){
+      if(ch === undefined || ch === null) return null;
+      if(ch === " ") return "Space";
+      if(ch === "\n") return "Enter";
+
+      const up = ch.toUpperCase();
+      const map = {"Á":"A","À":"A","Â":"A","Ã":"A","É":"E","Ê":"E","Í":"I","Ó":"O","Ô":"O","Õ":"O","Ú":"U","Ç":"C"};
+      const normalized = map[up] || up;
+
+      if(/[A-Z]/.test(normalized)) return normalized;
+      if(".,;:'\"!?()[]-=".includes(ch)) return ch;
+      return ch;
+    }
+
+    function fingerForKey(k){
+      const leftPinky = ["Q","A","Z","1","`"];
+      const leftRing  = ["W","S","X","2"];
+      const leftMiddle= ["E","D","C","3"];
+      const leftIndex = ["R","F","V","T","G","B","4","5"];
+      const rightIndex= ["Y","H","N","U","J","M","6","7"];
+      const rightMiddle=["I","K",",","8"];
+      const rightRing = ["O","L",".","9"];
+      const rightPinky= ["P",";","/","0","-","=","[","]","\\","'"];
+
+      if(k === "Space") return "Polegar";
+      if(leftPinky.includes(k)) return "Mínimo esquerdo";
+      if(leftRing.includes(k)) return "Anelar esquerdo";
+      if(leftMiddle.includes(k)) return "Médio esquerdo";
+      if(leftIndex.includes(k)) return "Indicador esquerdo";
+      if(rightIndex.includes(k)) return "Indicador direito";
+      if(rightMiddle.includes(k)) return "Médio direito";
+      if(rightRing.includes(k)) return "Anelar direito";
+      if(rightPinky.includes(k)) return "Mínimo direito";
+      return "—";
+    }
+
+    function buildKeyboard(activeKey, wrongFlash){
+      $kbd.innerHTML = "";
+      KEYBOARD.forEach(r => {
+        const row = document.createElement("div");
+        row.className = "row";
+        r.forEach(k => {
+          const key = document.createElement("div");
+          key.className = "key";
+          if(["Backspace","Tab","Caps","Enter","Shift","ShiftR","Ctrl","CtrlR","Alt","AltGr"].includes(k)) key.classList.add("wide");
+          if(k === "Space") key.classList.add("space");
+          key.textContent = (k === "Space") ? "" : k;
+
+          if(activeKey && k === activeKey) key.classList.add("active");
+          if(wrongFlash && activeKey && k === activeKey) key.classList.add("bad");
+
+          row.appendChild(key);
+        });
+        $kbd.appendChild(row);
+      });
+    }
+
+    function renderKeyboard(){
+      const nextChar = (typed.length < target.length) ? target.charAt(typed.length) : null;
+      const k = expectedKeyForChar(nextChar);
+      $nextKeyLabel.textContent = "Próxima tecla: " + (k || "—");
+      buildKeyboard(k, lastWrong);
+
+      if($fingerHint){
+        $fingerHint.textContent = "Dedo sugerido: " + fingerForKey(k || "");
+      }
+    }
+
+    function keepCursorVisible(){
+      const paper = document.querySelector(".paper");
+      const cursor = document.querySelector(".ch.cursor");
+      if(!paper || !cursor) return;
+      cursor.scrollIntoView({block:"nearest", inline:"nearest"});
+    }
+
+    // ===== Stats =====
+    function renderStats(){
+      const chars = typed.length;
+      const prog = target.length ? Math.min(100, Math.round((typed.length / target.length) * 100)) : 0;
+
+      $chars.textContent = chars;
+      $prog.textContent = prog + "%";
+
+      const errCount = Number($errs.dataset.count || "0");
+      $errs.textContent = errCount;
+
+      $acc.textContent = (chars === 0) ? "—" : "100%";
+      $btnNext.disabled = !(typed === target);
+    }
+
+    function renderAll(){
+      renderText();
+      renderStats();
+      renderKeyboard();
+      setTimeout(keepCursorVisible, 0);
+    }
+
+    // ===== Treino =====
+    function setExercise(i){
+      exIdx = i % EX.length;
+      const ex = EX[exIdx];
+      target = ex.a;
+      typed = "";
+      startedAt = null;
+
+      lastWrong = false;
+      $errs.dataset.count = "0";
+      $errs.textContent = "0";
+
+      $qMeta.textContent = ex.meta + ` • ${currentSubject} • (${exIdx+1}/${EX.length})`;
+      $qText.textContent = ex.q;
+
+      renderAll();
+      focusTraining();
+    }
+
+    function flashWrong(){
+      lastWrong = true;
+      renderKeyboard();
+      clearTimeout(errorFlashTimer);
+      errorFlashTimer = setTimeout(() => {
+        lastWrong = false;
+        renderKeyboard();
+      }, 140);
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if(!$pageTrain.classList.contains("active")) return;
+
+      if(document.activeElement !== $hiddenInput) focusTraining();
+      if(e.key === "Tab") e.preventDefault();
+
+      if(e.key === "Backspace"){
+        e.preventDefault();
+        if(typed.length > 0) typed = typed.slice(0, -1);
+        lastWrong = false;
+        renderAll();
+        return;
+      }
+
+      if(e.key === "Enter"){
+        const expected = target[typed.length];
+        if(expected === "\n"){
+          typed += "\n";
+          lastWrong = false;
+          renderAll();
+        } else {
+          $errs.dataset.count = String(Number($errs.dataset.count || "0") + 1);
+          $errs.textContent = $errs.dataset.count;
+          flashWrong();
+        }
+        return;
+      }
+
+      if(e.key.length === 1){
+        const expected = target[typed.length];
+        if(expected === undefined) return;
+        if(!startedAt) startedAt = Date.now();
+
+        if(e.key === expected){
+          typed += e.key;
+          lastWrong = false;
+          renderAll();
+        } else {
+          $errs.dataset.count = String(Number($errs.dataset.count || "0") + 1);
+          $errs.textContent = $errs.dataset.count;
+          flashWrong();
+        }
+      }
+    });
+
+    // ===== Botões principais =====
+    $badgeRight.onclick = () => showHome();
+
+    $btnLogin.onclick = () => showLogin();
+
+    $btnStatus.onclick = () => alert("Status: conectamos depois (já está planejado).");
+
+    $btnReset.onclick = () => setExercise(exIdx);
+    $btnFocus.onclick = () => focusTraining();
+    $btnNext.onclick = () => setExercise(exIdx + 1);
+
+    // ===== Login ações =====
+    $loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const name = ($loginUser.value || "").trim();
+      const pass = ($loginPass.value || "").trim();
+
+      if(name.length < 3 || pass.length < 3){
+        $loginMsg.textContent = "Preencha usuário e senha (mín. 3 caracteres).";
+        return;
+      }
+
+      const user = { name, mode:"local", remember: $rememberMe.checked, ts: Date.now() };
+
+      // modo simples (offline): se não "lembrar", ainda assim guarda (pra não sumir do nada)
+      // você pode mudar depois pra sessionStorage se quiser.
+      setUser(user);
+
+      $loginMsg.textContent = "Entrou com sucesso ✅";
+      showHome();
+    });
+
+    $btnGuest.onclick = () => {
+      setUser({ name:"Convidado", mode:"guest", remember:true, ts: Date.now() });
+      showHome();
+    };
+
+    $btnGoogleFake.onclick = () => {
+      $loginMsg.textContent = "Google login: posso implementar depois (precisa backend). Use login simples ou convidado por enquanto.";
+    };
+    $btnMicrosoftFake.onclick = () => {
+      $loginMsg.textContent = "Microsoft login: posso implementar depois (precisa backend). Use login simples ou convidado por enquanto.";
+    };
+    $btnForgot.onclick = () => {
+      $loginMsg.textContent = "Recuperação: na versão offline não existe. Depois dá pra fazer com e-mail (backend).";
+    };
+
+    $btnLogout.onclick = () => {
+      logout();
+      $loginMsg.textContent = "Você saiu.";
+    };
+
+    // ===== Atalhos =====
+    let fontSize = 25;
+    $toggleFont.onclick = () => {
+      fontSize = Math.min(34, fontSize + 1);
+      document.querySelector(".lines").style.fontSize = fontSize + "px";
+    };
+    $toggleFontDown.onclick = () => {
+      fontSize = Math.max(18, fontSize - 1);
+      document.querySelector(".lines").style.fontSize = fontSize + "px";
+    };
+
+    // ===== mãos overlay =====
+    let handsEnabled = true;
+    function checkHands(){
+      $handsOverlay.onerror = () => { $handsOverlay.style.display = "none"; };
+      $handsOverlay.onload = () => { $handsOverlay.style.display = handsEnabled ? "block" : "none"; };
+      $handsOverlay.src = "dedos.png?v=" + Date.now();
+    }
+    $toggleHands.onclick = () => {
+      handsEnabled = !handsEnabled;
+      $handsOverlay.style.display = handsEnabled ? "block" : "none";
+    };
+
+    // ===== init =====
+    function buildKeyboardInitial(){
+      buildKeyboard(null, false);
+    }
+
+    buildSubjects();
+    buildKeyboardInitial();
+    checkHands();
+    refreshAuthUI();
+    showHome();
+  </script>
+</body>
+</html>
